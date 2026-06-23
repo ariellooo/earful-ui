@@ -1,13 +1,23 @@
+import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { useArgs } from 'storybook/preview-api'
-import Dropdown, { type DropdownStatusItem } from './Dropdown'
+import Dropdown, { STRATEGY_ITEMS, type DropdownStatusItem, type DropdownStrategyItem } from './Dropdown'
 
-const DEFAULT_STATUS_ITEMS: DropdownStatusItem[] = [
+const STATUS_ITEMS: DropdownStatusItem[] = [
   { label: 'Draft',     checked: false },
   { label: 'Inactive',  checked: false },
   { label: 'Launched',  checked: false },
   { label: 'Completed', checked: false },
 ]
+
+const DEFAULT_STRATEGY_ITEMS: DropdownStrategyItem[] = STRATEGY_ITEMS.map(item => ({
+  ...item,
+  checked: false,
+}))
+
+const layoutControlHidden = {
+  statusLayout:   { control: false, table: { disable: true } },
+  strategyLayout: { control: false, table: { disable: true } },
+} as const
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Design System/Dropdown',
@@ -20,10 +30,12 @@ const meta: Meta<typeof Dropdown> = {
     date:            { control: 'text' },
     items:           { table: { disable: true } },
     statusItems:     { table: { disable: true } },
+    strategyItems:   { table: { disable: true } },
     notifications:   { table: { disable: true } },
     onClose:         { table: { disable: true } },
     onSelect:        { table: { disable: true } },
     onStatusChange:  { table: { disable: true } },
+    onStrategyChange: { table: { disable: true } },
     onNotification:  { table: { disable: true } },
     className:       { table: { disable: true } },
   },
@@ -42,6 +54,7 @@ export const Profile: Story = {
   argTypes: {
     message: { table: { disable: true } },
     date:    { table: { disable: true } },
+    ...layoutControlHidden,
   },
 }
 
@@ -54,6 +67,7 @@ export const Notification: Story = {
     message: 'Lorem ipsum dolor sit amet',
     date:    '03-18',
   },
+  argTypes: layoutControlHidden,
 }
 
 // ── Edit ──────────────────────────────────────────────────────────────────────
@@ -66,6 +80,7 @@ export const Edit: Story = {
     title:   { table: { disable: true } },
     message: { table: { disable: true } },
     date:    { table: { disable: true } },
+    ...layoutControlHidden,
   },
 }
 
@@ -73,28 +88,68 @@ export const Edit: Story = {
 export const Status: Story = {
   name: 'Status',
   args: {
-    variant:     'status',
-    title:       'Status',
-    statusItems: DEFAULT_STATUS_ITEMS,
+    statusLayout: 'default',
+  },
+  parameters: {
+    controls: { include: ['statusLayout'] },
   },
   argTypes: {
-    message: { table: { disable: true } },
-    date:    { table: { disable: true } },
+    statusLayout: {
+      control: 'radio',
+      options: ['default', 'compact'],
+    },
   },
   render: function Render(args) {
-    const [, updateArgs] = useArgs<typeof args>()
-    const items = args.statusItems ?? DEFAULT_STATUS_ITEMS
+    const [items, setItems] = useState(STATUS_ITEMS)
 
     return (
       <Dropdown
-        {...args}
+        variant="status"
+        title="Status"
+        statusLayout={args.statusLayout ?? 'default'}
         statusItems={items}
         onStatusChange={(item, checked) => {
-          updateArgs({
-            statusItems: items.map((row) =>
+          setItems((prev) =>
+            prev.map((row) =>
               row.label === item.label ? { ...row, checked } : row,
             ),
-          })
+          )
+        }}
+      />
+    )
+  },
+}
+
+// ── Strategy ──────────────────────────────────────────────────────────────────
+export const Strategy: Story = {
+  name: 'Strategy',
+  args: {
+    strategyLayout: 'default',
+  },
+  parameters: {
+    controls: { include: ['strategyLayout'] },
+  },
+  argTypes: {
+    strategyLayout: {
+      control: 'radio',
+      options: ['default', 'compact'],
+    },
+  },
+  render: function Render(args) {
+    const [items, setItems] = useState(DEFAULT_STRATEGY_ITEMS)
+
+    return (
+      <Dropdown
+        variant="strategy"
+        title="Strategy"
+        strategyLayout={args.strategyLayout ?? 'default'}
+        strategyItems={items}
+        onStrategyChange={(item, checked) => {
+          setItems((prev) =>
+            prev.map((row) =>
+              row.label === item.label ? { ...row, checked } : row,
+            ),
+          )
         }}
       />
     )

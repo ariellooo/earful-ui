@@ -28,6 +28,9 @@ export type ButtonProps = {
   level?:     ButtonLevel
   size?:      ButtonSize
   disabled?:  boolean
+  /** Forces primary fill color when level is primary (default: auto from icons/size) */
+  primaryColor?: 'blue' | 'orange'
+  className?:   string
   onClick?:   () => void
 }
 
@@ -65,6 +68,7 @@ function getClasses(
   disabled: boolean,
   hasLeft:  boolean,
   hasRight: boolean,
+  primaryColor?: 'blue' | 'orange',
 ): string {
   const h   = size === 'l' ? 'h-12' : 'h-9'
   const pad =
@@ -85,7 +89,7 @@ function getClasses(
   }
 
   if (level === 'primary') {
-    const usesOrange = hasLeft || hasRight || size === 'm'
+    const usesOrange = primaryColor === 'orange' || (primaryColor !== 'blue' && (hasLeft || hasRight || size === 'm'))
     const bg = usesOrange
       ? 'bg-secondary hover:bg-brand-tint-orange active:bg-brand-shade-orange'
       : 'bg-primary  hover:bg-brand-tint-blue   active:bg-brand-shade-blue'
@@ -126,6 +130,8 @@ export default function Button({
   level    = 'primary',
   size     = 'l',
   disabled = false,
+  primaryColor,
+  className,
   onClick,
 }: ButtonProps) {
   const iconColor = disabled ? ICON_COLOR_DISABLED : ICON_COLOR[level]
@@ -135,7 +141,7 @@ export default function Button({
       type="button"
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
-      className={getClasses(level, size, disabled, !!iconLeft, !!iconRight)}
+      className={[getClasses(level, size, disabled, !!iconLeft, !!iconRight, primaryColor), className].filter(Boolean).join(' ')}
     >
       {iconLeft  && <BtnIcon name={iconLeft}  color={iconColor} />}
       <span>{label}</span>

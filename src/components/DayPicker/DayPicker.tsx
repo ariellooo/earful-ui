@@ -6,12 +6,26 @@
  */
 
 import { useState } from 'react'
+import {
+  MONTH_NAMES,
+  WEEKDAYS,
+  buildCalendarDays,
+  computePresetRange,
+  normalizeDate,
+} from './calendarHelpers'
 
-export type DayPickerState = 'default' | 'open' | 'select-day' | 'select-range'
+export type DayPickerState = 'default' | 'open'
+
+export type DateRange = {
+  start: Date
+  end:   Date
+}
 
 export type DayPickerProps = {
-  state?: DayPickerState
-  text?:  string
+  state?:    DayPickerState
+  text?:     string
+  onApply?:  (range: DateRange) => void
+  onClear?:  () => void
 }
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -49,90 +63,25 @@ function ChevronRight() {
   )
 }
 
-// ─── Calendar helpers ─────────────────────────────────────────────────────────
-
-const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-
-const MONTH_NAMES = [
-  'January','February','March','April','May','June',
-  'July','August','September','October','November','December',
-]
-
-/** Returns a 6-row × 7-col grid of Date objects for a given month (Mon-start). */
-function buildCalendarDays(year: number, month: number): Date[] {
-  const first = new Date(year, month, 1)
-  // Monday-based: getDay() 0=Sun → shift so Mon=0
-  const startOffset = (first.getDay() + 6) % 7
-  const start = new Date(year, month, 1 - startOffset)
-  const days: Date[] = []
-  for (let i = 0; i < 35; i++) {
-    days.push(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i))
-  }
-  // If the last row still contains days from the current month, extend to 42
-  const last = days[days.length - 1]
-  if (last.getMonth() === month) {
-    for (let i = 35; i < 42; i++) {
-      days.push(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i))
-    }
-  }
-  return days
-}
-
-// ─── Date helpers ─────────────────────────────────────────────────────────────
-
-function normalizeDate(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
-}
-
-function offsetDays(base: Date, offset: number): Date {
-  const d = normalizeDate(base)
-  d.setDate(d.getDate() + offset)
-  return d
-}
-
-function computePresetRange(label: string, today: Date): { start: Date; end: Date } | null {
-  if (label === 'Last 7 Days') {
-    return { start: offsetDays(today, -6), end: normalizeDate(today) }
-  }
-  if (label === 'Last 14 Days') {
-    return { start: offsetDays(today, -13), end: normalizeDate(today) }
-  }
-  if (label === 'Last Month') {
-    const start = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-    const end   = new Date(today.getFullYear(), today.getMonth(), 0)
-    return { start, end }
-  }
-  return null
-}
-
 // ─── Panel ────────────────────────────────────────────────────────────────────
 
 const PRESETS = ['Today', 'Last 7 Days', 'Last 14 Days', 'Last Month']
 
-function DayPickerPanel({ initialPreset }: { initialPreset?: string }) {
+function DayPickerPanel({
+  onApply,
+  onClear,
+}: {
+  onApply?: (range: DateRange) => void
+  onClear?: () => void
+}) {
   const today = normalizeDate(new Date())
 
-  const initRange = initialPreset ? computePresetRange(initialPreset, today) : null
-
-  const [viewYear,     setViewYear]     = useState(() => {
-    if (initialPreset === 'Last Month') return (new Date(today.getFullYear(), today.getMonth() - 1, 1)).getFullYear()
-    return today.getFullYear()
-  })
-  const [viewMonth,    setViewMonth]    = useState(() => {
-    if (initialPreset === 'Last Month') return (new Date(today.getFullYear(), today.getMonth() - 1, 1)).getMonth()
-    return today.getMonth()
-  })
-  // rangeStart/rangeEnd cover all selections — presets, manual ranges, and single days
-  // (Today = rangeStart === rangeEnd)
-  const [rangeStart,    setRangeStart]    = useState<Date | null>(
-    initialPreset === 'Today' ? today : (initRange?.start ?? null)
-  )
-  const [rangeEnd,      setRangeEnd]      = useState<Date | null>(
-    initialPreset === 'Today' ? today : (initRange?.end ?? null)
-  )
-  // pendingStart holds the first click of a manual range before the second click
-  const [pendingStart,  setPendingStart]  = useState<Date | null>(null)
-  const [activePreset,  setActivePreset]  = useState<string | null>(initialPreset ?? null)
+  const [viewYear,    setViewYear]    = useState(() => today.getFullYear())
+  const [viewMonth,   setViewMonth]   = useState(() => today.getMonth())
+  const [rangeStart,  setRangeStart]  = useState<Date | null>(null)
+  const [rangeEnd,    setRangeEnd]    = useState<Date | null>(null)
+  const [pendingStart, setPendingStart] = useState<Date | null>(null)
+  const [activePreset, setActivePreset] = useState<string | null>(null)
 
   const days = buildCalendarDays(viewYear, viewMonth)
 
@@ -178,6 +127,16 @@ function DayPickerPanel({ initialPreset }: { initialPreset?: string }) {
     setRangeEnd(null)
     setPendingStart(null)
     setActivePreset(null)
+    onClear?.()
+  }
+
+  function handleApply() {
+    if (!hasSelection) return
+    if (rangeStart && rangeEnd) {
+      onApply?.({ start: rangeStart, end: rangeEnd })
+    } else if (pendingStart) {
+      onApply?.({ start: pendingStart, end: pendingStart })
+    }
   }
 
   function handleDayClick(d: Date) {
@@ -318,6 +277,7 @@ function DayPickerPanel({ initialPreset }: { initialPreset?: string }) {
             Clear
           </button>
           <button type="button"
+            onClick={handleApply}
             className={[
               'h-9 px-4 font-body font-medium text-[15px] leading-6 tracking-[0.2px] rounded-lg transition-colors cursor-pointer',
               hasSelection
@@ -336,12 +296,12 @@ function DayPickerPanel({ initialPreset }: { initialPreset?: string }) {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function DayPicker({
-  state = 'default',
-  text  = 'Select Day',
+  state   = 'default',
+  text    = 'Select Day',
+  onApply,
+  onClear,
 }: DayPickerProps) {
-  if (state === 'open')          return <DayPickerPanel />
-  if (state === 'select-day')   return <DayPickerPanel initialPreset="Today" />
-  if (state === 'select-range') return <DayPickerPanel initialPreset="Last 7 Days" />
+  if (state === 'open') return <DayPickerPanel onApply={onApply} onClear={onClear} />
 
   return (
     <button

@@ -22,6 +22,7 @@ export type ButtonSquareProps = {
   number?:   number
   /** Icon name (from Icon/Icon.tsx) for type=icon */
   icon?:     IconName
+  onClick?:  () => void
 }
 
 // ─── Icon via mask ────────────────────────────────────────────────────────────
@@ -92,6 +93,7 @@ export default function ButtonSquare({
   disabled = false,
   number   = 1,
   icon     = 'download',
+  onClick,
 }: ButtonSquareProps) {
   // ── number ─────────────────────────────────────────────────────────────────
   if (type === 'number') {
@@ -99,6 +101,7 @@ export default function ButtonSquare({
       <button
         type="button"
         disabled={disabled}
+        onClick={onClick}
         className={[
           'inline-flex items-center justify-center size-9 rounded-lg',
           'font-body font-medium text-[15px] leading-6 tracking-[0.2px]',
@@ -126,6 +129,7 @@ export default function ButtonSquare({
     <button
       type="button"
       disabled={disabled}
+      onClick={onClick}
       className={getIconClasses(iconLevel, size, disabled)}
     >
       <SqIcon name={icon} color={iconColor} />

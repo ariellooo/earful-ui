@@ -4,14 +4,22 @@
  * profile:      212 px · header + icon rows
  * notification: 528 px · header + message + date + unread dot
  * edit:         130 px · icon rows only (no header)
- * status:       212 px · header + checkbox rows (24 px row height)
+ * status:       212 px · checkbox rows (24 px row height)
+ *               · default: header + close · compact: no header (5217:4017)
+ * strategy:     212 px · checkbox rows (24 px row height)
+ *               · default: header + close (5218:4293) · compact: no header
  */
 
 import type { ReactNode } from 'react'
 import Checkbox from '../Checkbox/Checkbox'
 import { ICON_ASSETS, type IconName } from '../Icon/Icon'
 
-export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status'
+export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status' | 'strategy'
+
+/** Checkbox dropdown sub-layout — Status 5217:4017 · Strategy 5218:4293. */
+export type StatusLayout = 'default' | 'compact'
+
+export type StrategyLayout = StatusLayout
 
 export type DropdownItem = {
   icon:  IconName
@@ -22,6 +30,9 @@ export type DropdownStatusItem = {
   label:    string
   checked?: boolean
 }
+
+/** Same shape as status rows — used by the strategy variant. */
+export type DropdownStrategyItem = DropdownStatusItem
 
 export type DropdownNotificationItem = {
   message: string
@@ -34,13 +45,19 @@ export type DropdownProps = {
   title?:          string
   items?:          DropdownItem[]
   statusItems?:    DropdownStatusItem[]
+  /** Only applies when `variant="status"`. */
+  statusLayout?:   StatusLayout
+  strategyItems?: DropdownStrategyItem[]
+  /** Only applies when `variant="strategy"`. */
+  strategyLayout?: StrategyLayout
   /** Notification row placeholder — used when `notifications` is omitted. */
   message?:        string
   date?:           string
   notifications?:  DropdownNotificationItem[]
   onClose?:        () => void
   onSelect?:       (item: DropdownItem) => void
-  onStatusChange?: (item: DropdownStatusItem, checked: boolean) => void
+  onStatusChange?:   (item: DropdownStatusItem, checked: boolean) => void
+  onStrategyChange?: (item: DropdownStrategyItem, checked: boolean) => void
   onNotification?: (item: DropdownNotificationItem) => void
   className?:      string
 }
@@ -64,6 +81,14 @@ const STATUS_ITEMS: DropdownStatusItem[] = [
   { label: 'Completed' },
 ]
 
+const STRATEGY_ITEMS: DropdownStrategyItem[] = [
+  { label: 'Dilution' },
+  { label: 'Distraction' },
+  { label: 'Exposure' },
+  { label: 'Neutralization' },
+  { label: 'Market Intelligence' },
+]
+
 const DEFAULT_MESSAGE = 'Lorem ipsum dolor sit amet'
 const DEFAULT_DATE    = '03-18'
 
@@ -72,6 +97,7 @@ const WIDTH: Record<DropdownVariant, string> = {
   notification: 'w-[528px]',
   edit:         'w-[130px]',
   status:       'w-[212px]',
+  strategy:     'w-[212px]',
 }
 
 function buildNotifications(
@@ -174,12 +200,12 @@ function DropdownShell({
   )
 }
 
-function StatusMenuRows({
+function CheckboxMenuRows({
   items,
-  onStatusChange,
+  onChange,
 }: {
-  items:           DropdownStatusItem[]
-  onStatusChange?: (item: DropdownStatusItem, checked: boolean) => void
+  items:    DropdownStatusItem[]
+  onChange?: (item: DropdownStatusItem, checked: boolean) => void
 }) {
   return items.map((item) => {
     const checked = item.checked ?? false
@@ -190,7 +216,7 @@ function StatusMenuRows({
         type="button"
         role="menuitemcheckbox"
         aria-checked={checked}
-        onClick={() => onStatusChange?.(item, !checked)}
+        onClick={() => onChange?.(item, !checked)}
         className="flex h-6 w-full items-center bg-surface-white hover:bg-surface-primary transition-colors focus:outline-none"
       >
         <div className="flex h-6 w-10 shrink-0 items-center justify-center pl-2">
@@ -239,12 +265,16 @@ export default function Dropdown({
   title,
   items,
   statusItems     = STATUS_ITEMS,
+  statusLayout    = 'default',
+  strategyItems   = STRATEGY_ITEMS,
+  strategyLayout  = 'default',
   message         = DEFAULT_MESSAGE,
   date            = DEFAULT_DATE,
   notifications,
   onClose,
   onSelect,
   onStatusChange,
+  onStrategyChange,
   onNotification,
   className       = '',
 }: DropdownProps) {
@@ -257,7 +287,9 @@ export default function Dropdown({
       ? 'Notification'
       : variant === 'status'
         ? 'Status'
-        : 'Profile')
+        : variant === 'strategy'
+          ? 'Strategy'
+          : 'Profile')
 
   if (variant === 'edit') {
     return (
@@ -308,14 +340,33 @@ export default function Dropdown({
   }
 
   if (variant === 'status') {
+    const showHeader = statusLayout !== 'compact'
+
     return (
       <DropdownShell
         title={resolvedTitle}
         widthClass={WIDTH.status}
         onClose={onClose}
+        showHeader={showHeader}
         className={className}
       >
-        <StatusMenuRows items={statusItems} onStatusChange={onStatusChange} />
+        <CheckboxMenuRows items={statusItems} onChange={onStatusChange} />
+      </DropdownShell>
+    )
+  }
+
+  if (variant === 'strategy') {
+    const showHeader = strategyLayout !== 'compact'
+
+    return (
+      <DropdownShell
+        title={resolvedTitle}
+        widthClass={WIDTH.strategy}
+        onClose={onClose}
+        showHeader={showHeader}
+        className={className}
+      >
+        <CheckboxMenuRows items={strategyItems} onChange={onStrategyChange} />
       </DropdownShell>
     )
   }
@@ -331,3 +382,5 @@ export default function Dropdown({
     </DropdownShell>
   )
 }
+
+export { STATUS_ITEMS, STRATEGY_ITEMS }

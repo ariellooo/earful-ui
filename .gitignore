@@ -10,10 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-storybook-static
 *.local
-
-# Editor directories and files
+.env
+storybook-static
 .vscode/*
 !.vscode/extensions.json
 .idea
