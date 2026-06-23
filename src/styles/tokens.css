@@ -1,0 +1,68 @@
+/*
+  Design tokens extracted from Figma — Earful 2025
+  node: 45:143 (Colour page)
+
+  NOTE: TT Norms Pro is a commercial font. Add a @font-face or CDN link
+  in index.css if you are serving it as a web font.
+*/
+@theme {
+  /* ── Primary & Secondary ────────────────────────────── */
+  --color-primary: #2bc7e0;
+  --color-secondary: #ff801a;
+
+  /* ── Brand ──────────────────────────────────────────── */
+  --color-brand-blue: #2bc7e0;
+  --color-brand-orange: #ff801a;
+  --color-brand-indigo: #085b92;
+  --color-brand-purple: #9278ff;
+  --color-brand-mint: #6ade94;
+
+  /* ── Semantic ───────────────────────────────────────── */
+  --color-semantic-red: #d20032;
+  --color-semantic-yellow: #eaac00;
+  --color-semantic-green: #009e36;
+
+  /* ── Greyscale ──────────────────────────────────────── */
+  --color-greyscale-900: #0f172a;
+  --color-greyscale-700: #334155;
+  --color-greyscale-500: #64748b;
+  --color-greyscale-300: #cbd5e1;
+  --color-greyscale-100: #f1f5f9;
+  --color-greyscale-50: #f8fafc;
+  --color-greyscale-0: #ffffff;
+
+  /* ── Line / Border ──────────────────────────────────── */
+  --color-line-default: #cbd5e1;
+
+  /* ── Brand tints (hover states) ─────────────────────── */
+  --color-brand-tint-blue: #95e3f0;
+  --color-brand-tint-orange: #ffc08d;
+  --color-brand-tint-mint: #b5efca;
+  --color-brand-tint-purple: #c9bcff;
+  --color-brand-tint-indigo: #84adc9;
+
+  /* ── Brand shades (pressed states) ──────────────────── */
+  --color-brand-shade-blue: #229fb3;
+  --color-brand-shade-orange: #cc6615;
+  --color-brand-shade-mint: #55b276;
+  --color-brand-shade-purple: #7560cc;
+  --color-brand-shade-indigo: #064975;
+
+  /* ── Surface ─────────────────────────────────────────── */
+  --color-surface-white: #ffffff;
+  --color-surface-primary: #f1f5f9;
+  --color-surface-disable: #cbd5e1;
+
+  /* ── Text ───────────────────────────────────────────── */
+  --color-text-default: #334155;
+  --color-text-invert: #f8fafc;
+  --color-text-disable: #cbd5e1;
+
+  /* ── Typography ─────────────────────────────────────── */
+  --font-display: 'TT Norms Pro', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* ── Drop shadow ─────────────────────────────────────── */
+  --shadow-100: 0 1px 4px 0 rgba(12, 12, 13, 0.05);
+  --shadow-200: 0 1px 4px 0 rgba(12, 12, 13, 0.1), 0 1px 4px 0 rgba(12, 12, 13, 0.05);
+}
