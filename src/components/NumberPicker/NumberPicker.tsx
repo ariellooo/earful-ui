@@ -12,11 +12,12 @@ export type NumberPickerVariant = 'topics' | 'comments'
 
 export type NumberPickerProps = {
   variant?:       NumberPickerVariant
-  value?:         number
-  defaultValue?:  number
+  value?:         number | null
+  defaultValue?:  number | null
+  emptyLabel?:    string
   min?:           number
   max?:           number
-  onChange?:      (value: number) => void
+  onChange?:      (value: number | null) => void
 }
 
 const SUFFIX_LABEL: Record<NumberPickerVariant, string> = {
@@ -59,20 +60,25 @@ function PickerIcon({ name }: { name: Extract<IconName, 'chevron-up' | 'chevron-
 export default function NumberPicker({
   variant      = 'topics',
   value:        controlledValue,
-  defaultValue = 1,
+  defaultValue = null,
+  emptyLabel   = 'No.',
   min          = 1,
   max          = 99,
   onChange,
 }: NumberPickerProps) {
-  const [internalValue, setInternalValue] = useState(defaultValue)
-  const value = controlledValue ?? internalValue
+  const [internalValue, setInternalValue] = useState<number | null>(defaultValue)
+  const value = controlledValue !== undefined ? controlledValue : internalValue
 
-  const setValue = (next: number) => {
-    const clamped = Math.min(max, Math.max(min, next))
-    if (clamped === value) return
-    if (controlledValue === undefined) setInternalValue(clamped)
-    onChange?.(clamped)
+  const commit = (next: number | null) => {
+    if (next === value) return
+    const resolved =
+      next == null ? null : Math.min(max, Math.max(min, next))
+    if (resolved === value) return
+    if (controlledValue === undefined) setInternalValue(resolved)
+    onChange?.(resolved)
   }
+
+  const displayLabel = value == null ? emptyLabel : String(value)
 
   return (
     <div className="inline-flex items-center gap-1">
@@ -82,17 +88,17 @@ export default function NumberPicker({
         style={{ backgroundColor: 'var(--color-surface-primary)' }}
         role="group"
         aria-label="Number picker"
-        aria-valuenow={value}
+        aria-valuenow={value ?? undefined}
       >
         <span className="font-body font-medium text-[15px] leading-6 tracking-[0.2px] text-text-default whitespace-nowrap shrink-0">
-          {value}
+          {displayLabel}
         </span>
 
         <div className="flex h-9 w-3 shrink-0 flex-col items-start justify-center gap-2">
           <button
             type="button"
             aria-label="Increase"
-            onClick={() => setValue(value + 1)}
+            onClick={() => commit(value == null ? min : value + 1)}
             className="inline-flex size-3 items-center justify-center hover:opacity-70 transition-opacity focus:outline-none"
           >
             <PickerIcon name="chevron-up" />
@@ -100,7 +106,10 @@ export default function NumberPicker({
           <button
             type="button"
             aria-label="Decrease"
-            onClick={() => setValue(value - 1)}
+            onClick={() => {
+              if (value == null) return
+              commit(value <= min ? null : value - 1)
+            }}
             className="inline-flex size-3 items-center justify-center hover:opacity-70 transition-opacity focus:outline-none"
           >
             <PickerIcon name="chevron-down" />

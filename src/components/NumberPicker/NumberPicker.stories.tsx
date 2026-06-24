@@ -15,13 +15,14 @@ const meta: Meta<typeof NumberPicker> = {
   ],
   args: {
     variant: 'topics',
-    value:   1,
+    value:   null,
     min:     1,
     max:     99,
   },
   argTypes: {
     variant:      { control: 'radio', options: ['topics', 'comments'] },
-    value:        { control: 'number' },
+    value:        { control: { type: 'number', min: 1, max: 99 } },
+    emptyLabel:   { control: 'text' },
     min:          { table: { disable: true } },
     max:          { table: { disable: true } },
     defaultValue: { table: { disable: true } },
