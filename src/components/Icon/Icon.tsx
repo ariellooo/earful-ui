@@ -45,12 +45,11 @@ export type IconName = keyof typeof ICON_ASSETS
 
 export const ICON_NAMES = Object.keys(ICON_ASSETS) as IconName[]
 
-export type IconState = 'light' | 'dark'
+export const ICON_COLOR_DEFAULT = 'var(--color-icon-default)'
+export const ICON_COLOR_INVERT = 'var(--color-icon-invert)'
 
 export type IconProps = {
   name: IconName
-  /** light = dark icon on white bg · dark = white icon on indigo bg */
-  state?: IconState
   /** Size in px — Figma baseline is 24 */
   size?: number
   className?: string
@@ -58,27 +57,32 @@ export type IconProps = {
   label?: string
 }
 
-export default function Icon({ name, state = 'light', size = 24, className = '', label }: IconProps) {
-  const isDark = state === 'dark'
-
+export default function Icon({ name, size = 24, className = '', label }: IconProps) {
   return (
     <div
       className={[
-        'inline-flex items-center justify-center rounded-xl p-3',
-        isDark ? 'bg-brand-indigo' : 'bg-white',
+        'inline-flex items-center justify-center rounded-xl p-3 bg-white',
         className,
       ].join(' ')}
     >
-      <img
-        src={ICON_ASSETS[name]}
-        alt={label ?? ''}
+      <span
+        role={label ? 'img' : undefined}
+        aria-label={label ?? undefined}
         aria-hidden={label ? undefined : true}
-        width={size}
-        height={size}
         style={{
+          display: 'inline-block',
           width: size,
           height: size,
-          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+          flexShrink: 0,
+          backgroundColor: ICON_COLOR_DEFAULT,
+          WebkitMaskImage: `url(${ICON_ASSETS[name]})`,
+          maskImage: `url(${ICON_ASSETS[name]})`,
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
+          maskPosition: 'center',
         }}
       />
     </div>

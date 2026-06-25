@@ -1,19 +1,20 @@
 /**
- * Sidebar — sourced from Figma nodes 60:923 (layout) and 47:286 (menu item states).
+ * Sidebar — sourced from Figma nodes 55:169 (layout) and 47:286 (menu item states).
  *
  * state="expanded"  — 212 px wide: logo wordmark + icon + label nav items
  * state="collapsed" — 48 px wide:  icon-only logo + icon-only nav items
  *
- * Nav item states (per Figma node 47:286):
- *   Default  — transparent bg · dark icon · dark label
- *   Hovered  — bg-brand-tint-blue · cyan icon · cyan label (#2bc7e0)
- *   Selected — bg-primary (cyan) · brand-indigo icon · brand-indigo label · shadow-100
+ * Nav item states (WCAG AA — text/icon use colour/text/default #0F172A on all states):
+ *   Default  — transparent bg · icon-default · text-default
+ *   Hovered  — bg-brand-tint-blue · icon-default · text-default
+ *   Selected — bg-primary · icon-default · text-default · shadow-100
  *
- * Typography: TT Norms Pro Medium · 16 px · tracking 0.1px · leading 1.4
+ * Typography: Inter Medium 15 px · tracking 0.2px · leading 24 (Body 1 Medium)
  */
 
 import { useState } from 'react'
 import Logo from '../Logo/Logo'
+import { ICON_COLOR_DEFAULT } from '../Icon/Icon'
 import { ICON_MENU_ASSETS } from '../IconMenu/IconMenu'
 import type { IconMenuName } from '../IconMenu/IconMenu'
 
@@ -36,11 +37,7 @@ const NAV_ITEMS: { icon: IconMenuName; label: string }[] = [
   { icon: 'scan-face',           label: 'Face Detection' },
 ]
 
-// Icon + label colours from Figma tokens
-const COLOR_DEFAULT  = '#334155' // colour/text/default
-const COLOR_HOVER    = '#2bc7e0' // colour/icon/primary
-const COLOR_SELECTED = '#085b92' // color/brand/indigo
-
+// Nav icon + label use text/icon default on every state (Figma 55:169)
 function NavIcon({ src, color }: { src: string; color: string }) {
   return (
     <span
@@ -94,13 +91,8 @@ export default function Sidebar({ state = 'expanded' }: SidebarProps) {
           const isSelected = idx === selected
           const isHovered  = idx === hovered && !isSelected
 
-          const iconColor =
-            isSelected ? COLOR_SELECTED :
-            isHovered  ? COLOR_HOVER    : COLOR_DEFAULT
-
-          const labelClass =
-            isSelected ? 'text-brand-indigo' :
-            isHovered  ? 'text-primary'       : 'text-text-default'
+          const iconColor = ICON_COLOR_DEFAULT
+          const labelClass = 'text-text-default'
 
           const bgClass =
             isSelected ? 'bg-primary shadow-100' :
@@ -123,7 +115,7 @@ export default function Sidebar({ state = 'expanded' }: SidebarProps) {
               {!collapsed && (
                 <span
                   className={[
-                    'font-display font-medium text-[16px] leading-[1.4] tracking-[0.1px] whitespace-nowrap transition-colors',
+                    'font-body font-medium text-[15px] leading-6 tracking-[0.2px] whitespace-nowrap transition-colors',
                     labelClass,
                   ].join(' ')}
                 >

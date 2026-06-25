@@ -14,7 +14,7 @@
  *   tertiary                   → ghost (no bg, no border)
  */
 
-import { ICON_ASSETS, type IconName } from '../Icon/Icon'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT, ICON_COLOR_INVERT, type IconName } from '../Icon/Icon'
 
 export type ButtonLevel = 'primary' | 'secondary' | 'tertiary'
 export type ButtonSize  = 'l' | 'm'
@@ -93,7 +93,7 @@ function getClasses(
     const bg = usesOrange
       ? 'bg-secondary hover:bg-brand-tint-orange active:bg-brand-shade-orange'
       : 'bg-primary  hover:bg-brand-tint-blue   active:bg-brand-shade-blue'
-    return [...base, bg, 'text-text-invert shadow-200 cursor-pointer'].join(' ')
+    return [...base, bg, 'text-text-default shadow-200 cursor-pointer'].join(' ')
   }
 
   if (level === 'secondary') {
@@ -117,11 +117,11 @@ function getClasses(
 
 // Icon color matches the text color for each button level
 const ICON_COLOR: Record<ButtonLevel, string> = {
-  primary:   '#f8fafc', // text-invert (white — on cyan/orange bg)
-  secondary: '#334155', // text-default (dark — on white bg)
-  tertiary:  '#334155', // text-default (dark — on transparent bg)
+  primary:   ICON_COLOR_DEFAULT,
+  secondary: ICON_COLOR_DEFAULT,
+  tertiary:  ICON_COLOR_DEFAULT,
 }
-const ICON_COLOR_DISABLED = '#f8fafc' // text-invert (white — on disabled bg)
+const ICON_COLOR_DISABLED = ICON_COLOR_INVERT
 
 export default function Button({
   label    = 'Button Label',

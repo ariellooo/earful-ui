@@ -59,10 +59,10 @@ export default function ButtonCircle({
       className={[
         'inline-flex items-center justify-center size-9 rounded-full',
         'font-body font-medium text-[15px] leading-6 tracking-[0.2px]',
-        'text-text-invert transition-colors select-none',
+        'transition-colors select-none',
         disabled
-          ? 'bg-surface-disable cursor-not-allowed opacity-60'
-          : 'bg-primary hover:bg-brand-tint-blue active:bg-brand-shade-blue cursor-pointer',
+          ? 'bg-surface-disable text-text-invert cursor-not-allowed opacity-60'
+          : 'bg-primary text-text-default hover:bg-brand-tint-blue active:bg-brand-shade-blue cursor-pointer',
       ].join(' ')}
     >
       {number}

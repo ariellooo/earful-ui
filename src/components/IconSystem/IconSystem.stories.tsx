@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import IconSystem, { ICON_SYSTEM_TYPES } from './IconSystem'
+import IconSystem, { ICON_SYSTEM_TYPES, ICON_SYSTEM_VARIANTS } from './IconSystem'
 
 const meta: Meta<typeof IconSystem> = {
   title: 'Design System/Icons/System',
@@ -8,7 +8,7 @@ const meta: Meta<typeof IconSystem> = {
   args: { type: 'triangle-alert', variant: 'default', size: 24 },
   argTypes: {
     type:    { control: 'select', options: ICON_SYSTEM_TYPES },
-    variant: { control: 'radio',  options: ['default', 'fill', 'outline'] },
+    variant: { control: 'radio',  options: ICON_SYSTEM_VARIANTS },
     size:    { control: { type: 'range', min: 16, max: 64, step: 4 } },
   },
 }

@@ -7,7 +7,7 @@
 
 import Button from '../Button/Button'
 import ButtonSquare from '../ButtonSquare/ButtonSquare'
-import DropdownDatePicker from '../DayPicker/DropdownDatePicker'
+import SingleDayPicker from '../DayPicker/SingleDayPicker'
 import NumberPicker from '../NumberPicker/NumberPicker'
 import { normalizeDate } from '../DayPicker/calendarHelpers'
 
@@ -185,7 +185,7 @@ export default function DetailBar({
 
       {openPanel === 'launchDate' && (
         <div className="self-start">
-          <DropdownDatePicker
+          <SingleDayPicker
             selectedDate={launchDate}
             onSelectDate={(date) => onLaunchDateChange?.(normalizeDate(date))}
             onClear={() => onLaunchDateChange?.(null)}

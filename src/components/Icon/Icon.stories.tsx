@@ -5,10 +5,9 @@ const meta: Meta<typeof Icon> = {
   title: 'Design System/Icons/Function',
   component: Icon,
   parameters: { layout: 'centered' },
-  args: { name: 'search', state: 'light', size: 24 },
+  args: { name: 'search', size: 24 },
   argTypes: {
     name:  { control: 'select', options: ICON_NAMES },
-    state: { control: 'radio',  options: ['light', 'dark'] },
     size:  { control: { type: 'range', min: 12, max: 64, step: 4 } },
   },
 }

@@ -1,11 +1,14 @@
 /**
- * DayPicker — sourced from Figma (Earful 2026).
+ * RangeDayPicker — sourced from Figma (Earful 2026).
  *
  * state="default" — outlined trigger button: calendar icon + "Select Day" label
  * state="open"    — full dropdown panel: preset shortcuts + calendar grid
  */
 
 import { useState } from 'react'
+import Button from '../Button/Button'
+import ButtonSquare from '../ButtonSquare/ButtonSquare'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
 import {
   MONTH_NAMES,
   WEEKDAYS,
@@ -14,52 +17,50 @@ import {
   normalizeDate,
 } from './calendarHelpers'
 
-export type DayPickerState = 'default' | 'open'
+export type RangeDayPickerState = 'default' | 'open'
 
 export type DateRange = {
   start: Date
   end:   Date
 }
 
-export type DayPickerProps = {
-  state?:    DayPickerState
+export type RangeDayPickerProps = {
+  state?:    RangeDayPickerState
   text?:     string
   onApply?:  (range: DateRange) => void
   onClear?:  () => void
 }
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
+// ─── Icons (mask — same pattern as Button / Pagination) ───────────────────────
 
-function CalendarIcon() {
+function MaskIcon({
+  name,
+  size  = 24,
+  color = ICON_COLOR_DEFAULT,
+}: {
+  name:  IconName
+  size?: number
+  color?: string
+}) {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden className="shrink-0">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8"  y1="2" x2="8"  y2="6" />
-      <line x1="3"  y1="10" x2="21" y2="10" />
-    </svg>
-  )
-}
-
-function ChevronLeft() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden>
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  )
-}
-
-function ChevronRight() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden>
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
+    <span
+      aria-hidden
+      style={{
+        display:            'inline-block',
+        width:              size,
+        height:             size,
+        flexShrink:         0,
+        backgroundColor:    color,
+        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
+        maskImage:          `url(${ICON_ASSETS[name]})`,
+        WebkitMaskSize:     'contain',
+        maskSize:           'contain',
+        WebkitMaskRepeat:   'no-repeat',
+        maskRepeat:         'no-repeat',
+        WebkitMaskPosition: 'center',
+        maskPosition:       'center',
+      }}
+    />
   )
 }
 
@@ -67,7 +68,7 @@ function ChevronRight() {
 
 const PRESETS = ['Today', 'Last 7 Days', 'Last 14 Days', 'Last Month']
 
-function DayPickerPanel({
+function RangeDayPickerPanel({
   onApply,
   onClear,
 }: {
@@ -196,7 +197,7 @@ function DayPickerPanel({
                 'text-left px-4 h-9 rounded-lg mx-1 transition-colors cursor-pointer whitespace-nowrap',
                 'font-body font-medium text-[15px] leading-6 tracking-[0.2px]',
                 isActive
-                  ? 'bg-secondary text-text-invert shadow-200'
+                  ? 'bg-secondary text-text-default shadow-200'
                   : 'text-text-default hover:bg-surface-primary',
               ].join(' ')}
             >
@@ -210,17 +211,25 @@ function DayPickerPanel({
       <div className="flex flex-col gap-4 p-4 w-[286px]">
         {/* Month nav */}
         <div className="flex items-center justify-between">
-          <button type="button" onClick={prevMonth}
-            className="text-text-default cursor-pointer">
-            <ChevronLeft />
-          </button>
-          <span className="font-body font-bold text-[15px] leading-6 tracking-[0.2px] text-secondary">
+          <div className="flex size-10 shrink-0 items-center justify-center">
+            <ButtonSquare
+              type="icon"
+              icon="chevron-left"
+              size="s"
+              onClick={prevMonth}
+            />
+          </div>
+          <span className="font-body font-bold text-[15px] leading-6 tracking-[0.2px] text-brand-indigo">
             {MONTH_NAMES[viewMonth]} {viewYear}
           </span>
-          <button type="button" onClick={nextMonth}
-            className="text-text-default cursor-pointer">
-            <ChevronRight />
-          </button>
+          <div className="flex size-10 shrink-0 items-center justify-center">
+            <ButtonSquare
+              type="icon"
+              icon="chevron-right"
+              size="s"
+              onClick={nextMonth}
+            />
+          </div>
         </div>
 
         {/* Divider */}
@@ -258,8 +267,8 @@ function DayPickerPanel({
                     isPending(d) || showIndividualRange(d, week)
                       ? 'bg-surface-primary rounded-lg text-text-default'
                       : isCurrentMonth(d)
-                        ? 'rounded-full text-text-default hover:bg-surface-primary'
-                        : 'rounded-full text-greyscale-300 hover:bg-surface-primary',
+                        ? 'rounded-lg text-text-default hover:bg-surface-primary'
+                        : 'rounded-lg text-greyscale-300 hover:bg-surface-primary',
                   ].join(' ')}
                 >
                   {d.getDate()}
@@ -271,22 +280,19 @@ function DayPickerPanel({
 
         {/* Footer */}
         <div className="flex gap-2 justify-end">
-          <button type="button"
+          <Button
+            label="Clear"
+            level="tertiary"
+            size="m"
             onClick={handleClear}
-            className="h-9 px-4 font-body font-medium text-[15px] leading-6 tracking-[0.2px] text-text-default hover:bg-surface-primary rounded-lg transition-colors cursor-pointer">
-            Clear
-          </button>
-          <button type="button"
+          />
+          <Button
+            label="Apply"
+            level={hasSelection ? 'primary' : 'secondary'}
+            size="m"
+            primaryColor={hasSelection ? 'orange' : undefined}
             onClick={handleApply}
-            className={[
-              'h-9 px-4 font-body font-medium text-[15px] leading-6 tracking-[0.2px] rounded-lg transition-colors cursor-pointer',
-              hasSelection
-                ? 'bg-secondary text-text-invert shadow-200'
-                : 'text-text-default border border-greyscale-300 bg-surface-white shadow-100 hover:bg-surface-primary',
-            ].join(' ')}
-          >
-            Apply
-          </button>
+          />
         </div>
       </div>
     </div>
@@ -295,13 +301,13 @@ function DayPickerPanel({
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function DayPicker({
+export default function RangeDayPicker({
   state   = 'default',
   text    = 'Select Day',
   onApply,
   onClear,
-}: DayPickerProps) {
-  if (state === 'open') return <DayPickerPanel onApply={onApply} onClear={onClear} />
+}: RangeDayPickerProps) {
+  if (state === 'open') return <RangeDayPickerPanel onApply={onApply} onClear={onClear} />
 
   return (
     <button
@@ -313,7 +319,7 @@ export default function DayPicker({
         'cursor-pointer transition-colors hover:bg-surface-primary whitespace-nowrap',
       ].join(' ')}
     >
-      <CalendarIcon />
+      <MaskIcon name="calendar" size={20} />
       <span>{text}</span>
     </button>
   )

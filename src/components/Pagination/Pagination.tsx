@@ -10,7 +10,7 @@
  */
 
 import { useState } from 'react'
-import { ICON_ASSETS } from '../Icon/Icon'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
 
 export type PaginationVersion = 'default' | 'show-rows'
 
@@ -69,9 +69,40 @@ function PageButton({
   )
 }
 
+function MaskIcon({
+  name,
+  size  = 24,
+  color = ICON_COLOR_DEFAULT,
+}: {
+  name:  IconName
+  size?: number
+  color?: string
+}) {
+  return (
+    <span
+      aria-hidden
+      style={{
+        display:            'inline-block',
+        width:              size,
+        height:             size,
+        flexShrink:         0,
+        backgroundColor:    color,
+        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
+        maskImage:          `url(${ICON_ASSETS[name]})`,
+        WebkitMaskSize:     'contain',
+        maskSize:           'contain',
+        WebkitMaskRepeat:   'no-repeat',
+        maskRepeat:         'no-repeat',
+        WebkitMaskPosition: 'center',
+        maskPosition:       'center',
+      }}
+    />
+  )
+}
+
 function ChevronButton({
-  src, label, disabled, onClick,
-}: { src: string; label: string; disabled?: boolean; onClick?: () => void }) {
+  icon, label, disabled, onClick,
+}: { icon: IconName; label: string; disabled?: boolean; onClick?: () => void }) {
   return (
     <button
       type="button"
@@ -83,7 +114,7 @@ function ChevronButton({
         disabled ? 'opacity-30 cursor-default pointer-events-none' : 'cursor-pointer hover:bg-surface-primary',
       ].join(' ')}
     >
-      <img src={src} alt="" aria-hidden width={24} height={24} style={{ width: 24, height: 24 }} />
+      <MaskIcon name={icon} />
     </button>
   )
 }
@@ -143,13 +174,9 @@ export default function Pagination({
                   <option key={n} value={n}>{n} Rows</option>
                 ))}
               </select>
-              <img
-                src={ICON_ASSETS['chevron-down']}
-                alt="" aria-hidden
-                width={24} height={24}
-                style={{ width: 24, height: 24 }}
-                className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2"
-              />
+              <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
+                <MaskIcon name="chevron-down" />
+              </span>
             </div>
           </>
         )}
@@ -158,7 +185,7 @@ export default function Pagination({
       {/* Right */}
       <div className="flex items-center gap-6 shrink-0">
         <ChevronButton
-          src={ICON_ASSETS['chevron-left']} label="Previous page"
+          icon="chevron-left" label="Previous page"
           disabled={safeCurrent === 1}
           onClick={() => go(safeCurrent - 1)}
         />
@@ -179,7 +206,7 @@ export default function Pagination({
         </div>
 
         <ChevronButton
-          src={ICON_ASSETS['chevron-right']} label="Next page"
+          icon="chevron-right" label="Next page"
           disabled={safeCurrent === totalPages}
           onClick={() => go(safeCurrent + 1)}
         />

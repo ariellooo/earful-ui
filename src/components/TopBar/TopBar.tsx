@@ -12,7 +12,7 @@ import Dropdown, {
   type DropdownStatusItem,
   type DropdownStrategyItem,
 } from '../Dropdown/Dropdown'
-import DayPicker from '../DayPicker/DayPicker'
+import RangeDayPicker from '../DayPicker/RangeDayPicker'
 import SearchBar from '../SearchBar/SearchBar'
 import { normalizeDate } from '../DayPicker/calendarHelpers'
 
@@ -238,7 +238,7 @@ export default function TopBar({
 
       {openPanel === 'date' && (
         <div className="self-start">
-          <DayPicker
+          <RangeDayPicker
             state="open"
             onApply={({ start, end }) => {
               onDateRangeChange?.(normalizeDate(start), normalizeDate(end))
@@ -286,7 +286,7 @@ export default function TopBar({
 
       {openPanel === 'launchedDate' && (
         <div className="self-start">
-          <DayPicker
+          <RangeDayPicker
             state="open"
             onApply={({ start, end }) => {
               onLaunchedDateRangeChange?.(normalizeDate(start), normalizeDate(end))

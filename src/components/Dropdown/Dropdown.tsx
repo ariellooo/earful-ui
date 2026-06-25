@@ -12,7 +12,7 @@
 
 import type { ReactNode } from 'react'
 import Checkbox from '../Checkbox/Checkbox'
-import { ICON_ASSETS, type IconName } from '../Icon/Icon'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
 
 export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status' | 'strategy'
 
@@ -117,7 +117,7 @@ function buildNotifications(
 function MaskIcon({
   name,
   size  = 24,
-  color = '#334155',
+  color = ICON_COLOR_DEFAULT,
 }: {
   name:  IconName
   size?: number
@@ -383,4 +383,4 @@ export default function Dropdown({
   )
 }
 
-export { STATUS_ITEMS, STRATEGY_ITEMS }
+export { STATUS_ITEMS, STRATEGY_ITEMS, PROFILE_ITEMS }

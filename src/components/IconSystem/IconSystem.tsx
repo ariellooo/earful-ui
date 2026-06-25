@@ -1,59 +1,53 @@
 /**
- * System / status icons — Figma node 1069:3628 (Earful 2026).
- *
- * Each icon is a 24×24 composited image built from overlapping vector layers,
- * matching the Figma export exactly.
+ * System status icons — Figma node 1069:3628 (Earful 2026).
  *
  * type    : triangle-alert | octagon-warning | circle-info | circle-success | circle-help
  * variant : default | fill | outline
+ *
+ * Layer composites sourced from Figma export (hosted URLs expire after 7 days).
+ * Semantic colours are defined in tokens.css as --color-icon-system-*.
  */
 
 const BASE = 'https://www.figma.com/api/mcp/asset/'
 const u = (id: string) => BASE + id
 
-// ─── Asset registry ───────────────────────────────────────────────────────────
+// ─── Asset registry (Figma 1069:3628 — Jun 2026 export) ───────────────────────
 
 const A = {
-  // triangle-alert bodies
-  ta_dflt: u('7d64df65-8824-4d81-903a-f4d0adedcc68'),
-  ta_fill: u('d88385ec-9ac1-4fad-b402-a5cce00749bb'),
-  ta_outl: u('455d016a-a283-4201-a90c-1037c693068d'),
-  // octagon-warning bodies
-  ow_dflt: u('6c69fc52-4afb-4920-972d-c9a26da2aa49'),
-  ow_fill: u('415e9b40-daa4-4a9c-9bc0-1862c0f98d75'),
-  ow_outl: u('8f9cb6d5-c555-4c35-aa2f-268041f48ab3'),
-  // circle-info bodies
-  ci_dflt: u('b1cb94f8-bffb-4642-a783-e027bfb24b1f'),
-  ci_fill: u('a7d4d8e0-3ada-46a9-b175-d5aab4698ba1'),
-  ci_outl: u('92e56238-d9f2-48f8-b1b3-18d002660087'),
-  // circle-success bodies + checkmarks
-  cs_dflt_body: u('8b926d6d-66be-444e-82e2-05b12d825c8c'),
-  cs_fill_body: u('f553f0b5-9f8d-4ef7-9f71-95dd8551feca'),
-  cs_outl_body: u('bb84b411-2c65-40c3-bf74-27a1095cc22a'),
-  cs_dflt_chk:  u('04edc8e1-05ce-4c64-af5d-13336484bb14'),
-  cs_fill_chk:  u('7207f3db-2eaf-4cad-9300-ffcd8e8ad8ac'),
-  cs_outl_chk:  u('a78e63a7-17a5-434f-b4b3-86c5a6e94fb4'),
-  // circle-help bodies + marks
-  ch_dflt: u('b1cb94f8-bffb-4642-a783-e027bfb24b1f'), // same body as ci_dflt
-  ch_fill: u('1b2a9dc8-f15c-43f2-a255-e40203790d4b'),
-  ch_outl: u('92e56238-d9f2-48f8-b1b3-18d002660087'), // same body as ci_outl
-  ch_q_dflt:   u('9969ef54-77b5-4611-be02-8f39a9d7b2c2'), // ? glyph (default + outline)
-  ch_q_fill:   u('0af2c513-b663-474c-a641-5245c2cf2c00'), // ? glyph (fill)
-  ch_dot_fill: u('18b6859a-e2f5-49bf-b055-e2846d875100'), // dot under ? (fill)
-  // shared detail vectors
-  stem:        u('b64c99f5-54eb-487e-a3de-131554ff91e0'), // dark vertical stem (!  body)
-  dot:         u('ca3a04e5-45ad-4ec4-a216-9a01d635e783'), // dark horizontal dot (! and i)
-  ci_i:        u('3f9ecdeb-c216-4b12-907e-a1b1c3614115'), // circle-info "i" stroke
-  outl_line_1: u('ed2b6ee5-7720-4bb7-be67-c3885197bdef'), // outline stroke set 1
-  outl_line_2: u('b4a126b8-690a-4373-b9c4-45580820c7ee'), // outline stroke set 2
+  ta_dflt:  u('3bd69599-01fc-42aa-a760-b19002f128a8'),
+  ta_fill:  u('92d3ffea-28c9-4887-8650-ccee1dd2eea0'),
+  ta_outl:  u('17f63b21-9bf4-4fbc-8ecb-e6a98ce6cba7'),
+  ow_dflt:  u('5adadffd-5fba-4f4f-9356-64f5d5b573a9'),
+  ow_fill:  u('05794e01-bf9f-4b12-96c8-9db60a26b8bb'),
+  ow_outl:  u('8c881a0d-5305-4e6b-8f73-5d66919add3d'),
+  ci_dflt:  u('2f7dd8e7-f238-480c-9837-07195132c8bf'),
+  ci_fill:  u('789defdc-7ba2-44e6-abdc-88c26f29c1b2'),
+  ci_outl:  u('3429c103-c65a-438e-93bd-371c1900bfbb'),
+  cs_dflt_body: u('ccdf0c58-7014-4c73-b36c-db3c1cc3b9c3'),
+  cs_fill_body: u('585bb1d3-0b78-436a-bd9f-62ca64eb73e7'),
+  cs_outl_body: u('8a224993-ca54-4d45-bf3c-b5f08b82dfb3'),
+  cs_dflt_chk:  u('28676a32-79fd-4021-8d11-7c3213fe6ee1'),
+  cs_fill_chk:  u('9a3ac258-a7bb-4b8c-a314-f6c519d74385'),
+  cs_outl_chk:  u('379f4bda-3e28-4f7c-9826-55bff0f598fd'),
+  ch_dflt:  u('2f7dd8e7-f238-480c-9837-07195132c8bf'),
+  ch_fill:  u('d12fd9c3-146a-42b6-a0ce-6cf5146f41a3'),
+  ch_outl:  u('3429c103-c65a-438e-93bd-371c1900bfbb'),
+  ch_q:        u('4bac4f12-bc29-429f-91e0-61a4fbf83165'),
+  ch_q_fill:   u('cd5a1cdb-cc20-40a2-bda7-30ba832e1387'),
+  ch_dot_fill: u('52db6cb8-5d25-4bd7-8c8c-0b907a3465b4'),
+  stem:        u('b48a4b38-fe44-44fb-a22b-600e13f6c277'),
+  dot:         u('e43b3012-c55f-4a4a-90f9-694e1d823f53'),
+  ci_i:        u('c70a5168-19ce-4df0-b7e2-e42aa8d0c6ad'),
+  outl_line_1: u('40b73230-55ac-4fdb-a5f7-200e2f93ae14'),
+  outl_line_2: u('641a7a37-05ea-49d1-a5d6-9b4b2459f1d1'),
 } as const
 
 // ─── Layer type ───────────────────────────────────────────────────────────────
 
 type Layer = {
   url:   string
-  outer: string  // absolute-positioning classes for the outer container
-  inner: string  // absolute-positioning classes for the inner image wrapper (bleed)
+  outer: string
+  inner: string
 }
 
 // ─── Shared position constants ────────────────────────────────────────────────
@@ -74,15 +68,15 @@ const LAYERS: Record<string, Record<string, Layer[]>> = {
     default: [
       { url: A.ta_dflt, outer: TRI_BODY_OUTER, inner: TRI_BODY_INNER },
       { url: A.stem,    outer: 'bottom-[45.83%] left-1/2 right-[49.96%] top-[37.5%]',   inner: VLINE_INNER },
-      { url: A.dot,     outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]',   inner: HLINE_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
     ],
     fill: [
       { url: A.ta_fill, outer: TRI_BODY_OUTER, inner: TRI_BODY_INNER },
       { url: A.stem,    outer: 'bottom-[45.83%] left-1/2 right-[49.96%] top-[37.5%]',   inner: VLINE_INNER },
-      { url: A.dot,     outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]',   inner: HLINE_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
     ],
     outline: [
-      { url: A.ta_outl,    outer: TRI_BODY_OUTER, inner: TRI_BODY_INNER },
+      { url: A.ta_outl,     outer: TRI_BODY_OUTER, inner: TRI_BODY_INNER },
       { url: A.outl_line_2, outer: 'bottom-[45.83%] left-1/2 right-[49.96%] top-[37.5%]', inner: VLINE_INNER },
       { url: A.outl_line_1, outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
     ],
@@ -90,35 +84,35 @@ const LAYERS: Record<string, Record<string, Layer[]>> = {
   'octagon-warning': {
     default: [
       { url: A.ow_dflt, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.dot,     outer: 'bottom-[33.33%] left-1/2 right-[49.96%] top-[66.67%]',  inner: HLINE_INNER },
-      { url: A.stem,    outer: 'left-1/2 bottom-1/2 right-1/2 top-[33.33%]',             inner: VLINE_INNER },
+      { url: A.dot,     outer: 'bottom-[33.33%] left-1/2 right-[49.96%] top-[66.67%]', inner: HLINE_INNER },
+      { url: A.stem,    outer: 'left-1/2 bottom-1/2 right-1/2 top-[33.33%]',           inner: VLINE_INNER },
     ],
     fill: [
       { url: A.ow_fill, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.dot,     outer: 'bottom-[33.33%] left-1/2 right-[49.96%] top-[66.67%]',  inner: HLINE_INNER },
-      { url: A.stem,    outer: 'left-1/2 bottom-1/2 right-1/2 top-[33.33%]',             inner: VLINE_INNER },
+      { url: A.dot,     outer: 'bottom-[33.33%] left-1/2 right-[49.96%] top-[66.67%]', inner: HLINE_INNER },
+      { url: A.stem,    outer: 'left-1/2 bottom-1/2 right-1/2 top-[33.33%]',           inner: VLINE_INNER },
     ],
     outline: [
-      { url: A.ow_outl,    outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
+      { url: A.ow_outl,     outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
       { url: A.outl_line_1, outer: 'bottom-[33.33%] left-1/2 right-[49.96%] top-[66.67%]', inner: HLINE_INNER },
-      { url: A.outl_line_2, outer: 'left-1/2 bottom-1/2 right-1/2 top-[33.33%]',           inner: VLINE_INNER },
+      { url: A.outl_line_2, outer: 'left-1/2 bottom-1/2 right-1/2 top-[33.33%]',         inner: VLINE_INNER },
     ],
   },
   'circle-info': {
     default: [
       { url: A.ci_dflt, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.ci_i,    outer: 'bottom-[33.33%] left-1/2 right-1/2 top-1/2',            inner: VLINE_INNER },
-      { url: A.dot,     outer: 'left-1/2 bottom-[66.67%] right-[49.96%] top-[33.33%]',  inner: HLINE_INNER },
+      { url: A.ci_i,    outer: 'bottom-[33.33%] left-1/2 right-1/2 top-1/2',           inner: VLINE_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[66.67%] right-[49.96%] top-[33.33%]', inner: HLINE_INNER },
     ],
     fill: [
       { url: A.ci_fill, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.ci_i,    outer: 'bottom-[33.33%] left-1/2 right-1/2 top-1/2',            inner: VLINE_INNER },
-      { url: A.dot,     outer: 'left-1/2 bottom-[66.67%] right-[49.96%] top-[33.33%]',  inner: HLINE_INNER },
+      { url: A.ci_i,    outer: 'bottom-[33.33%] left-1/2 right-1/2 top-1/2',           inner: VLINE_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[66.67%] right-[49.96%] top-[33.33%]', inner: HLINE_INNER },
     ],
     outline: [
       { url: A.ci_outl, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.ci_i,    outer: 'bottom-[33.33%] left-1/2 right-1/2 top-1/2',            inner: VLINE_INNER },
-      { url: A.dot,     outer: 'left-1/2 bottom-[66.67%] right-[49.96%] top-[33.33%]',  inner: HLINE_INNER },
+      { url: A.ci_i,    outer: 'bottom-[33.33%] left-1/2 right-1/2 top-1/2',           inner: VLINE_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[66.67%] right-[49.96%] top-[33.33%]', inner: HLINE_INNER },
     ],
   },
   'circle-success': {
@@ -137,9 +131,9 @@ const LAYERS: Record<string, Record<string, Layer[]>> = {
   },
   'circle-help': {
     default: [
-      { url: A.ch_dflt,    outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.ch_q_dflt,  outer: 'inset-[29.15%_37.83%_45.83%_37.88%]',                inner: HELP_Q_INNER },
-      { url: A.dot,        outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
+      { url: A.ch_dflt, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
+      { url: A.ch_q,    outer: 'inset-[29.15%_37.83%_45.83%_37.88%]',                inner: HELP_Q_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
     ],
     fill: [
       { url: A.ch_fill,     outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
@@ -147,9 +141,9 @@ const LAYERS: Record<string, Record<string, Layer[]>> = {
       { url: A.ch_dot_fill, outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
     ],
     outline: [
-      { url: A.ch_outl,   outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
-      { url: A.ch_q_dflt, outer: 'inset-[29.15%_37.83%_45.83%_37.88%]',                inner: HELP_Q_INNER },
-      { url: A.dot,       outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
+      { url: A.ch_outl, outer: CIR_BODY_OUTER, inner: CIR_BODY_INNER },
+      { url: A.ch_q,    outer: 'inset-[29.15%_37.83%_45.83%_37.88%]',                inner: HELP_Q_INNER },
+      { url: A.dot,     outer: 'left-1/2 bottom-[29.17%] right-[49.96%] top-[70.83%]', inner: HLINE_INNER },
     ],
   },
 }
@@ -159,7 +153,8 @@ const LAYERS: Record<string, Record<string, Layer[]>> = {
 export type IconSystemType    = keyof typeof LAYERS
 export type IconSystemVariant = 'default' | 'fill' | 'outline'
 
-export const ICON_SYSTEM_TYPES = Object.keys(LAYERS) as IconSystemType[]
+export const ICON_SYSTEM_TYPES    = Object.keys(LAYERS) as IconSystemType[]
+export const ICON_SYSTEM_VARIANTS = ['default', 'fill', 'outline'] as const
 
 export type IconSystemProps = {
   type:      IconSystemType
@@ -172,6 +167,16 @@ export type IconSystemProps = {
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
+
+function IconLayer({ layer }: { layer: Layer }) {
+  return (
+    <div className={`absolute ${layer.outer}`}>
+      <div className={`absolute ${layer.inner}`}>
+        <img src={layer.url} alt="" aria-hidden className="block size-full max-w-none" />
+      </div>
+    </div>
+  )
+}
 
 export default function IconSystem({
   type,
@@ -190,18 +195,7 @@ export default function IconSystem({
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >
-      {layers.map((layer, i) => (
-        <div key={i} className={`absolute ${layer.outer}`}>
-          <div className={`absolute ${layer.inner}`}>
-            <img
-              src={layer.url}
-              alt=""
-              aria-hidden
-              className="block size-full"
-            />
-          </div>
-        </div>
-      ))}
+      {layers.map((layer, i) => <IconLayer key={i} layer={layer} />)}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 /**
  * Sidebar navigation icons sourced from Figma (node 41:138).
- * state="light" — dark icon on a light background (inactive sidebar item)
- * state="dark"  — white icon on the brand-indigo background (dark sidebar)
  * Hosted URLs expire after 7 days — replace with local SVGs when ready.
  */
+import { ICON_COLOR_DEFAULT } from '../Icon/Icon'
+
 export const ICON_MENU_ASSETS = {
   dashboard:              'https://www.figma.com/api/mcp/asset/83ed3148-88dc-47ea-9a40-9953a3711f73',
   window:                 'https://www.figma.com/api/mcp/asset/7a77e796-ff51-4af7-9c36-4df34d6ae0c2',
@@ -16,15 +16,12 @@ export const ICON_MENU_ASSETS = {
   'scan-face':            'https://www.figma.com/api/mcp/asset/9c185b4f-fa77-4dc8-b785-80b7629a2bdc',
 } as const
 
-export type IconMenuName  = keyof typeof ICON_MENU_ASSETS
-export type IconMenuState = 'light' | 'dark'
+export type IconMenuName = keyof typeof ICON_MENU_ASSETS
 
 export const ICON_MENU_NAMES = Object.keys(ICON_MENU_ASSETS) as IconMenuName[]
 
 export type IconMenuProps = {
   name: IconMenuName
-  /** light = dark icon on white bg · dark = white icon on indigo bg */
-  state?: IconMenuState
   /** Size in px — Figma baseline is 24 */
   size?: number
   className?: string
@@ -34,31 +31,35 @@ export type IconMenuProps = {
 
 export default function IconMenu({
   name,
-  state = 'light',
   size = 24,
   className = '',
   label,
 }: IconMenuProps) {
-  const isDark = state === 'dark'
-
   return (
     <div
       className={[
-        'inline-flex items-center justify-center rounded-xl p-3',
-        isDark ? 'bg-brand-indigo' : 'bg-white',
+        'inline-flex items-center justify-center rounded-xl p-3 bg-white',
         className,
       ].join(' ')}
     >
-      <img
-        src={ICON_MENU_ASSETS[name]}
-        alt={label ?? ''}
+      <span
+        role={label ? 'img' : undefined}
+        aria-label={label ?? undefined}
         aria-hidden={label ? undefined : true}
-        width={size}
-        height={size}
         style={{
+          display: 'inline-block',
           width: size,
           height: size,
-          filter: isDark ? 'brightness(0) invert(1)' : 'none',
+          flexShrink: 0,
+          backgroundColor: ICON_COLOR_DEFAULT,
+          WebkitMaskImage: `url(${ICON_MENU_ASSETS[name]})`,
+          maskImage: `url(${ICON_MENU_ASSETS[name]})`,
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
+          maskPosition: 'center',
         }}
       />
     </div>

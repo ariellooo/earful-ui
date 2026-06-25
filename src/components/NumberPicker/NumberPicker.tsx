@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react'
-import { ICON_ASSETS, type IconName } from '../Icon/Icon'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
 
 export type NumberPickerVariant = 'topics' | 'comments'
 
@@ -41,7 +41,7 @@ function PickerIcon({ name }: { name: Extract<IconName, 'chevron-up' | 'chevron-
         width:              12,
         height:             12,
         flexShrink:         0,
-        backgroundColor:    '#334155',
+        backgroundColor:    ICON_COLOR_DEFAULT,
         WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
         maskImage:          `url(${ICON_ASSETS[name]})`,
         WebkitMaskSize:     'contain',

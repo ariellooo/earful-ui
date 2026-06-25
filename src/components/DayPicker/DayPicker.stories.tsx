@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from 'storybook/preview-api'
-import DayPicker from './DayPicker'
-import DropdownDatePicker from './DropdownDatePicker'
+import RangeDayPicker from './RangeDayPicker'
+import SingleDayPicker from './SingleDayPicker'
 import { normalizeDate } from './calendarHelpers'
 
 type StoryArgs = {
-  variant:      'compact' | 'range'
+  variant:      'single' | 'range'
   selectedDate: string | number | null
 }
 
@@ -39,13 +39,13 @@ const meta: Meta<StoryArgs> = {
     ),
   ],
   args: {
-    variant:      'compact',
+    variant:      'single',
     selectedDate: null,
   },
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['compact', 'range'],
+      options: ['single', 'range'],
     },
     selectedDate: { table: { disable: true } },
   },
@@ -53,13 +53,13 @@ const meta: Meta<StoryArgs> = {
     const [, updateArgs] = useArgs<StoryArgs>()
 
     if (args.variant === 'range') {
-      return <DayPicker state="open" />
+      return <RangeDayPicker state="open" />
     }
 
     const selectedDate = parseStoryDate(args.selectedDate)
 
     return (
-      <DropdownDatePicker
+      <SingleDayPicker
         selectedDate={selectedDate}
         onSelectDate={(date) => updateArgs({ selectedDate: formatStoryDate(date) })}
         onClear={() => updateArgs({ selectedDate: null })}
@@ -73,8 +73,8 @@ export default meta
 type Story = StoryObj<StoryArgs>
 
 export const Compact: Story = {
-  name: 'Compact',
-  args: { variant: 'compact' },
+  name: 'Single',
+  args: { variant: 'single' },
 }
 
 export const Range: Story = {

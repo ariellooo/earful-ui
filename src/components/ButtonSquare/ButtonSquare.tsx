@@ -8,7 +8,7 @@
  * disabled: boolean — hover/pressed use native CSS interaction
  */
 
-import { ICON_ASSETS, type IconName } from '../Icon/Icon'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT, ICON_COLOR_INVERT, type IconName } from '../Icon/Icon'
 
 export type ButtonSquareType  = 'number' | 'icon'
 export type ButtonSquareLevel = 'secondary' | 'tertiary'
@@ -123,8 +123,8 @@ export default function ButtonSquare({
   // ── icon ───────────────────────────────────────────────────────────────────
   const iconLevel: ButtonSquareLevel = size === 'l' ? 'secondary' : 'tertiary'
   const iconColor = disabled
-    ? iconLevel === 'secondary' ? '#f8fafc' : '#cbd5e1' // invert on disable bg · disable on ghost
-    : '#334155'
+    ? iconLevel === 'secondary' ? ICON_COLOR_INVERT : 'var(--color-text-disable)'
+    : ICON_COLOR_DEFAULT
   return (
     <button
       type="button"

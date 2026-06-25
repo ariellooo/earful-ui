@@ -6,6 +6,7 @@
  */
 
 import { useState } from 'react'
+import { ICON_ASSETS, ICON_COLOR_DEFAULT } from '../Icon/Icon'
 
 export type SearchBarProps = {
   placeholder?: string
@@ -13,15 +14,24 @@ export type SearchBarProps = {
 
 function SearchIcon() {
   return (
-    <svg
-      width="24" height="24" viewBox="0 0 24 24"
-      fill="none" stroke="currentColor" strokeWidth="2"
-      strokeLinecap="round" strokeLinejoin="round"
-      aria-hidden className="shrink-0 text-text-default"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <line x1="16.5" y1="16.5" x2="22" y2="22" />
-    </svg>
+    <span
+      aria-hidden
+      className="shrink-0"
+      style={{
+        display:            'inline-block',
+        width:              24,
+        height:             24,
+        backgroundColor:    ICON_COLOR_DEFAULT,
+        WebkitMaskImage:    `url(${ICON_ASSETS['search']})`,
+        maskImage:          `url(${ICON_ASSETS['search']})`,
+        WebkitMaskSize:     'contain',
+        maskSize:           'contain',
+        WebkitMaskRepeat:   'no-repeat',
+        maskRepeat:         'no-repeat',
+        WebkitMaskPosition: 'center',
+        maskPosition:       'center',
+      }}
+    />
   )
 }
 

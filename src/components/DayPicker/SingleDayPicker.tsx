@@ -1,5 +1,5 @@
 /**
- * DropdownDatePicker — Figma node 902:5345 (Earful 2026).
+ * SingleDayPicker — Figma node 902:5345 (Earful 2026).
  *
  * Compact 240 px calendar panel: month nav, day grid, Clear + Apply.
  */
@@ -14,7 +14,7 @@ import {
   normalizeDate,
 } from './calendarHelpers'
 
-export type DropdownDatePickerProps = {
+export type SingleDayPickerProps = {
   /** Selected day (date-only, local time). */
   selectedDate?: Date | null
   onSelectDate?: (date: Date) => void
@@ -23,13 +23,13 @@ export type DropdownDatePickerProps = {
   className?:    string
 }
 
-export default function DropdownDatePicker({
+export default function SingleDayPicker({
   selectedDate = null,
   onSelectDate,
   onClear,
   onApply,
   className = '',
-}: DropdownDatePickerProps) {
+}: SingleDayPickerProps) {
   const initialView = selectedDate ?? normalizeDate(new Date())
 
   const [viewYear,  setViewYear]  = useState(() => initialView.getFullYear())
@@ -118,10 +118,10 @@ export default function DropdownDatePicker({
                     'font-body text-[10px] font-normal leading-4',
                     'cursor-pointer transition-colors',
                     isSelected(d)
-                      ? 'rounded-full bg-surface-primary text-text-default'
+                      ? 'rounded-lg bg-surface-primary text-text-default'
                       : isCurrentMonth(d)
-                        ? 'rounded-full text-text-default hover:bg-surface-primary'
-                        : 'rounded-full text-greyscale-300 hover:bg-surface-primary',
+                        ? 'rounded-lg text-text-default hover:bg-surface-primary'
+                        : 'rounded-lg text-greyscale-300 hover:bg-surface-primary',
                   ].join(' ')}
                 >
                   {d.getDate()}

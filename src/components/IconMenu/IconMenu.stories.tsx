@@ -5,10 +5,9 @@ const meta: Meta<typeof IconMenu> = {
   title: 'Design System/Icons/Menu',
   component: IconMenu,
   parameters: { layout: 'centered' },
-  args: { name: 'dashboard', state: 'light', size: 24 },
+  args: { name: 'dashboard', size: 24 },
   argTypes: {
     name:  { control: 'select', options: ICON_MENU_NAMES },
-    state: { control: 'radio',  options: ['light', 'dark'] },
     size:  { control: { type: 'range', min: 16, max: 64, step: 4 } },
   },
 }
