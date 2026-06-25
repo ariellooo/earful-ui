@@ -5,6 +5,8 @@
   NOTE: TT Norms Pro is a commercial font. Add a @font-face or CDN link
   in index.css if you are serving it as a web font.
 */
+@import "tailwindcss" reference;
+
 @theme {
   /* ── Primary & Secondary ────────────────────────────── */
   --color-primary: #2bc7e0;
@@ -32,7 +34,8 @@
   --color-greyscale-0: #ffffff;
 
   /* ── Line / Border ──────────────────────────────────── */
-  --color-line-default: #cbd5e1;
+  --color-line-default: var(--color-greyscale-300);
+  --color-line-invert: var(--color-greyscale-50);
 
   /* ── Brand tints (hover states) ─────────────────────── */
   --color-brand-tint-blue: #95e3f0;
@@ -49,14 +52,33 @@
   --color-brand-shade-indigo: #064975;
 
   /* ── Surface ─────────────────────────────────────────── */
-  --color-surface-white: #ffffff;
-  --color-surface-primary: #f1f5f9;
-  --color-surface-disable: #cbd5e1;
+  --color-surface-white: var(--color-greyscale-0);
+  --color-surface-primary: var(--color-greyscale-100);
+  --color-surface-secondary: var(--color-greyscale-500);
+  --color-surface-disable: var(--color-greyscale-300);
+  --color-surface-invert: var(--color-greyscale-900);
 
   /* ── Text ───────────────────────────────────────────── */
-  --color-text-default: #334155;
-  --color-text-invert: #f8fafc;
-  --color-text-disable: #cbd5e1;
+  --color-text-default: var(--color-greyscale-900);
+  --color-text-invert: var(--color-greyscale-50);
+  --color-text-disable: var(--color-greyscale-300);
+
+  /* ── Icon ───────────────────────────────────────────── */
+  --color-icon-default: var(--color-greyscale-900);
+  --color-icon-invert: var(--color-greyscale-50);
+  --color-icon-disable: var(--color-greyscale-300);
+
+  /* ── Icon system (status semantics) ─────────────────── */
+  --color-icon-system-warning: var(--color-semantic-yellow);
+  --color-icon-system-critical: var(--color-secondary);
+  --color-icon-system-info: var(--color-primary);
+  --color-icon-system-success: var(--color-semantic-green);
+  --color-icon-system-help: var(--color-semantic-red);
+  --color-icon-system-warning-surface: var(--color-brand-tint-orange);
+  --color-icon-system-critical-surface: var(--color-brand-tint-orange);
+  --color-icon-system-info-surface: var(--color-brand-tint-blue);
+  --color-icon-system-success-surface: var(--color-brand-tint-mint);
+  --color-icon-system-help-surface: var(--color-brand-tint-blue);
 
   /* ── Typography ─────────────────────────────────────── */
   --font-display: 'TT Norms Pro', system-ui, sans-serif;
