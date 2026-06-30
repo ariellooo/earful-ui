@@ -1,44 +1,80 @@
 /**
- * Icon assets sourced from Figma (node 67:567).
- * These hosted URLs expire after 7 days — replace with local SVGs or an
- * icon library once you have them exported.
+ * Icon assets — local SVGs (Lucide stroke icons).
+ * Rendered inline so stroke="currentColor" inherits --color-icon-default.
  */
+
+import arrowDown from '../../assets/icons_function/arrow-down.svg?raw'
+import arrowLeft from '../../assets/icons_function/arrow-left.svg?raw'
+import arrowRight from '../../assets/icons_function/arrow-right.svg?raw'
+import arrowUp from '../../assets/icons_function/arrow-up.svg?raw'
+import bell from '../../assets/icons_function/bell.svg?raw'
+import bellDot from '../../assets/icons_function/bell-dot.svg?raw'
+import calendar from '../../assets/icons_function/calendar.svg?raw'
+import check from '../../assets/icons_function/check.svg?raw'
+import chevronDown from '../../assets/icons_function/chevron-down.svg?raw'
+import chevronLeft from '../../assets/icons_function/chevron-left.svg?raw'
+import chevronRight from '../../assets/icons_function/chevron-right.svg?raw'
+import chevronUp from '../../assets/icons_function/chevron-up.svg?raw'
+import commentSquarePlus from '../../assets/icons_function/comment-square-plus.svg?raw'
+import deleteIcon from '../../assets/icons_function/delete.svg?raw'
+import dollarSign from '../../assets/icons_function/dollar-sign.svg?raw'
+import dot from '../../assets/icons_function/dot.svg?raw'
+import download from '../../assets/icons_function/download.svg?raw'
+import ellipsisVertical from '../../assets/icons_function/ellipsis-vertical.svg?raw'
+import externalLink from '../../assets/icons_function/external-link.svg?raw'
+import image from '../../assets/icons_function/image.svg?raw'
+import languages from '../../assets/icons_function/languages.svg?raw'
+import link from '../../assets/icons_function/link.svg?raw'
+import listFilter from '../../assets/icons_function/list-filter.svg?raw'
+import logOut from '../../assets/icon_menu/log-out.svg?raw'
+import pencil from '../../assets/icons_function/pencil.svg?raw'
+import plus from '../../assets/icons_function/plus.svg?raw'
+import repeat from '../../assets/icons_function/repeat.svg?raw'
+import save from '../../assets/icons_function/save.svg?raw'
+import search from '../../assets/icons_function/search.svg?raw'
+import setting from '../../assets/icon_menu/settings.svg?raw'
+import star from '../../assets/icons_function/star.svg?raw'
+import stickyNoteComment from '../../assets/icons_function/sticky-note.svg?raw'
+import trash from '../../assets/icons_function/trash-2.svg?raw'
+import upload from '../../assets/icons_function/upload.svg?raw'
+import wandSparkles from '../../assets/icons_function/wand-sparkles.svg?raw'
+
 export const ICON_ASSETS = {
-  'arrow-down':           'https://www.figma.com/api/mcp/asset/dfba6150-3127-462a-b8bf-c6c73371f2d2',
-  'arrow-left':           'https://www.figma.com/api/mcp/asset/2871aed7-b03e-4db5-a648-1def86e721f2',
-  'arrow-right':          'https://www.figma.com/api/mcp/asset/6776a3cc-934a-4cc9-87fe-d8d954275338',
-  'arrow-up':             'https://www.figma.com/api/mcp/asset/4a4c3009-d4f1-4534-add2-2921920a7b76',
-  'bell':                 'https://www.figma.com/api/mcp/asset/b44ad1c9-1841-4bf6-b34e-529e0168b64a',
-  'bell-dot':             'https://www.figma.com/api/mcp/asset/96798621-fd26-4edc-b685-444cb6f33500',
-  'calendar':             'https://www.figma.com/api/mcp/asset/aef1409c-a5e7-42bd-a6d6-80096af6227f',
-  'check':                'https://www.figma.com/api/mcp/asset/2265f70e-56d4-4718-bd26-58d3476451b1',
-  'chevron-down':         'https://www.figma.com/api/mcp/asset/3125d198-98d3-4f4b-af82-6cedd54e4497',
-  'chevron-left':         'https://www.figma.com/api/mcp/asset/40cb3ba0-5e63-4a01-ae04-35b58a44bf3a',
-  'chevron-right':        'https://www.figma.com/api/mcp/asset/8d881f0a-cc3b-456a-931d-641853db39d8',
-  'chevron-up':           'https://www.figma.com/api/mcp/asset/9d18aa37-1a2c-4171-92ac-54163a774f56',
-  'comment-square-plus':  'https://www.figma.com/api/mcp/asset/bbdf7490-78bc-419b-986d-33748ac782cc',
-  'delete':               'https://www.figma.com/api/mcp/asset/04fb4be1-9afe-45e6-bc20-188a390ae8f6',
-  'dollar-sign':          'https://www.figma.com/api/mcp/asset/d942c895-9f77-48c2-9294-c78521e418c0',
-  'dot':                  'https://www.figma.com/api/mcp/asset/5159f145-7c53-46b3-9183-22159008d736',
-  'download':             'https://www.figma.com/api/mcp/asset/da1d71ce-0cb0-4b73-a742-ba7f89f084cf',
-  'ellipsis-vertical':    'https://www.figma.com/api/mcp/asset/4d4cb22a-1a31-4b81-87c1-9a84c9534933',
-  'external-link':        'https://www.figma.com/api/mcp/asset/0bde88df-adc0-4ab8-9f7a-3ec4f1f0cb1d',
-  'image':                'https://www.figma.com/api/mcp/asset/0774c186-9ece-47e4-b509-9e7e1ecce7b2',
-  'languages':            'https://www.figma.com/api/mcp/asset/2672ea86-dc6c-452f-9c4e-10db05e72dc0',
-  'link':                 'https://www.figma.com/api/mcp/asset/1ca03094-a5a0-4e51-a270-bf4d9f175b84',
-  'list-filter':          'https://www.figma.com/api/mcp/asset/b9023892-18ea-4fb1-b4a1-0a371327b0bb',
-  'log-out':              'https://www.figma.com/api/mcp/asset/53441955-6a72-46bb-a6e9-d4ba87d2802e',
-  'pencil':               'https://www.figma.com/api/mcp/asset/ac9ca70b-ce4f-4b5b-b239-e824c922dd6c',
-  'plus':                 'https://www.figma.com/api/mcp/asset/c75f3ab7-a122-4452-96fb-b9ca4331802e',
-  'repeat':               'https://www.figma.com/api/mcp/asset/83013050-57d1-4508-a67b-0fb5c8c89e64',
-  'save':                 'https://www.figma.com/api/mcp/asset/5f29b2cb-f668-49a0-ad42-39d712d0d6a8',
-  'search':               'https://www.figma.com/api/mcp/asset/71ddfb5a-7e0d-419f-96b0-443eb1e20171',
-  'setting':              'https://www.figma.com/api/mcp/asset/7ae89a10-8d6b-437c-96ae-809b46d9d61d',
-  'star':                 'https://www.figma.com/api/mcp/asset/b0b5ab03-ee9d-479b-a9e9-236c4b2668fe',
-  'sticky-note-comment':  'https://www.figma.com/api/mcp/asset/e31338fc-38bd-432e-8444-26f2fec7fd92',
-  'trash':                'https://www.figma.com/api/mcp/asset/46e7b75e-221f-4480-a735-f0e637738841',
-  'upload':               'https://www.figma.com/api/mcp/asset/26eca616-7074-4156-b178-0c510a80c2bf',
-  'wand-sparkles':        'https://www.figma.com/api/mcp/asset/ac1b4811-b7dd-40ed-a61d-925359267d99',
+  'arrow-down':           arrowDown,
+  'arrow-left':           arrowLeft,
+  'arrow-right':          arrowRight,
+  'arrow-up':             arrowUp,
+  'bell':                 bell,
+  'bell-dot':             bellDot,
+  'calendar':             calendar,
+  'check':                check,
+  'chevron-down':         chevronDown,
+  'chevron-left':         chevronLeft,
+  'chevron-right':        chevronRight,
+  'chevron-up':           chevronUp,
+  'comment-square-plus':  commentSquarePlus,
+  'delete':               deleteIcon,
+  'dollar-sign':          dollarSign,
+  'dot':                  dot,
+  'download':             download,
+  'ellipsis-vertical':    ellipsisVertical,
+  'external-link':        externalLink,
+  'image':                image,
+  'languages':            languages,
+  'link':                 link,
+  'list-filter':          listFilter,
+  'log-out':              logOut,
+  'pencil':               pencil,
+  'plus':                 plus,
+  'repeat':               repeat,
+  'save':                 save,
+  'search':               search,
+  'setting':              setting,
+  'star':                 star,
+  'sticky-note-comment':  stickyNoteComment,
+  'trash':                trash,
+  'upload':               upload,
+  'wand-sparkles':        wandSparkles,
 } as const
 
 export type IconName = keyof typeof ICON_ASSETS
@@ -47,6 +83,33 @@ export const ICON_NAMES = Object.keys(ICON_ASSETS) as IconName[]
 
 export const ICON_COLOR_DEFAULT = 'var(--color-icon-default)'
 export const ICON_COLOR_INVERT = 'var(--color-icon-invert)'
+
+export type IconGlyphProps = {
+  name:       IconName
+  size?:      number
+  color?:     string
+  className?: string
+}
+
+/** Inline SVG glyph — stroke inherits `color` (use icon tokens). */
+export function IconGlyph({
+  name,
+  size      = 24,
+  color     = ICON_COLOR_DEFAULT,
+  className = '',
+}: IconGlyphProps) {
+  return (
+    <span
+      aria-hidden
+      className={[
+        'inline-block shrink-0 [&>svg]:block [&>svg]:size-full',
+        className,
+      ].join(' ')}
+      style={{ width: size, height: size, color }}
+      dangerouslySetInnerHTML={{ __html: ICON_ASSETS[name] }}
+    />
+  )
+}
 
 export type IconProps = {
   name: IconName
@@ -69,22 +132,9 @@ export default function Icon({ name, size = 24, className = '', label }: IconPro
         role={label ? 'img' : undefined}
         aria-label={label ?? undefined}
         aria-hidden={label ? undefined : true}
-        style={{
-          display: 'inline-block',
-          width: size,
-          height: size,
-          flexShrink: 0,
-          backgroundColor: ICON_COLOR_DEFAULT,
-          WebkitMaskImage: `url(${ICON_ASSETS[name]})`,
-          maskImage: `url(${ICON_ASSETS[name]})`,
-          WebkitMaskSize: 'contain',
-          maskSize: 'contain',
-          WebkitMaskRepeat: 'no-repeat',
-          maskRepeat: 'no-repeat',
-          WebkitMaskPosition: 'center',
-          maskPosition: 'center',
-        }}
-      />
+      >
+        <IconGlyph name={name} size={size} />
+      </span>
     </div>
   )
 }

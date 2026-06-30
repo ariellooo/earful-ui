@@ -8,7 +8,7 @@
  * disabled: boolean — hover/pressed use native CSS interaction
  */
 
-import { ICON_ASSETS, ICON_COLOR_DEFAULT, ICON_COLOR_INVERT, type IconName } from '../Icon/Icon'
+import { IconGlyph, ICON_COLOR_DEFAULT, ICON_COLOR_INVERT, type IconName } from '../Icon/Icon'
 
 export type ButtonSquareType  = 'number' | 'icon'
 export type ButtonSquareLevel = 'secondary' | 'tertiary'
@@ -25,29 +25,10 @@ export type ButtonSquareProps = {
   onClick?:  () => void
 }
 
-// ─── Icon via mask ────────────────────────────────────────────────────────────
+// ─── Icon ─────────────────────────────────────────────────────────────────────
 
 function SqIcon({ name, color }: { name: IconName; color: string }) {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display:            'inline-block',
-        width:              20,
-        height:             20,
-        flexShrink:         0,
-        backgroundColor:    color,
-        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
-        maskImage:          `url(${ICON_ASSETS[name]})`,
-        WebkitMaskSize:     'contain',
-        maskSize:           'contain',
-        WebkitMaskRepeat:   'no-repeat',
-        maskRepeat:         'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition:       'center',
-      }}
-    />
-  )
+  return <IconGlyph name={name} size={20} color={color} />
 }
 
 // ─── Style helpers ────────────────────────────────────────────────────────────

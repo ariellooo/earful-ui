@@ -8,7 +8,7 @@
 import { useState } from 'react'
 import Button from '../Button/Button'
 import ButtonSquare from '../ButtonSquare/ButtonSquare'
-import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
+import { IconGlyph } from '../Icon/Icon'
 import {
   MONTH_NAMES,
   WEEKDAYS,
@@ -29,39 +29,6 @@ export type RangeDayPickerProps = {
   text?:     string
   onApply?:  (range: DateRange) => void
   onClear?:  () => void
-}
-
-// ─── Icons (mask — same pattern as Button / Pagination) ───────────────────────
-
-function MaskIcon({
-  name,
-  size  = 24,
-  color = ICON_COLOR_DEFAULT,
-}: {
-  name:  IconName
-  size?: number
-  color?: string
-}) {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display:            'inline-block',
-        width:              size,
-        height:             size,
-        flexShrink:         0,
-        backgroundColor:    color,
-        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
-        maskImage:          `url(${ICON_ASSETS[name]})`,
-        WebkitMaskSize:     'contain',
-        maskSize:           'contain',
-        WebkitMaskRepeat:   'no-repeat',
-        maskRepeat:         'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition:       'center',
-      }}
-    />
-  )
 }
 
 // ─── Panel ────────────────────────────────────────────────────────────────────
@@ -319,7 +286,7 @@ export default function RangeDayPicker({
         'cursor-pointer transition-colors hover:bg-surface-primary whitespace-nowrap',
       ].join(' ')}
     >
-      <MaskIcon name="calendar" size={20} />
+      <IconGlyph name="calendar" size={20} />
       <span>{text}</span>
     </button>
   )

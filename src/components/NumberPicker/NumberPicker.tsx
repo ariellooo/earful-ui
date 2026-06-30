@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react'
-import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
+import { IconGlyph, type IconName } from '../Icon/Icon'
 
 export type NumberPickerVariant = 'topics' | 'comments'
 
@@ -33,26 +33,7 @@ const PICKER_FIELD =
 // ─── Chevron icon via mask (12 px) ────────────────────────────────────────────
 
 function PickerIcon({ name }: { name: Extract<IconName, 'chevron-up' | 'chevron-down'> }) {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display:            'inline-block',
-        width:              12,
-        height:             12,
-        flexShrink:         0,
-        backgroundColor:    ICON_COLOR_DEFAULT,
-        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
-        maskImage:          `url(${ICON_ASSETS[name]})`,
-        WebkitMaskSize:     'contain',
-        maskSize:           'contain',
-        WebkitMaskRepeat:   'no-repeat',
-        maskRepeat:         'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition:       'center',
-      }}
-    />
-  )
+  return <IconGlyph name={name} size={12} />
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────

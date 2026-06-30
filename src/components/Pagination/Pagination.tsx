@@ -10,7 +10,7 @@
  */
 
 import { useState } from 'react'
-import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
+import { IconGlyph, type IconName } from '../Icon/Icon'
 
 export type PaginationVersion = 'default' | 'show-rows'
 
@@ -69,37 +69,6 @@ function PageButton({
   )
 }
 
-function MaskIcon({
-  name,
-  size  = 24,
-  color = ICON_COLOR_DEFAULT,
-}: {
-  name:  IconName
-  size?: number
-  color?: string
-}) {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display:            'inline-block',
-        width:              size,
-        height:             size,
-        flexShrink:         0,
-        backgroundColor:    color,
-        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
-        maskImage:          `url(${ICON_ASSETS[name]})`,
-        WebkitMaskSize:     'contain',
-        maskSize:           'contain',
-        WebkitMaskRepeat:   'no-repeat',
-        maskRepeat:         'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition:       'center',
-      }}
-    />
-  )
-}
-
 function ChevronButton({
   icon, label, disabled, onClick,
 }: { icon: IconName; label: string; disabled?: boolean; onClick?: () => void }) {
@@ -114,7 +83,7 @@ function ChevronButton({
         disabled ? 'opacity-30 cursor-default pointer-events-none' : 'cursor-pointer hover:bg-surface-primary',
       ].join(' ')}
     >
-      <MaskIcon name={icon} />
+      <IconGlyph name={icon} size={24} />
     </button>
   )
 }
@@ -175,7 +144,7 @@ export default function Pagination({
                 ))}
               </select>
               <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
-                <MaskIcon name="chevron-down" />
+                <IconGlyph name="chevron-down" size={24} />
               </span>
             </div>
           </>

@@ -7,6 +7,9 @@
  * state="main"     — filled star, white card with border + shadow (non-interactive display)
  */
 
+import star from '../../assets/icons_function/star.svg?raw'
+import { ICON_COLOR_DEFAULT } from '../Icon/Icon'
+
 export type ButtonStarState = 'default' | 'starred' | 'label' | 'main'
 
 export type ButtonStarProps = {
@@ -14,18 +17,15 @@ export type ButtonStarProps = {
   onClick?: () => void
 }
 
-// ─── Star icons ───────────────────────────────────────────────────────────────
-
-const STAR_OUTLINE = 'https://www.figma.com/api/mcp/asset/ff71f359-804d-4ecb-9683-a19ccee8589f'
-const STAR_FILLED  = 'https://www.figma.com/api/mcp/asset/55629572-e5e3-49a0-83d4-5e037bd4066d'
+const STAR_FILLED_COLOR = 'var(--color-secondary)'
 
 function StarIcon({ filled }: { filled: boolean }) {
   return (
-    <img
-      src={filled ? STAR_FILLED : STAR_OUTLINE}
-      alt=""
+    <span
       aria-hidden
-      className="block size-6 shrink-0"
+      className="inline-block size-6 shrink-0 [&>svg]:block [&>svg]:size-full"
+      style={{ color: filled ? STAR_FILLED_COLOR : ICON_COLOR_DEFAULT }}
+      dangerouslySetInnerHTML={{ __html: star }}
     />
   )
 }

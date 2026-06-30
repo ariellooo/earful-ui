@@ -6,33 +6,10 @@
  */
 
 import { useState } from 'react'
-import { ICON_ASSETS, ICON_COLOR_DEFAULT } from '../Icon/Icon'
+import { IconGlyph } from '../Icon/Icon'
 
 export type SearchBarProps = {
   placeholder?: string
-}
-
-function SearchIcon() {
-  return (
-    <span
-      aria-hidden
-      className="shrink-0"
-      style={{
-        display:            'inline-block',
-        width:              24,
-        height:             24,
-        backgroundColor:    ICON_COLOR_DEFAULT,
-        WebkitMaskImage:    `url(${ICON_ASSETS['search']})`,
-        maskImage:          `url(${ICON_ASSETS['search']})`,
-        WebkitMaskSize:     'contain',
-        maskSize:           'contain',
-        WebkitMaskRepeat:   'no-repeat',
-        maskRepeat:         'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition:       'center',
-      }}
-    />
-  )
 }
 
 export default function SearchBar({ placeholder = 'Search' }: SearchBarProps) {
@@ -43,7 +20,7 @@ export default function SearchBar({ placeholder = 'Search' }: SearchBarProps) {
     <div className="flex items-center gap-2 pl-3 pr-4 h-12 w-[328px]
       bg-surface-white border border-greyscale-300 rounded-lg shadow-100
       focus-within:border-greyscale-500 transition-colors cursor-text">
-      <SearchIcon />
+      <IconGlyph name="search" size={24} className="shrink-0" />
       <input
         type="text"
         value={value}

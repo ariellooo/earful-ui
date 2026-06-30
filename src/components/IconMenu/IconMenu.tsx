@@ -1,19 +1,28 @@
 /**
- * Sidebar navigation icons sourced from Figma (node 41:138).
- * Hosted URLs expire after 7 days — replace with local SVGs when ready.
+ * Sidebar navigation icons — local SVGs from src/assets/icon_menu.
  */
 import { ICON_COLOR_DEFAULT } from '../Icon/Icon'
 
+import layoutDashboard from '../../assets/icon_menu/layout-dashboard.svg?raw'
+import appWindow from '../../assets/icon_menu/app-window.svg?raw'
+import bot from '../../assets/icon_menu/bot.svg?raw'
+import shieldCheck from '../../assets/icon_menu/shield-check.svg?raw'
+import messageSquareText from '../../assets/icon_menu/message-square-text.svg?raw'
+import hash from '../../assets/icon_menu/hash.svg?raw'
+import user from '../../assets/icon_menu/user.svg?raw'
+import seeding from '../../assets/icon_menu/seeding.svg?raw'
+import scanFace from '../../assets/icon_menu/scan-face.svg?raw'
+
 export const ICON_MENU_ASSETS = {
-  dashboard:              'https://www.figma.com/api/mcp/asset/83ed3148-88dc-47ea-9a40-9953a3711f73',
-  window:                 'https://www.figma.com/api/mcp/asset/7a77e796-ff51-4af7-9c36-4df34d6ae0c2',
-  bot:                    'https://www.figma.com/api/mcp/asset/58e82a14-0d43-472f-87f2-77e8178f070f',
-  'shield-check':         'https://www.figma.com/api/mcp/asset/faf94f40-21c3-4dd2-a91a-bfe54065ca7c',
-  'message-square-text':  'https://www.figma.com/api/mcp/asset/3715fff4-2db4-4765-a9ed-41aaeb73bbc9',
-  hash:                   'https://www.figma.com/api/mcp/asset/5be5fdcb-d8ce-4674-9f16-59a68bcbd4d8',
-  user:                   'https://www.figma.com/api/mcp/asset/3a108417-cd1f-4174-881a-a09e95d7f83f',
-  seeding:                'https://www.figma.com/api/mcp/asset/1891bca2-dd5d-4a84-abcc-a722c1c53136',
-  'scan-face':            'https://www.figma.com/api/mcp/asset/9c185b4f-fa77-4dc8-b785-80b7629a2bdc',
+  dashboard:              layoutDashboard,
+  window:                 appWindow,
+  bot:                    bot,
+  'shield-check':         shieldCheck,
+  'message-square-text':  messageSquareText,
+  hash:                   hash,
+  user:                   user,
+  seeding:                seeding,
+  'scan-face':            scanFace,
 } as const
 
 export type IconMenuName = keyof typeof ICON_MENU_ASSETS
@@ -29,39 +38,20 @@ export type IconMenuProps = {
   label?: string
 }
 
-export default function IconMenu({
-  name,
-  size = 24,
-  className = '',
-  label,
-}: IconMenuProps) {
+export default function IconMenu({ name, size = 24, className = '', label }: IconMenuProps) {
   return (
-    <div
-      className={[
-        'inline-flex items-center justify-center rounded-xl p-3 bg-white',
-        className,
-      ].join(' ')}
+    <span
+      className={['inline-flex items-center justify-center', className].join(' ')}
+      style={{ width: size, height: size }}
     >
       <span
         role={label ? 'img' : undefined}
         aria-label={label ?? undefined}
         aria-hidden={label ? undefined : true}
-        style={{
-          display: 'inline-block',
-          width: size,
-          height: size,
-          flexShrink: 0,
-          backgroundColor: ICON_COLOR_DEFAULT,
-          WebkitMaskImage: `url(${ICON_MENU_ASSETS[name]})`,
-          maskImage: `url(${ICON_MENU_ASSETS[name]})`,
-          WebkitMaskSize: 'contain',
-          maskSize: 'contain',
-          WebkitMaskRepeat: 'no-repeat',
-          maskRepeat: 'no-repeat',
-          WebkitMaskPosition: 'center',
-          maskPosition: 'center',
-        }}
+        className="inline-block shrink-0 size-full [&>svg]:block [&>svg]:size-full"
+        style={{ color: ICON_COLOR_DEFAULT }}
+        dangerouslySetInnerHTML={{ __html: ICON_MENU_ASSETS[name] }}
       />
-    </div>
+    </span>
   )
 }

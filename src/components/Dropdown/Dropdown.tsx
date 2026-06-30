@@ -12,7 +12,7 @@
 
 import type { ReactNode } from 'react'
 import Checkbox from '../Checkbox/Checkbox'
-import { ICON_ASSETS, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
+import { IconGlyph, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
 
 export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status' | 'strategy'
 
@@ -112,9 +112,9 @@ function buildNotifications(
   ]
 }
 
-// ─── Icon via mask ────────────────────────────────────────────────────────────
+// ─── Icon ─────────────────────────────────────────────────────────────────────
 
-function MaskIcon({
+function RowIcon({
   name,
   size  = 24,
   color = ICON_COLOR_DEFAULT,
@@ -123,26 +123,7 @@ function MaskIcon({
   size?: number
   color?: string
 }) {
-  return (
-    <span
-      aria-hidden
-      style={{
-        display:            'inline-block',
-        width:              size,
-        height:             size,
-        flexShrink:         0,
-        backgroundColor:    color,
-        WebkitMaskImage:    `url(${ICON_ASSETS[name]})`,
-        maskImage:          `url(${ICON_ASSETS[name]})`,
-        WebkitMaskSize:     'contain',
-        maskSize:           'contain',
-        WebkitMaskRepeat:   'no-repeat',
-        maskRepeat:         'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition:       'center',
-      }}
-    />
-  )
+  return <IconGlyph name={name} size={size} color={color} />
 }
 
 // ─── Shared shell ─────────────────────────────────────────────────────────────
@@ -187,7 +168,7 @@ function DropdownShell({
                   onClick={onClose}
                   className="inline-flex size-6 items-center justify-center rounded hover:bg-surface-primary transition-colors focus:outline-none"
                 >
-                  <MaskIcon name="delete" />
+                  <RowIcon name="delete" />
                 </button>
               </div>
             </div>
@@ -249,7 +230,7 @@ function IconMenuRows({
       className="flex h-9 w-full items-center bg-surface-white hover:bg-surface-primary transition-colors focus:outline-none"
     >
       <div className="flex size-10 shrink-0 items-center justify-center p-2">
-        <MaskIcon name={item.icon} />
+        <RowIcon name={item.icon} />
       </div>
       <span className="min-w-0 flex-1 p-2 text-left font-body font-normal text-[15px] leading-6 text-text-default">
         {item.label}
@@ -330,7 +311,7 @@ export default function Dropdown({
             </span>
             <div className="flex size-10 shrink-0 items-center justify-center p-2">
               {item.unread !== false && (
-                <MaskIcon name="dot" color="#2bc7e0" />
+                <RowIcon name="dot" color="var(--color-primary)" />
               )}
             </div>
           </button>

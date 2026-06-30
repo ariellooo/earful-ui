@@ -14,8 +14,7 @@
 
 import { useState } from 'react'
 import Logo from '../Logo/Logo'
-import { ICON_COLOR_DEFAULT } from '../Icon/Icon'
-import { ICON_MENU_ASSETS } from '../IconMenu/IconMenu'
+import IconMenu from '../IconMenu/IconMenu'
 import type { IconMenuName } from '../IconMenu/IconMenu'
 
 export type SidebarState = 'expanded' | 'collapsed'
@@ -36,27 +35,6 @@ const NAV_ITEMS: { icon: IconMenuName; label: string }[] = [
   { icon: 'seeding',             label: 'C.R.O.W.S' },
   { icon: 'scan-face',           label: 'Face Detection' },
 ]
-
-// Nav icon + label use text/icon default on every state (Figma 55:169)
-function NavIcon({ src, color }: { src: string; color: string }) {
-  return (
-    <span
-      aria-hidden
-      className="inline-block size-6 shrink-0"
-      style={{
-        backgroundColor: color,
-        WebkitMaskImage: `url(${src})`,
-        maskImage: `url(${src})`,
-        WebkitMaskSize: 'contain',
-        maskSize: 'contain',
-        WebkitMaskRepeat: 'no-repeat',
-        maskRepeat: 'no-repeat',
-        WebkitMaskPosition: 'center',
-        maskPosition: 'center',
-      }}
-    />
-  )
-}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -91,7 +69,6 @@ export default function Sidebar({ state = 'expanded' }: SidebarProps) {
           const isSelected = idx === selected
           const isHovered  = idx === hovered && !isSelected
 
-          const iconColor = ICON_COLOR_DEFAULT
           const labelClass = 'text-text-default'
 
           const bgClass =
@@ -111,7 +88,7 @@ export default function Sidebar({ state = 'expanded' }: SidebarProps) {
                 bgClass,
               ].join(' ')}
             >
-              <NavIcon src={ICON_MENU_ASSETS[icon]} color={iconColor} />
+              <IconMenu name={icon} size={24} />
               {!collapsed && (
                 <span
                   className={[
