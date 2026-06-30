@@ -20,7 +20,7 @@ const layoutControlHidden = {
 } as const
 
 const meta: Meta<typeof Dropdown> = {
-  title: 'Design System/Dropdown',
+  title: 'Components/Dropdown',
   component: Dropdown,
   parameters: { layout: 'centered' },
   argTypes: {

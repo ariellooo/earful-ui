@@ -1,13 +1,47 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from 'storybook/preview-api'
 import type { CheckboxStatus } from '../Checkbox/Checkbox'
-import Table, { DEFAULT_TABLE_ROWS, type TableRow } from './Table'
+import Table, { type TableRow } from './Table'
+
+const DEFAULT_TABLE_ROWS: TableRow[] = [
+  {
+    id: '1',
+    topic: 'BHK-finance',
+    owner: 'admin_agent',
+    createdAt: '2023-08-16 11:20:57',
+    updatedAt: '2023-08-16 11:20:57',
+    lastSentAt: '2023-08-16 11:20:57',
+    status: true,
+  },
+  {
+    id: '2',
+    topic: 'BHK-finance',
+    owner: 'admin_agent',
+    createdAt: '2023-08-16 11:20:57',
+    updatedAt: '2023-08-16 11:20:57',
+    lastSentAt: '2023-08-16 11:20:57',
+    status: true,
+  },
+  {
+    id: '3',
+    topic: 'BHK-finance',
+    owner: 'admin_agent',
+    createdAt: '2023-08-16 11:20:57',
+    updatedAt: '2023-08-16 11:20:57',
+    lastSentAt: '2023-08-16 11:20:57',
+    status: true,
+  },
+]
 
 type StoryArgs = {
   lastSentAt: boolean
   test:       boolean
   log:        boolean
   rows:       TableRow[]
+}
+
+const booleanToggle = {
+  control: 'boolean' as const,
 }
 
 function deriveSelectAllStatus(rows: TableRow[]): CheckboxStatus {
@@ -26,11 +60,11 @@ function cycleSelectAll(current: CheckboxStatus): TableRow[] {
 }
 
 const meta: Meta<StoryArgs> = {
-  title: 'Design System/Table',
+  title: 'Components/Table',
   parameters: { layout: 'padded' },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[1140px] rounded-xl bg-white p-10">
+      <div className="w-full max-w-[1140px]">
         <Story />
       </div>
     ),
@@ -42,9 +76,9 @@ const meta: Meta<StoryArgs> = {
     rows:       DEFAULT_TABLE_ROWS,
   },
   argTypes: {
-    lastSentAt: { control: 'boolean', name: 'Last sent at' },
-    test:       { control: 'boolean', name: 'Test' },
-    log:        { control: 'boolean', name: 'Log' },
+    lastSentAt: { ...booleanToggle, name: 'Last sent at' },
+    test:       { ...booleanToggle, name: 'Test' },
+    log:        { ...booleanToggle, name: 'Log' },
     rows:       { table: { disable: true } },
   },
   render: function Render(args) {

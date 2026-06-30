@@ -8,7 +8,7 @@ function nextStatus(current: CheckboxStatus): CheckboxStatus {
 }
 
 const meta: Meta<typeof Checkbox> = {
-  title: 'Design System/Checkbox',
+  title: 'Components/Checkbox',
   component: Checkbox,
   parameters: { layout: 'centered' },
   argTypes: {

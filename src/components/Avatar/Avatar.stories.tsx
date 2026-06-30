@@ -2,16 +2,28 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Avatar from './Avatar'
 
 const meta: Meta<typeof Avatar> = {
-  title: 'Design System/Avatar',
+  title: 'Components/Avatar',
   component: Avatar,
   parameters: { layout: 'centered' },
+  decorators: [
+    (Story) => (
+      <div className="rounded-xl bg-white p-10">
+        <Story />
+      </div>
+    ),
+  ],
   args: {
-    size: 'm',
+    type:     'image',
+    size:     'm',
+    initials: 'TK',
+    alt:      'User avatar',
   },
   argTypes: {
-    size:      { control: 'radio', options: ['s', 'm', 'l'] },
+    type:      { control: 'radio', options: ['image', 'initials'] },
+    size:      { control: 'radio', options: ['s', 'm'] },
+    initials:  { control: 'text', name: 'Initials' },
     src:       { table: { disable: true } },
-    alt:       { table: { disable: true } },
+    alt:       { control: 'text' },
     className: { table: { disable: true } },
   },
 }
@@ -19,4 +31,12 @@ const meta: Meta<typeof Avatar> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
+export const Image: Story = {
+  name: 'Image',
+  args: { type: 'image' },
+}
+
+export const Initials: Story = {
+  name: 'Initials',
+  args: { type: 'initials', initials: 'TK' },
+}

@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react'
-import { IconGlyph, type IconName } from '../Icon/Icon'
+import { IconGlyph, type IconName } from '../../foundations/Icons/Function/IconFunction'
 
 export type NumberPickerVariant = 'topics' | 'comments'
 

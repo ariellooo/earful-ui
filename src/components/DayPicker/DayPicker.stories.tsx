@@ -29,7 +29,7 @@ function formatStoryDate(date: Date): string {
 }
 
 const meta: Meta<StoryArgs> = {
-  title: 'Design System/Day Picker',
+  title: 'Components/Day Picker',
   parameters: { layout: 'centered' },
   decorators: [
     (Story) => (

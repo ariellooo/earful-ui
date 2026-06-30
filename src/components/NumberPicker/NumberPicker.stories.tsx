@@ -3,7 +3,7 @@ import { useArgs } from 'storybook/preview-api'
 import NumberPicker from './NumberPicker'
 
 const meta: Meta<typeof NumberPicker> = {
-  title: 'Design System/Number Picker',
+  title: 'Components/Number Picker',
   component: NumberPicker,
   parameters: { layout: 'centered' },
   decorators: [

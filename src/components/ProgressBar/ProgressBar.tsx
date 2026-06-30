@@ -4,9 +4,9 @@
  * Multi-step wizard header: back control, step indicators, Save + Next/Launch.
  */
 
-import Button from '../Button/Button'
-import ButtonCircle from '../ButtonCircle/ButtonCircle'
-import ButtonSquare from '../ButtonSquare/ButtonSquare'
+import Button from '../Button/Button/Button'
+import ButtonCircle from '../Button/ButtonCircle/ButtonCircle'
+import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
 
 export type ProgressStep = 1 | 2 | 3 | 4
 

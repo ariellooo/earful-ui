@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import PieChart from './PieChart'
 
 const meta: Meta<typeof PieChart> = {
-  title: 'Design System/Chart',
+  title: 'Components/Chart/Pie',
   component: PieChart,
   parameters: { layout: 'padded' },
   decorators: [

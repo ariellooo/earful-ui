@@ -12,7 +12,7 @@
 
 import type { ReactNode } from 'react'
 import Checkbox from '../Checkbox/Checkbox'
-import { IconGlyph, ICON_COLOR_DEFAULT, type IconName } from '../Icon/Icon'
+import { IconGlyph, ICON_COLOR_DEFAULT, type IconName } from '../../foundations/Icons/Function/IconFunction'
 
 export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status' | 'strategy'
 

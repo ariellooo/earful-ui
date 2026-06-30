@@ -2,9 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from 'storybook/preview-api'
 import Toggle from './Toggle'
 
-const meta: Meta<typeof Toggle> = {
-  title: 'Design System/Toggle',
-  component: Toggle,
+type StoryArgs = {
+  checked:  'off' | 'on'
+  disabled: boolean
+}
+
+const meta: Meta<StoryArgs> = {
+  title: 'Components/Toggle',
   parameters: { layout: 'centered' },
   decorators: [
     (Story) => (
@@ -13,34 +17,38 @@ const meta: Meta<typeof Toggle> = {
       </div>
     ),
   ],
+  args: {
+    checked:  'off',
+    disabled: false,
+  },
   argTypes: {
-    checked:        { table: { disable: true } },
-    defaultChecked: { table: { disable: true } },
-    disabled:       { control: 'boolean' },
-    onChange:       { table: { disable: true } },
-    className:      { table: { disable: true } },
-    'aria-label':   { table: { disable: true } },
+    checked: {
+      control: { type: 'radio' },
+      options: ['off', 'on'],
+    },
+    disabled: { control: 'boolean' },
   },
   render: function Render(args) {
-    const [, updateArgs] = useArgs<typeof args>()
+    const [, updateArgs] = useArgs<StoryArgs>()
     return (
       <Toggle
-        {...args}
-        onChange={(checked) => updateArgs({ checked })}
+        checked={args.checked === 'on'}
+        disabled={args.disabled}
+        onChange={(checked) => updateArgs({ checked: checked ? 'on' : 'off' })}
       />
     )
   },
 }
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<StoryArgs>
 
 export const On: Story = {
   name: 'On',
-  args: { checked: true },
+  args: { checked: 'on' },
 }
 
 export const Off: Story = {
   name: 'Off',
-  args: { checked: false },
+  args: { checked: 'off' },
 }

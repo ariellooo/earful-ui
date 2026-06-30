@@ -3,7 +3,7 @@ import { useArgs } from 'storybook/preview-api'
 import ProgressBar, { type ProgressStep } from './ProgressBar'
 
 const meta: Meta<typeof ProgressBar> = {
-  title: 'Design System/Progress Bar',
+  title: 'Components/Progress Bar',
   component: ProgressBar,
   parameters: { layout: 'padded' },
   decorators: [

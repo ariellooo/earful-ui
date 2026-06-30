@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import BarChart from './BarChart'
 
 const meta: Meta<typeof BarChart> = {
-  title: 'Design System/Chart',
+  title: 'Components/Chart/Bar',
   component: BarChart,
   parameters: { layout: 'padded' },
   decorators: [

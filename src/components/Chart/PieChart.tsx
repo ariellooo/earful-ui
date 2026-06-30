@@ -12,7 +12,7 @@ import {
   Tooltip,
   type PieLabelRenderProps,
 } from 'recharts'
-import ButtonSquare from '../ButtonSquare/ButtonSquare'
+import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
 import {
   DEFAULT_PIE_CHART_SLICES,
   DEFAULT_PIE_TOTAL_CONVERSATIONS,

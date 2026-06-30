@@ -5,8 +5,8 @@
  */
 
 import { useState } from 'react'
-import Button from '../Button/Button'
-import ButtonSquare from '../ButtonSquare/ButtonSquare'
+import Button from '../Button/Button/Button'
+import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
 import {
   MONTH_NAMES,
   WEEKDAYS,

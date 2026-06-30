@@ -6,9 +6,10 @@
  * Header 64 px · body rows 48 px · 8 px row gap · white rounded header
  */
 
+import type { ReactNode } from 'react'
 import Checkbox, { type CheckboxStatus } from '../Checkbox/Checkbox'
-import Icon from '../Icon/Icon'
 import Toggle from '../Toggle/Toggle'
+import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
 
 export type TableRow = {
   id:           string
@@ -21,11 +22,14 @@ export type TableRow = {
   selected?:    boolean
 }
 
-export type TableProps = {
+export type TableColumnVisibility = {
+  showLastSentAt?: boolean
+  showTest?:       boolean
+  showLog?:        boolean
+}
+
+export type TableProps = TableColumnVisibility & {
   rows?:              TableRow[]
-  showLastSentAt?:    boolean
-  showTest?:          boolean
-  showLog?:           boolean
   selectAllStatus?:   CheckboxStatus
   onSelectAll?:       () => void
   onSelectRow?:       (id: string) => void
@@ -34,6 +38,30 @@ export type TableProps = {
   onStatusChange?:    (id: string, status: boolean) => void
   onMore?:            (id: string) => void
   className?:         string
+}
+
+export type TableHeaderProps = TableColumnVisibility & {
+  selectAllStatus: CheckboxStatus
+  onSelectAll?:    () => void
+}
+
+export type TableRowItemProps = TableColumnVisibility & {
+  row:             TableRow
+  onSelect?:       () => void
+  onTest?:         () => void
+  onLog?:          () => void
+  onStatusChange?: (status: boolean) => void
+  onMore?:         () => void
+}
+
+type OptionalColumnKey = keyof TableColumnVisibility
+
+type OptionalColumnDef = {
+  flag:       OptionalColumnKey
+  label:      string
+  widthClass: string
+  centerCell: boolean
+  renderCell: (props: Pick<TableRowItemProps, 'row' | 'onTest' | 'onLog'>) => ReactNode
 }
 
 const HEADER_TEXT = [
@@ -53,24 +81,40 @@ const COLOUR_BTN = [
   'transition-colors active:opacity-90',
 ].join(' ')
 
-function MoreButton({ onClick }: { onClick?: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="More actions"
-      className={[
-        'flex size-10 shrink-0 items-center justify-center rounded-lg p-1.5',
-        'hover:bg-surface-primary transition-colors',
-      ].join(' ')}
-    >
-      <Icon
-        name="ellipsis-vertical"
-        size={24}
-        className="rotate-90 bg-transparent p-0 rounded-none"
-      />
-    </button>
-  )
+const OPTIONAL_COLUMNS: OptionalColumnDef[] = [
+  {
+    flag:       'showLastSentAt',
+    label:      'Last sent at',
+    widthClass: 'min-w-0 flex-1',
+    centerCell: false,
+    renderCell: ({ row }) => (
+      <span className={BODY_TEXT}>{row.lastSentAt ?? row.updatedAt}</span>
+    ),
+  },
+  {
+    flag:       'showTest',
+    label:      'Test',
+    widthClass: 'w-20',
+    centerCell: true,
+    renderCell: ({ onTest }) => <TestButton onClick={onTest} />,
+  },
+  {
+    flag:       'showLog',
+    label:      'Log',
+    widthClass: 'w-20',
+    centerCell: true,
+    renderCell: ({ onLog }) => <LogButton onClick={onLog} />,
+  },
+]
+
+function columnCellClass(height: 'header' | 'body', widthClass: string, center: boolean) {
+  const h = height === 'header' ? 'h-16' : 'h-10'
+  return [
+    'flex shrink-0 items-center p-2',
+    h,
+    widthClass,
+    center ? 'justify-center' : '',
+  ].join(' ')
 }
 
 function TestButton({ onClick }: { onClick?: () => void }) {
@@ -103,19 +147,43 @@ function LogButton({ onClick }: { onClick?: () => void }) {
   )
 }
 
+function OptionalColumns({
+  columns,
+  height,
+  rowProps,
+}: {
+  columns:   TableColumnVisibility
+  height:    'header' | 'body'
+  rowProps?: Pick<TableRowItemProps, 'row' | 'onTest' | 'onLog'>
+}) {
+  const role = height === 'header' ? 'columnheader' : 'cell'
+
+  return OPTIONAL_COLUMNS.map((col) => {
+    if (!columns[col.flag]) return null
+
+    return (
+      <div
+        key={col.flag}
+        className={columnCellClass(height, col.widthClass, col.centerCell)}
+        role={role}
+      >
+        {height === 'header'
+          ? <span className={HEADER_TEXT}>{col.label}</span>
+          : rowProps && col.renderCell(rowProps)}
+      </div>
+    )
+  })
+}
+
 function TableHeader({
   selectAllStatus,
   showLastSentAt,
   showTest,
   showLog,
   onSelectAll,
-}: {
-  selectAllStatus:  CheckboxStatus
-  showLastSentAt?:  boolean
-  showTest?:        boolean
-  showLog?:         boolean
-  onSelectAll?:     () => void
-}) {
+}: TableHeaderProps) {
+  const columns: TableColumnVisibility = { showLastSentAt, showTest, showLog }
+
   return (
     <div
       className="flex w-full shrink-0 items-start rounded-lg bg-surface-white"
@@ -136,21 +204,7 @@ function TableHeader({
       <div className="flex h-16 min-w-0 flex-1 items-center p-2" role="columnheader">
         <span className={HEADER_TEXT}>Update time</span>
       </div>
-      {showLastSentAt && (
-        <div className="flex h-16 min-w-0 flex-1 items-center p-2" role="columnheader">
-          <span className={HEADER_TEXT}>Last sent at</span>
-        </div>
-      )}
-      {showTest && (
-        <div className="flex h-16 w-20 shrink-0 items-center p-2" role="columnheader">
-          <span className={HEADER_TEXT}>Test</span>
-        </div>
-      )}
-      {showLog && (
-        <div className="flex h-16 w-20 shrink-0 items-center p-2" role="columnheader">
-          <span className={HEADER_TEXT}>Log</span>
-        </div>
-      )}
+      <OptionalColumns columns={columns} height="header" />
       <div className="flex h-16 w-[72px] shrink-0 items-center p-2" role="columnheader">
         <span className={HEADER_TEXT}>Status</span>
       </div>
@@ -169,17 +223,9 @@ function TableRowItem({
   onLog,
   onStatusChange,
   onMore,
-}: {
-  row:              TableRow
-  showLastSentAt?:  boolean
-  showTest?:        boolean
-  showLog?:         boolean
-  onSelect?:        () => void
-  onTest?:          () => void
-  onLog?:           () => void
-  onStatusChange?:  (status: boolean) => void
-  onMore?:          () => void
-}) {
+}: TableRowItemProps) {
+  const columns: TableColumnVisibility = { showLastSentAt, showTest, showLog }
+
   return (
     <div className="flex w-full shrink-0 items-start" role="row">
       <div className="flex h-10 w-16 shrink-0 items-center justify-center p-2" role="cell">
@@ -201,21 +247,11 @@ function TableRowItem({
       <div className="flex h-10 min-w-0 flex-1 items-center p-2" role="cell">
         <span className={BODY_TEXT}>{row.updatedAt}</span>
       </div>
-      {showLastSentAt && (
-        <div className="flex h-10 min-w-0 flex-1 items-center p-2" role="cell">
-          <span className={BODY_TEXT}>{row.lastSentAt ?? row.updatedAt}</span>
-        </div>
-      )}
-      {showTest && (
-        <div className="flex h-10 w-20 shrink-0 items-center justify-center p-2" role="cell">
-          <TestButton onClick={onTest} />
-        </div>
-      )}
-      {showLog && (
-        <div className="flex h-10 w-20 shrink-0 items-center justify-center p-2" role="cell">
-          <LogButton onClick={onLog} />
-        </div>
-      )}
+      <OptionalColumns
+        columns={columns}
+        height="body"
+        rowProps={{ row, onTest, onLog }}
+      />
       <div className="flex h-10 w-[72px] shrink-0 items-center justify-center p-2" role="cell">
         <Toggle
           checked={row.status}
@@ -224,44 +260,20 @@ function TableRowItem({
         />
       </div>
       <div className="flex h-10 w-12 shrink-0 items-center justify-center p-2" role="cell">
-        <MoreButton onClick={onMore} />
+        <ButtonSquare
+          type="icon"
+          icon="ellipsis-vertical"
+          size="m"
+          onClick={onMore}
+          aria-label="More actions"
+        />
       </div>
     </div>
   )
 }
 
-export const DEFAULT_TABLE_ROWS: TableRow[] = [
-  {
-    id: '1',
-    topic: 'BHK-finance',
-    owner: 'admin_agent',
-    createdAt: '2023-08-16 11:20:57',
-    updatedAt: '2023-08-16 11:20:57',
-    lastSentAt: '2023-08-16 11:20:57',
-    status: true,
-  },
-  {
-    id: '2',
-    topic: 'BHK-finance',
-    owner: 'admin_agent',
-    createdAt: '2023-08-16 11:20:57',
-    updatedAt: '2023-08-16 11:20:57',
-    lastSentAt: '2023-08-16 11:20:57',
-    status: true,
-  },
-  {
-    id: '3',
-    topic: 'BHK-finance',
-    owner: 'admin_agent',
-    createdAt: '2023-08-16 11:20:57',
-    updatedAt: '2023-08-16 11:20:57',
-    lastSentAt: '2023-08-16 11:20:57',
-    status: true,
-  },
-]
-
 export default function Table({
-  rows             = DEFAULT_TABLE_ROWS,
+  rows             = [],
   showLastSentAt   = false,
   showTest         = false,
   showLog          = false,
@@ -274,25 +286,23 @@ export default function Table({
   onMore,
   className        = '',
 }: TableProps) {
+  const columns: TableColumnVisibility = { showLastSentAt, showTest, showLog }
+
   return (
     <div
-      className={['flex w-full max-w-[1140px] flex-col gap-2', className].join(' ')}
+      className={['flex w-full flex-col gap-2', className].join(' ')}
       role="table"
     >
       <TableHeader
         selectAllStatus={selectAllStatus}
-        showLastSentAt={showLastSentAt}
-        showTest={showTest}
-        showLog={showLog}
+        {...columns}
         onSelectAll={onSelectAll}
       />
       {rows.map((row) => (
         <TableRowItem
           key={row.id}
           row={row}
-          showLastSentAt={showLastSentAt}
-          showTest={showTest}
-          showLog={showLog}
+          {...columns}
           onSelect={() => onSelectRow?.(row.id)}
           onTest={() => onTest?.(row.id)}
           onLog={() => onLog?.(row.id)}

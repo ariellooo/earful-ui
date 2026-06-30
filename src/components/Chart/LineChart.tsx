@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import ButtonSquare from '../ButtonSquare/ButtonSquare'
+import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
 import {
   CHART_LEGEND_GAP,
   CHART_PLOT_HEIGHT,

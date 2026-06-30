@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import ButtonSquare from '../ButtonSquare/ButtonSquare'
+import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
 import {
   BAR_CHART_Y_MAX,
   BAR_CHART_Y_TICKS,
