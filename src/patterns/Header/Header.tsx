@@ -12,7 +12,7 @@
  * Panels render in an absolute layer (top-full · z-30) so they overlay TopBar and content.
  */
 
-import SearchBar from '../SearchBar/SearchBar'
+import SearchBar from '../../components/SearchBar/SearchBar'
 import ButtonSquare from '../../components/Button/ButtonSquare/ButtonSquare'
 import Avatar from '../../components/Avatar/Avatar'
 import Dropdown, {

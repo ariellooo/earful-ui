@@ -24,7 +24,7 @@ const meta: Meta<typeof DashboardOverview> = {
     docs: {
       description: {
         component:
-          'Full-page dashboard layout composed from Sidebar, Header, TopBar and various charts (BarChart, LineChart, and PieChart). Chart customization can be toggled via **Customise** button',
+          'Full-page dashboard layout composed from Sidebar, Header, TopBar and various charts (BarChart, LineChart, and PieChart). Chart customization can be toggled via **Customise** button.',
       },
     },
   },

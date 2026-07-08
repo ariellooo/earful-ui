@@ -120,10 +120,10 @@ function SeedingRow({
         <span className={BODY_TEXT}>{row.campaignId}</span>
       </div>
       <div className="flex h-10 flex-1 min-w-0 items-center p-2" role="cell">
-        <span className={BODY_TEXT}>{row.campaignName}</span>
+        <span className={[BODY_TEXT, 'truncate'].join(' ')}>{row.campaignName}</span>
       </div>
       <div className="flex h-10 flex-1 min-w-0 items-center p-2" role="cell">
-        <span className={BODY_TEXT}>{row.client}</span>
+        <span className={[BODY_TEXT, 'truncate'].join(' ')}>{row.client}</span>
       </div>
       <div className={`${CELL_BASE} w-40`} role="cell">
         <BadgesStrategy strategy={row.strategy} />
@@ -207,12 +207,12 @@ export default function TableContentSeeding({
   return (
     <div
       className={[
-        'flex w-full max-w-[1116px] flex-col gap-2',
+        'flex w-full min-w-0 flex-col gap-2 overflow-x-auto bg-surface-white py-2',
         className,
       ].join(' ')}
       role="table"
     >
-      <div className="flex flex-col gap-0 px-2">
+      <div className="flex min-w-[960px] flex-col gap-0 px-2">
         <SeedingHeader {...columns} />
         <div className="flex flex-col gap-2 pt-2">
           {rows.map((row) => (

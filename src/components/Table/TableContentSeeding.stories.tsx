@@ -28,7 +28,7 @@ const meta: Meta<StoryArgs & TableContentSeedingProps> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[1140px]">
+      <div className="w-full min-w-0">
         <Story />
       </div>
     ),

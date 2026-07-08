@@ -28,8 +28,9 @@ import type { IconMenuName } from '../../foundations/Icons/Menu/IconMenu'
 export type SidebarState = 'expanded' | 'collapsed'
 
 export type SidebarProps = {
-  state?:    SidebarState
-  onToggle?: () => void
+  state?:                SidebarState
+  defaultSelectedIndex?: number
+  onToggle?:             () => void
 }
 
 // ─── Nav items ────────────────────────────────────────────────────────────────
@@ -50,9 +51,9 @@ const NAV_ITEMS: { icon: IconMenuName; label: string }[] = [
 /** Logo + divider shell — 88 px, divider on the bottom edge (Figma 626:6146). */
 const LOGO_SHELL_HEIGHT = 'h-[88px]'
 
-export default function Sidebar({ state = 'expanded', onToggle }: SidebarProps) {
+export default function Sidebar({ state = 'expanded', defaultSelectedIndex, onToggle }: SidebarProps) {
   const collapsed = state === 'collapsed'
-  const [selected, setSelected]       = useState<number | null>(null)
+  const [selected, setSelected]       = useState<number | null>(defaultSelectedIndex ?? null)
   const [hovered,  setHovered]        = useState<number | null>(null)
   const [toggleHovered, setToggleHovered] = useState(false)
 

@@ -12,6 +12,7 @@
 
 import Button from '../../components/Button/Button/Button'
 import ButtonSquare from '../../components/Button/ButtonSquare/ButtonSquare'
+import ButtonStar from '../../components/Button/ButtonStar/ButtonStar'
 import Dropdown, {
   CUSTOMISE_ITEMS,
   STRATEGY_ITEMS,
@@ -20,7 +21,7 @@ import Dropdown, {
   type DropdownStrategyItem,
 } from '../../components/Dropdown/Dropdown'
 import RangeDayPicker from '../../components/DayPicker/RangeDayPicker'
-import SearchBar from '../SearchBar/SearchBar'
+import SearchBar from '../../components/SearchBar/SearchBar'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
 
 export type TopBarVariant = 'default' | 'action'
@@ -97,12 +98,17 @@ export type TopBarProps = {
   launchedDateEnd?:      Date | null
   statusItems?:          DropdownStatusItem[]
   customiseItems?:       DropdownCustomiseItem[]
+  /** Show a starred-filter toggle at the start of the action-variant left controls. */
+  showStarFilter?:         boolean
+  /** Whether the starred filter is currently active (filled star). */
+  starFilterActive?:       boolean
   onPanelChange?:            (panel: TopBarPanel) => void
   onStrategyItemsChange?:    (items: DropdownStrategyItem[]) => void
   onDateRangeChange?:        (start: Date | null, end: Date | null) => void
   onLaunchedDateRangeChange?: (start: Date | null, end: Date | null) => void
   onStatusItemsChange?:      (items: DropdownStatusItem[]) => void
   onCustomiseItemsChange?:   (items: DropdownCustomiseItem[]) => void
+  onStarFilterChange?:       (active: boolean) => void
   className?:         string
 }
 
@@ -116,12 +122,15 @@ export default function TopBar({
   launchedDateEnd    = null,
   statusItems        = DEFAULT_STATUS_ITEMS,
   customiseItems     = DEFAULT_CUSTOMISE_ITEMS,
+  showStarFilter     = false,
+  starFilterActive   = false,
   onPanelChange,
   onStrategyItemsChange,
   onDateRangeChange,
   onLaunchedDateRangeChange,
   onStatusItemsChange,
   onCustomiseItemsChange,
+  onStarFilterChange,
   className          = '',
 }: TopBarProps) {
   const togglePanel = (panel: NonNullable<TopBarPanel>) => {
@@ -167,6 +176,13 @@ export default function TopBar({
             </>
           ) : (
             <>
+              {showStarFilter && (
+                <ButtonStar
+                  state={starFilterActive ? 'starred' : 'default'}
+                  className="border border-line-default shadow-100 bg-surface-white"
+                  onClick={() => onStarFilterChange?.(!starFilterActive)}
+                />
+              )}
               <Button
                 label={strategyLabel}
                 level="secondary"
