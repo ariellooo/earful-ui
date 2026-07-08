@@ -4,7 +4,14 @@ import Card from './Card'
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
   component: Card,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Feedback card for displaying contextual alerts, warnings, info, and success messages with optional primary and secondary action buttons.',
+      },
+    },
+  },
   args: {
     type:           'alert',
     heading:        'Login Failed',
@@ -14,13 +21,36 @@ const meta: Meta<typeof Card> = {
   },
   argTypes: {
     type: {
+      description: 'Semantic tone — determines icon and colour theming.',
       control: 'radio',
       options: ['info', 'alert', 'warning', 'success'],
+      table: {
+        type: { summary: "'info' | 'alert' | 'warning' | 'success'" },
+        defaultValue: { summary: 'alert' },
+      },
     },
-    heading:        { control: 'text' },
-    body:           { control: 'text' },
-    secondaryButton: { control: 'text', name: 'Secondary button' },
-    primaryButton:   { control: 'text', name: 'Primary button' },
+    heading: {
+      description: 'Title text displayed at the top of the card.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    body: {
+      description: 'Detailed message body below the heading.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    secondaryButton: {
+      description: 'Label for the secondary (left) action button.',
+      control: 'text',
+      name: 'Secondary button',
+      table: { type: { summary: 'string' } },
+    },
+    primaryButton: {
+      description: 'Label for the primary (right) CTA button.',
+      control: 'text',
+      name: 'Primary button',
+      table: { type: { summary: 'string' } },
+    },
     onPrimary:      { table: { disable: true } },
     onSecondary:    { table: { disable: true } },
     className:      { table: { disable: true } },

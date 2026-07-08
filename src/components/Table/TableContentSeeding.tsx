@@ -23,7 +23,12 @@ export type ContentSeedingRow = {
   starred?:       boolean
 }
 
-export type TableContentSeedingProps = {
+export type TableContentSeedingColumnVisibility = {
+  showCredit?:       boolean
+  showLaunchedDate?: boolean
+}
+
+export type TableContentSeedingProps = TableContentSeedingColumnVisibility & {
   rows?:          ContentSeedingRow[]
   onStar?:        (id: string) => void
   onMore?:        (id: string) => void
@@ -46,7 +51,10 @@ const CELL_BASE = 'flex shrink-0 h-10 items-center p-2'
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-function SeedingHeader() {
+function SeedingHeader({
+  showCredit       = true,
+  showLaunchedDate = true,
+}: TableContentSeedingColumnVisibility) {
   return (
     <div className="flex w-full shrink-0 flex-col">
       <div className="flex w-full h-12 items-center" role="row">
@@ -65,15 +73,19 @@ function SeedingHeader() {
         <div className={`${CELL_BASE} w-40`} role="columnheader">
           <span className={HEADER_TEXT}>Strategy</span>
         </div>
-        <div className={`${CELL_BASE} w-[72px]`} role="columnheader">
-          <span className={HEADER_TEXT}>Credit</span>
-        </div>
+        {showCredit && (
+          <div className={`${CELL_BASE} w-[72px]`} role="columnheader">
+            <span className={HEADER_TEXT}>Credit</span>
+          </div>
+        )}
         <div className={`${CELL_BASE} w-[120px]`} role="columnheader">
           <span className={HEADER_TEXT}>Status</span>
         </div>
-        <div className={`${CELL_BASE} w-[140px]`} role="columnheader">
-          <span className={HEADER_TEXT}>Launched Date</span>
-        </div>
+        {showLaunchedDate && (
+          <div className={`${CELL_BASE} w-[140px]`} role="columnheader">
+            <span className={HEADER_TEXT}>Launched Date</span>
+          </div>
+        )}
         <div className="h-10 w-12 shrink-0" role="columnheader" aria-hidden />
       </div>
       <div className="w-full border-t border-line-default" />
@@ -85,9 +97,11 @@ function SeedingHeader() {
 
 function SeedingRow({
   row,
+  showCredit       = true,
+  showLaunchedDate = true,
   onStar,
   onMore,
-}: {
+}: TableContentSeedingColumnVisibility & {
   row:     ContentSeedingRow
   onStar?: () => void
   onMore?: () => void
@@ -114,15 +128,19 @@ function SeedingRow({
       <div className={`${CELL_BASE} w-40`} role="cell">
         <BadgesStrategy strategy={row.strategy} />
       </div>
-      <div className={`${CELL_BASE} w-[72px]`} role="cell">
-        <span className={BODY_TEXT}>{creditStr}</span>
-      </div>
+      {showCredit && (
+        <div className={`${CELL_BASE} w-[72px]`} role="cell">
+          <span className={BODY_TEXT}>{creditStr}</span>
+        </div>
+      )}
       <div className={`${CELL_BASE} w-[120px]`} role="cell">
         <BadgesStatus status={row.status} />
       </div>
-      <div className={`${CELL_BASE} w-[140px]`} role="cell">
-        <span className={BODY_TEXT}>{row.launchedDate ?? '--'}</span>
-      </div>
+      {showLaunchedDate && (
+        <div className={`${CELL_BASE} w-[140px]`} role="cell">
+          <span className={BODY_TEXT}>{row.launchedDate ?? '--'}</span>
+        </div>
+      )}
       <div className="flex h-12 w-12 shrink-0 items-center justify-center p-2" role="cell">
         <ButtonSquare
           type="icon"
@@ -177,11 +195,15 @@ export const DEFAULT_SEEDING_ROWS: ContentSeedingRow[] = [
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TableContentSeeding({
-  rows      = DEFAULT_SEEDING_ROWS,
+  rows             = DEFAULT_SEEDING_ROWS,
+  showCredit       = true,
+  showLaunchedDate = true,
   onStar,
   onMore,
-  className = '',
+  className        = '',
 }: TableContentSeedingProps) {
+  const columns: TableContentSeedingColumnVisibility = { showCredit, showLaunchedDate }
+
   return (
     <div
       className={[
@@ -191,12 +213,13 @@ export default function TableContentSeeding({
       role="table"
     >
       <div className="flex flex-col gap-0 px-2">
-        <SeedingHeader />
+        <SeedingHeader {...columns} />
         <div className="flex flex-col gap-2 pt-2">
           {rows.map((row) => (
             <SeedingRow
               key={row.id}
               row={row}
+              {...columns}
               onStar={() => onStar?.(row.id)}
               onMore={() => onMore?.(row.id)}
             />

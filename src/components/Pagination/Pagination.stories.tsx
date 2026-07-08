@@ -4,7 +4,14 @@ import Pagination from './Pagination'
 const meta: Meta<typeof Pagination> = {
   title: 'Components/Pagination',
   component: Pagination,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: 'Controls for navigating paginated data sets. The default variant shows a range summary ("Showing X to Y of Z entries"); the show-rows variant adds a rows-per-page selector.',
+      },
+    },
+  },
   args: {
     version:             'default',
     totalItems:          36,
@@ -12,7 +19,12 @@ const meta: Meta<typeof Pagination> = {
   },
   argTypes: {
     version:             { table: { disable: true } },
-    totalItems:          { control: { type: 'number', min: 1 }, name: 'total items' },
+    totalItems: {
+      description: 'Total number of records across all pages.',
+      control: { type: 'number', min: 1 },
+      name: 'total items',
+      table: { type: { summary: 'number' }, defaultValue: { summary: '36' } },
+    },
     defaultItemsPerPage: { table: { disable: true } },
   },
 }

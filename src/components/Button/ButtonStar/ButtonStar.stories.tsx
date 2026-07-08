@@ -4,12 +4,24 @@ import ButtonStar from './ButtonStar'
 const meta: Meta<typeof ButtonStar> = {
   title: 'Components/Button/Star',
   component: ButtonStar,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Bookmark/star button used on content rows to flag items as starred or promoted. Cycles through default, starred, label, and main visual states.',
+      },
+    },
+  },
   args: { state: 'default' },
   argTypes: {
     state: {
+      description: 'Visual state of the star button.',
       control: 'radio',
       options: ['default', 'starred', 'label', 'main'],
+      table: {
+        type: { summary: "'default' | 'starred' | 'label' | 'main'" },
+        defaultValue: { summary: 'default' },
+      },
     },
   },
 }

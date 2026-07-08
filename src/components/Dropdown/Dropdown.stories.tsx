@@ -22,12 +22,31 @@ const layoutControlHidden = {
 const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown',
   component: Dropdown,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Contextual menu panel with variants for profile actions, notifications, item editing, status filtering, and strategy selection.',
+      },
+    },
+  },
   argTypes: {
     variant:         { table: { disable: true } },
-    title:           { control: 'text' },
-    message:         { control: 'text' },
-    date:            { control: 'text' },
+    title: {
+      description: 'Heading rendered inside the dropdown panel.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    message: {
+      description: 'Body text shown in the notification variant.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    date: {
+      description: 'Date string shown in the notification variant.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
     items:           { table: { disable: true } },
     statusItems:     { table: { disable: true } },
     strategyItems:   { table: { disable: true } },

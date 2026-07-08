@@ -4,7 +4,14 @@ import Form from './Form'
 const meta: Meta<typeof Form> = {
   title: 'Components/Form',
   component: Form,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: 'Full campaign form layout with tab navigation and a topic creation workflow. Wrap in a max-width container for correct proportions.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[1140px] p-10">

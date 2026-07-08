@@ -4,11 +4,28 @@ import Icon, { ICON_NAMES } from './IconFunction'
 const meta: Meta<typeof Icon> = {
   title: 'Foundations/Icons/Function',
   component: Icon,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Lucide-based function icons for actions, navigation, and UI controls. Icons inherit from the icon-default token and scale cleanly from 12px to 64px.',
+      },
+    },
+  },
   args: { name: 'search', size: 24 },
   argTypes: {
-    name:  { control: 'select', options: ICON_NAMES },
-    size:  { control: { type: 'range', min: 12, max: 64, step: 4 } },
+    name: {
+      description: 'Icon name from the function icon library.',
+      control: 'select',
+      options: ICON_NAMES,
+      table: { type: { summary: 'IconName' } },
+    },
+    size: {
+      description: 'Rendered width and height in pixels.',
+      control: { type: 'range', min: 12, max: 64, step: 4 },
+      table: { type: { summary: 'number' }, defaultValue: { summary: '24' } },
+    },
   },
 }
 

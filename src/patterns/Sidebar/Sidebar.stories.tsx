@@ -4,10 +4,26 @@ import Sidebar from './Sidebar'
 const meta: Meta<typeof Sidebar> = {
   title: 'Patterns/Sidebar',
   component: Sidebar,
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          'Primary app navigation rail with logo and section links. Supports expanded (212px with labels) and collapsed (48px icon-only) layouts for shell layouts.',
+      },
+    },
+  },
   args: { state: 'expanded' },
   argTypes: {
-    state: { control: 'radio', options: ['expanded', 'collapsed'] },
+    state: {
+      description: 'Navigation rail width and label visibility.',
+      control: 'radio',
+      options: ['expanded', 'collapsed'],
+      table: {
+        type: { summary: "'expanded' | 'collapsed'" },
+        defaultValue: { summary: 'expanded' },
+      },
+    },
   },
   decorators: [
     (Story) => (

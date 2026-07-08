@@ -40,12 +40,12 @@ export type TableProps = TableColumnVisibility & {
   className?:         string
 }
 
-export type TableHeaderProps = TableColumnVisibility & {
+type TableHeaderProps = TableColumnVisibility & {
   selectAllStatus: CheckboxStatus
   onSelectAll?:    () => void
 }
 
-export type TableRowItemProps = TableColumnVisibility & {
+type TableRowItemProps = TableColumnVisibility & {
   row:             TableRow
   onSelect?:       () => void
   onTest?:         () => void

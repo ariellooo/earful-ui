@@ -10,10 +10,21 @@ function nextStatus(current: CheckboxStatus): CheckboxStatus {
 const meta: Meta<typeof Checkbox> = {
   title: 'Components/Checkbox',
   component: Checkbox,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Three-state selection control supporting unchecked, checked, and indeterminate (`checked-all`) states. Click the rendered checkbox to cycle through states in the story.',
+      },
+    },
+  },
   argTypes: {
     status:    { table: { disable: true } },
-    disabled:  { control: 'boolean' },
+    disabled: {
+      description: 'Prevents interaction and applies muted styling.',
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
     label:     { table: { disable: true } },
     onClick:   { table: { disable: true } },
     className: { table: { disable: true } },

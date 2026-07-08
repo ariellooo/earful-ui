@@ -30,7 +30,14 @@ function formatStoryDate(date: Date): string {
 
 const meta: Meta<StoryArgs> = {
   title: 'Components/Day Picker',
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Calendar date picker supporting single-date selection and date-range selection. Use the `variant` control to switch between modes.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="rounded-xl bg-white p-10">
@@ -44,8 +51,13 @@ const meta: Meta<StoryArgs> = {
   },
   argTypes: {
     variant: {
+      description: '`single` shows a date selector with clear/apply actions; `range` shows a two-month date-range picker.',
       control: 'radio',
       options: ['single', 'range'],
+      table: {
+        type: { summary: "'single' | 'range'" },
+        defaultValue: { summary: 'single' },
+      },
     },
     selectedDate: { table: { disable: true } },
   },

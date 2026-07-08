@@ -5,7 +5,14 @@ import ProgressBar, { type ProgressStep } from './ProgressBar'
 const meta: Meta<typeof ProgressBar> = {
   title: 'Components/Progress Bar',
   component: ProgressBar,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: 'Stepped progress indicator for multi-step form flows. Displays the current step out of four and exposes back/next navigation callbacks.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[1116px]">
@@ -18,9 +25,14 @@ const meta: Meta<typeof ProgressBar> = {
   },
   argTypes: {
     step: {
+      description: 'Active step number. Step 4 shows the launch confirmation state.',
       control: 'radio',
       options: [1, 2, 3, 4],
       name:    'Step',
+      table: {
+        type: { summary: '1 | 2 | 3 | 4' },
+        defaultValue: { summary: '1' },
+      },
     },
     onBack:   { table: { disable: true } },
     onSave:   { table: { disable: true } },

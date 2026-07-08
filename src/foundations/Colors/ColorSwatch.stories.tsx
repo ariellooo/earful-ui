@@ -33,9 +33,29 @@ const GREYSCALE_COLORS: ColorSwatchItem[] = [
   { label: '0',   hex: '#FFFFFF', bordered: true },
 ]
 
-const meta: Meta = {
+const meta: Meta<typeof ColorGroup> = {
   title: 'Foundations/Colors',
-  parameters: { layout: 'padded' },
+  component: ColorGroup,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Design token colour palette covering brand, primary, secondary, semantic, and greyscale roles. Reference these hex values when binding colour tokens in components and layouts.',
+      },
+    },
+  },
+  argTypes: {
+    title: {
+      description: 'Group heading shown above the swatch row.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    colors: {
+      description: 'Swatches to render in the group.',
+      table: { type: { summary: 'ColorSwatchItem[]' }, disable: true },
+    },
+  },
 }
 
 export default meta

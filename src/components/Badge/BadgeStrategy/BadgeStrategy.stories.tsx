@@ -4,11 +4,22 @@ import BadgeStrategy from './BadgeStrategy'
 const meta: Meta<typeof BadgeStrategy> = {
   title: 'Components/Badge/Strategy',
   component: BadgeStrategy,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Strategy-specific badge that maps each strategy to a consistent visual tag with its own colour and label.',
+      },
+    },
+  },
   argTypes: {
     strategy: {
+      description: 'The strategy name displayed in the badge.',
       control: 'radio',
       options: ['Dilution', 'Distraction', 'Exposure', 'Neutralization', 'Market Intelligence'],
+      table: {
+        type: { summary: "'Dilution' | 'Distraction' | 'Exposure' | 'Neutralization' | 'Market Intelligence'" },
+      },
     },
   },
 }

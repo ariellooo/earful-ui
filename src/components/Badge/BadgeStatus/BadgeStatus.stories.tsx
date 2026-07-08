@@ -4,9 +4,23 @@ import BadgeStatus from './BadgeStatus'
 const meta: Meta<typeof BadgeStatus> = {
   title: 'Components/Badge/Status',
   component: BadgeStatus,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Status badge representing the lifecycle stage of a campaign or topic. Each value maps to a distinct colour and label.',
+      },
+    },
+  },
   argTypes: {
-    status: { control: 'radio', options: ['Draft', 'Inactive', 'Launched', 'Completed'] },
+    status: {
+      description: 'Lifecycle stage of the item.',
+      control: 'radio',
+      options: ['Draft', 'Inactive', 'Launched', 'Completed'],
+      table: {
+        type: { summary: "'Draft' | 'Inactive' | 'Launched' | 'Completed'" },
+      },
+    },
   },
 }
 

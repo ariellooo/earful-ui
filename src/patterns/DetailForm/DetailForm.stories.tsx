@@ -3,6 +3,7 @@ import { useArgs } from 'storybook/preview-api'
 import DetailForm, {
   LANGUAGE_OPTIONS,
   type DetailFormPanel,
+  type DetailFormProps,
 } from './DetailForm'
 import { type LanguageOption } from '../DetailBar/DetailBar'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
@@ -31,9 +32,18 @@ function formatStoryDate(date: Date): string {
   return `${y}-${m}-${d}`
 }
 
-const meta: Meta<StoryArgs> = {
+const meta: Meta<StoryArgs & DetailFormProps> = {
   title: 'Patterns/Detail Form',
-  parameters: { layout: 'padded' },
+  component: DetailForm,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Include Context panel for configuring board name, language, launch date, topic count, and comment count in a stacked form layout. Used when adding or editing campaign context details.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[534px] rounded-xl bg-white p-10">
@@ -51,13 +61,43 @@ const meta: Meta<StoryArgs> = {
     commentsCount:   null,
   },
   argTypes: {
-    openPanel:       { table: { disable: true } },
-    boardName:       { control: 'text' },
-    language:        { control: 'select', options: [null, ...LANGUAGE_OPTIONS] },
-    launchDateLabel: { control: 'text' },
-    launchDate:      { table: { disable: true } },
-    topicsCount:     { control: 'number' },
-    commentsCount:   { control: 'number' },
+    boardName: {
+      description: 'Name of the board or context being configured.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    language: {
+      description: 'Selected content language — null shows the placeholder state.',
+      control: 'select',
+      options: [null, ...LANGUAGE_OPTIONS],
+      table: { type: { summary: 'LanguageOption | null' }, defaultValue: { summary: 'null' } },
+    },
+    launchDateLabel: {
+      description: 'Override label for the launch date field.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    topicsCount: {
+      description: 'Number of topics — pass null for the empty placeholder state.',
+      control: 'number',
+      table: { type: { summary: 'number | null' }, defaultValue: { summary: 'null' } },
+    },
+    commentsCount: {
+      description: 'Number of comments — pass null for the empty placeholder state.',
+      control: 'number',
+      table: { type: { summary: 'number | null' }, defaultValue: { summary: 'null' } },
+    },
+    openPanel:          { table: { disable: true } },
+    launchDate:         { table: { disable: true } },
+    onPanelChange:      { table: { disable: true } },
+    onBoardNameChange:  { table: { disable: true } },
+    onLanguageChange:   { table: { disable: true } },
+    onLaunchDateChange: { table: { disable: true } },
+    onTopicsChange:     { table: { disable: true } },
+    onCommentsChange:   { table: { disable: true } },
+    onNewContext:       { table: { disable: true } },
+    onClose:            { table: { disable: true } },
+    className:          { table: { disable: true } },
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs<StoryArgs>()
@@ -90,8 +130,6 @@ const meta: Meta<StoryArgs> = {
 }
 
 export default meta
-type Story = StoryObj<StoryArgs>
+type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  name: 'Default',
-}
+export const Default: Story = {}

@@ -4,7 +4,14 @@ import BarChart from './BarChart'
 const meta: Meta<typeof BarChart> = {
   title: 'Components/Chart/Bar',
   component: BarChart,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: 'Grouped bar chart for comparing sentiment or volume across topics. Supply data via the `data` prop; use `title` and `subtitle` for chart labelling.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[708px] rounded-xl bg-white p-6">
@@ -17,8 +24,16 @@ const meta: Meta<typeof BarChart> = {
     subtitle: 'Calculated by number of messages',
   },
   argTypes: {
-    title:      { control: 'text' },
-    subtitle:   { control: 'text' },
+    title: {
+      description: 'Chart heading displayed above the visualisation.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    subtitle: {
+      description: 'Supporting context shown below the heading.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
     data:       { table: { disable: true } },
     yMax:       { table: { disable: true } },
     onDownload: { table: { disable: true } },

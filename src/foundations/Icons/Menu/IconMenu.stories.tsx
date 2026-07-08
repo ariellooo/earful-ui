@@ -4,11 +4,28 @@ import IconMenu, { ICON_MENU_NAMES } from './IconMenu'
 const meta: Meta<typeof IconMenu> = {
   title: 'Foundations/Icons/Menu',
   component: IconMenu,
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Sidebar navigation icons for app sections and menu items. Sized for nav rails and compact menus across the product shell.',
+      },
+    },
+  },
   args: { name: 'dashboard', size: 24 },
   argTypes: {
-    name:  { control: 'select', options: ICON_MENU_NAMES },
-    size:  { control: { type: 'range', min: 16, max: 64, step: 4 } },
+    name: {
+      description: 'Icon name from the menu icon library.',
+      control: 'select',
+      options: ICON_MENU_NAMES,
+      table: { type: { summary: 'IconMenuName' } },
+    },
+    size: {
+      description: 'Rendered width and height in pixels.',
+      control: { type: 'range', min: 16, max: 64, step: 4 },
+      table: { type: { summary: 'number' }, defaultValue: { summary: '24' } },
+    },
   },
 }
 

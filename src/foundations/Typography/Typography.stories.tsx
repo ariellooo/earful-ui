@@ -4,7 +4,67 @@ import Typography from './Typography'
 const meta: Meta<typeof Typography> = {
   title: 'Foundations/Typography',
   component: Typography,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Type scale preview for display (TT Norms Pro) and body (Inter) styles. Use these tokens for headings, subtitles, and body copy across product screens.',
+      },
+    },
+  },
+  argTypes: {
+    name: {
+      description: 'Display name of the type style, e.g. "H1 / Heading 1".',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    fontDescription: {
+      description: 'Human-readable font family and weight label.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    sizeLabel: {
+      description: 'Human-readable size label shown in the spec row.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    fontFamily: {
+      description: 'Token-backed font family role.',
+      control: 'radio',
+      options: ['display', 'body'],
+      table: {
+        type: { summary: "'display' | 'body'" },
+        defaultValue: { summary: 'body' },
+      },
+    },
+    fontSize: {
+      description: 'Font size in pixels.',
+      control: 'number',
+      table: { type: { summary: 'number' } },
+    },
+    fontWeight: {
+      description: 'Font weight for the style.',
+      control: 'radio',
+      options: [400, 500, 700],
+      table: { type: { summary: '400 | 500 | 700' } },
+    },
+    lineHeight: {
+      description: 'Line height as a unitless ratio or fixed pixel value.',
+      control: 'text',
+      table: { type: { summary: 'number | string' } },
+    },
+    letterSpacing: {
+      description: 'Letter spacing in pixels.',
+      control: 'number',
+      table: { type: { summary: 'number' } },
+    },
+    sample: {
+      description: 'Optional override for the preview sample text.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+  },
 }
 
 export default meta

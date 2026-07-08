@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from 'storybook/preview-api'
 import type { CheckboxStatus } from '../Checkbox/Checkbox'
-import Table, { type TableRow } from './Table'
+import Table, { type TableRow, type TableProps } from './Table'
 
 const DEFAULT_TABLE_ROWS: TableRow[] = [
   {
@@ -59,9 +59,18 @@ function cycleSelectAll(current: CheckboxStatus): TableRow[] {
   }))
 }
 
-const meta: Meta<StoryArgs> = {
-  title: 'Components/Table',
-  parameters: { layout: 'padded' },
+const meta: Meta<StoryArgs & TableProps> = {
+  title: 'Components/Table/Topics',
+  component: Table,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Topics data table with per-row selection, status toggles, and optional extra columns (Last Sent At, Test, Log). Toggle the boolean controls to show or hide those columns.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[1140px]">
@@ -76,10 +85,36 @@ const meta: Meta<StoryArgs> = {
     rows:       DEFAULT_TABLE_ROWS,
   },
   argTypes: {
-    lastSentAt: { ...booleanToggle, name: 'Last sent at' },
-    test:       { ...booleanToggle, name: 'Test' },
-    log:        { ...booleanToggle, name: 'Log' },
-    rows:       { table: { disable: true } },
+    lastSentAt: {
+      ...booleanToggle,
+      name: 'Last sent at',
+      description: 'Toggles visibility of the "Last Sent At" column.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    test: {
+      ...booleanToggle,
+      name: 'Test',
+      description: 'Toggles visibility of the "Test" column.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    log: {
+      ...booleanToggle,
+      name: 'Log',
+      description: 'Toggles visibility of the "Log" column.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    rows:             { table: { disable: true } },
+    showLastSentAt:   { table: { disable: true } },
+    showTest:         { table: { disable: true } },
+    showLog:          { table: { disable: true } },
+    selectAllStatus:  { table: { disable: true } },
+    onSelectAll:      { table: { disable: true } },
+    onSelectRow:      { table: { disable: true } },
+    onTest:           { table: { disable: true } },
+    onLog:            { table: { disable: true } },
+    onStatusChange:   { table: { disable: true } },
+    onMore:           { table: { disable: true } },
+    className:        { table: { disable: true } },
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs<StoryArgs>()
@@ -116,8 +151,6 @@ const meta: Meta<StoryArgs> = {
 }
 
 export default meta
-type Story = StoryObj<StoryArgs>
+type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  name: 'Default',
-}
+export const Default: Story = {}

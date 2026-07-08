@@ -4,6 +4,7 @@ import TopBar, {
   DEFAULT_STATUS_ITEMS,
   DEFAULT_STRATEGY_ITEMS,
   type TopBarPanel,
+  type TopBarProps,
 } from './TopBar'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
 import type { DropdownStatusItem, DropdownStrategyItem } from '../../components/Dropdown/Dropdown'
@@ -33,9 +34,18 @@ function formatStoryDate(date: Date): string {
   return `${y}-${m}-${d}`
 }
 
-const meta: Meta<StoryArgs> = {
+const meta: Meta<StoryArgs & TopBarProps> = {
   title: 'Patterns/Top Bar',
-  parameters: { layout: 'padded' },
+  component: TopBar,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Toolbar for list and table views with filter, date, search, and action controls. The default variant exposes filter and export actions; the action variant adds strategy, status, and launched-date filters plus a primary task button.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[1116px] rounded-xl bg-white p-10">
@@ -55,16 +65,27 @@ const meta: Meta<StoryArgs> = {
   },
   argTypes: {
     variant: {
+      description: 'Toolbar layout — filter/export controls or campaign action filters.',
       control: 'radio',
       options: ['default', 'action'],
+      table: {
+        type: { summary: "'default' | 'action'" },
+        defaultValue: { summary: 'default' },
+      },
     },
-    openPanel:       { table: { disable: true } },
-    strategyItems:   { table: { disable: true } },
-    selectedDate:    { table: { disable: true } },
-    selectedDateEnd: { table: { disable: true } },
-    launchedDate:    { table: { disable: true } },
-    launchedDateEnd: { table: { disable: true } },
-    statusItems:     { table: { disable: true } },
+    openPanel:                { table: { disable: true } },
+    strategyItems:            { table: { disable: true } },
+    selectedDate:             { table: { disable: true } },
+    selectedDateEnd:          { table: { disable: true } },
+    launchedDate:             { table: { disable: true } },
+    launchedDateEnd:          { table: { disable: true } },
+    statusItems:              { table: { disable: true } },
+    onPanelChange:            { table: { disable: true } },
+    onStrategyItemsChange:    { table: { disable: true } },
+    onDateRangeChange:        { table: { disable: true } },
+    onLaunchedDateRangeChange: { table: { disable: true } },
+    onStatusItemsChange:      { table: { disable: true } },
+    className:                { table: { disable: true } },
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs<StoryArgs>()
@@ -102,14 +123,7 @@ const meta: Meta<StoryArgs> = {
 }
 
 export default meta
-type Story = StoryObj<StoryArgs>
+type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  name: 'Default',
-  args: { variant: 'default' },
-}
-
-export const Action: Story = {
-  name: 'Action',
-  args: { variant: 'action' },
-}
+export const Default: Story = { args: { variant: 'default' } }
+export const Action:  Story = { args: { variant: 'action' } }

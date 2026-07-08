@@ -3,6 +3,7 @@ import { useArgs } from 'storybook/preview-api'
 import DetailBar, {
   LANGUAGE_OPTIONS,
   type DetailBarPanel,
+  type DetailBarProps,
   type LanguageOption,
 } from './DetailBar'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
@@ -30,9 +31,18 @@ function formatStoryDate(date: Date): string {
   return `${y}-${m}-${d}`
 }
 
-const meta: Meta<StoryArgs> = {
+const meta: Meta<StoryArgs & DetailBarProps> = {
   title: 'Patterns/Detail Bar',
-  parameters: { layout: 'padded' },
+  component: DetailBar,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Inline board configuration bar for setting label, language, topic count, comment count, and launch date. Opens language and date panels below the bar.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[1140px] rounded-xl bg-white p-10">
@@ -49,12 +59,38 @@ const meta: Meta<StoryArgs> = {
     launchDate:    null,
   },
   argTypes: {
-    openPanel:     { table: { disable: true } },
-    label:         { control: 'text' },
-    language:      { control: 'select', options: [...LANGUAGE_OPTIONS] },
-    topicsCount:   { control: { type: 'number', min: 1, max: 99 } },
-    commentsCount: { control: { type: 'number', min: 1, max: 99 } },
-    launchDate:    { table: { disable: true } },
+    label: {
+      description: 'Board label text shown in the bar.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    language: {
+      description: 'Selected content language.',
+      control: 'select',
+      options: [...LANGUAGE_OPTIONS],
+      table: { type: { summary: 'LanguageOption' }, defaultValue: { summary: 'English' } },
+    },
+    topicsCount: {
+      description: 'Number of topics — pass null for the empty placeholder state.',
+      control: { type: 'number', min: 1, max: 99 },
+      table: { type: { summary: 'number | null' }, defaultValue: { summary: 'null' } },
+    },
+    commentsCount: {
+      description: 'Number of comments — pass null for the empty placeholder state.',
+      control: { type: 'number', min: 1, max: 99 },
+      table: { type: { summary: 'number | null' }, defaultValue: { summary: 'null' } },
+    },
+    openPanel:         { table: { disable: true } },
+    launchDate:        { table: { disable: true } },
+    variant:           { table: { disable: true } },
+    onPanelChange:     { table: { disable: true } },
+    onLanguageChange:  { table: { disable: true } },
+    onTopicsChange:    { table: { disable: true } },
+    onCommentsChange:  { table: { disable: true } },
+    onLaunchDateChange: { table: { disable: true } },
+    onAdd:             { table: { disable: true } },
+    onClose:           { table: { disable: true } },
+    className:         { table: { disable: true } },
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs<StoryArgs>()
@@ -82,8 +118,6 @@ const meta: Meta<StoryArgs> = {
 }
 
 export default meta
-type Story = StoryObj<StoryArgs>
+type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  name: 'Default',
-}
+export const Default: Story = {}

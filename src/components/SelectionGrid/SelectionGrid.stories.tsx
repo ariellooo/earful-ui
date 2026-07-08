@@ -18,7 +18,14 @@ const FORUM_ITEMS: SelectionGridItem[] = [
 const meta: Meta<typeof SelectionGrid> = {
   title: 'Components/Selection Grid',
   component: SelectionGrid,
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: 'Multi-select grid of labeled items used for toggling data sources such as forums. Each item carries its own checked state and fires `onToggle` with the item id.',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div className="w-full max-w-[1116px]">
@@ -32,6 +39,17 @@ const meta: Meta<typeof SelectionGrid> = {
     columns: 2,
   },
   argTypes: {
+    title: {
+      description: 'Heading displayed above the grid.',
+      control: 'text',
+      table: { type: { summary: 'string' } },
+    },
+    columns: {
+      description: 'Number of columns in the grid layout.',
+      control: 'number',
+      table: { type: { summary: 'number' }, defaultValue: { summary: '2' } },
+    },
+    items: { table: { disable: true } },
     onToggle: { table: { disable: true } },
   },
 }
