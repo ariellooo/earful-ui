@@ -4,6 +4,7 @@ export const CHART_PLOT_HEIGHT   = 204
 export const CHART_Y_AXIS_WIDTH  = 48
 export const CHART_WIDTH         = CHART_Y_AXIS_WIDTH + CHART_PLOT_WIDTH
 export const CHART_X_AXIS_HEIGHT = 24
+export const CHART_BODY_HEIGHT   = CHART_PLOT_HEIGHT + CHART_X_AXIS_HEIGHT
 
 export const CHART_TICK_STYLE = {
   fill:       '#334155',

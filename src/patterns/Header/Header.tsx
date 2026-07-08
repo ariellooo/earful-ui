@@ -2,9 +2,14 @@
  * Header — sourced from Figma node 156:561 (Earful 2026).
  *
  * Page title on the left · SearchBar + ButtonSquare (bell) + Avatar on the right.
- * 1116 px wide · 16 px gap between trailing actions.
+ * Trailing actions are right-aligned with pr-6 (24 px) from the header edge.
+ * 16 px gap between search · bell · avatar.
+ *
+ * Dashboard shell: outer wrapper uses h-[88px] pt-6 pb-4 so the bar bottom
+ * aligns with the Sidebar divider (Figma 626:6146).
  *
  * Bell opens notification dropdown · Avatar opens profile dropdown (right-aligned).
+ * Panels render in an absolute layer (top-full · z-30) so they overlay TopBar and content.
  */
 
 import SearchBar from '../SearchBar/SearchBar'
@@ -44,13 +49,13 @@ export default function Header({
   const closePanel = () => onPanelChange?.(null)
 
   return (
-    <div className={['flex w-full max-w-[1116px] flex-col gap-2', className].join(' ')}>
-      <header className="flex w-full items-center justify-between">
+    <div className={['relative w-full', className].join(' ')}>
+      <header className="flex h-12 min-h-12 w-full items-center justify-between">
         <h1 className="font-body font-bold text-[32px] leading-[1.25] tracking-[0.25px] text-text-default whitespace-nowrap">
           {title}
         </h1>
 
-        <div className="flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-4 pr-6">
           <SearchBar placeholder={searchPlaceholder} />
           <ButtonSquare
             type="icon"
@@ -71,7 +76,7 @@ export default function Header({
       </header>
 
       {openPanel === 'notification' && (
-        <div className="self-end">
+        <div className="absolute top-full right-0 z-30 mt-2 pr-6">
           <Dropdown
             variant="notification"
             onClose={closePanel}
@@ -81,7 +86,7 @@ export default function Header({
       )}
 
       {openPanel === 'profile' && (
-        <div className="self-end">
+        <div className="absolute top-full right-0 z-30 mt-2 pr-6">
           <Dropdown
             variant="profile"
             items={PROFILE_ITEMS}

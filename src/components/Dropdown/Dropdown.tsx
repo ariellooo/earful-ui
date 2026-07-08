@@ -8,18 +8,22 @@
  *               · default: header + close · compact: no header (5217:4017)
  * strategy:     212 px · checkbox rows (24 px row height)
  *               · default: header + close (5218:4293) · compact: no header
+ * customise:    212 px · checkbox rows (5456:7449)
+ *               · default: header + close · compact: no header
  */
 
 import type { ReactNode } from 'react'
 import Checkbox from '../Checkbox/Checkbox'
 import { IconGlyph, ICON_COLOR_DEFAULT, type IconName } from '../../foundations/Icons/Function/IconFunction'
 
-export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status' | 'strategy'
+export type DropdownVariant = 'profile' | 'notification' | 'edit' | 'status' | 'strategy' | 'customise'
 
-/** Checkbox dropdown sub-layout — Status 5217:4017 · Strategy 5218:4293. */
+/** Checkbox dropdown sub-layout — Status 5217:4017 · Strategy 5218:4293 · Customise 5456:7449. */
 export type StatusLayout = 'default' | 'compact'
 
 export type StrategyLayout = StatusLayout
+
+export type CustomiseLayout = StatusLayout
 
 export type DropdownItem = {
   icon:  IconName
@@ -31,8 +35,10 @@ export type DropdownStatusItem = {
   checked?: boolean
 }
 
-/** Same shape as status rows — used by the strategy variant. */
+/** Same shape as status rows — used by the strategy and customise variants. */
 export type DropdownStrategyItem = DropdownStatusItem
+
+export type DropdownCustomiseItem = DropdownStatusItem
 
 export type DropdownNotificationItem = {
   message: string
@@ -50,6 +56,9 @@ export type DropdownProps = {
   strategyItems?: DropdownStrategyItem[]
   /** Only applies when `variant="strategy"`. */
   strategyLayout?: StrategyLayout
+  customiseItems?: DropdownCustomiseItem[]
+  /** Only applies when `variant="customise"`. */
+  customiseLayout?: CustomiseLayout
   /** Notification row placeholder — used when `notifications` is omitted. */
   message?:        string
   date?:           string
@@ -58,6 +67,7 @@ export type DropdownProps = {
   onSelect?:       (item: DropdownItem) => void
   onStatusChange?:   (item: DropdownStatusItem, checked: boolean) => void
   onStrategyChange?: (item: DropdownStrategyItem, checked: boolean) => void
+  onCustomiseChange?: (item: DropdownCustomiseItem, checked: boolean) => void
   onNotification?: (item: DropdownNotificationItem) => void
   className?:      string
 }
@@ -89,6 +99,13 @@ const STRATEGY_ITEMS: DropdownStrategyItem[] = [
   { label: 'Market Intelligence' },
 ]
 
+const CUSTOMISE_ITEMS: DropdownCustomiseItem[] = [
+  { label: 'Sentiment' },
+  { label: 'Buzz Trend' },
+  { label: 'Overall Analysis' },
+  { label: 'Share Of Voice' },
+]
+
 const DEFAULT_MESSAGE = 'Lorem ipsum dolor sit amet'
 const DEFAULT_DATE    = '03-18'
 
@@ -98,6 +115,7 @@ const WIDTH: Record<DropdownVariant, string> = {
   edit:         'w-[130px]',
   status:       'w-[212px]',
   strategy:     'w-[212px]',
+  customise:    'w-[212px]',
 }
 
 function buildNotifications(
@@ -249,6 +267,8 @@ export default function Dropdown({
   statusLayout    = 'default',
   strategyItems   = STRATEGY_ITEMS,
   strategyLayout  = 'default',
+  customiseItems  = CUSTOMISE_ITEMS,
+  customiseLayout = 'default',
   message         = DEFAULT_MESSAGE,
   date            = DEFAULT_DATE,
   notifications,
@@ -256,6 +276,7 @@ export default function Dropdown({
   onSelect,
   onStatusChange,
   onStrategyChange,
+  onCustomiseChange,
   onNotification,
   className       = '',
 }: DropdownProps) {
@@ -270,7 +291,9 @@ export default function Dropdown({
         ? 'Status'
         : variant === 'strategy'
           ? 'Strategy'
-          : 'Profile')
+          : variant === 'customise'
+            ? 'Customise'
+            : 'Profile')
 
   if (variant === 'edit') {
     return (
@@ -352,6 +375,22 @@ export default function Dropdown({
     )
   }
 
+  if (variant === 'customise') {
+    const showHeader = customiseLayout !== 'compact'
+
+    return (
+      <DropdownShell
+        title={resolvedTitle}
+        widthClass={WIDTH.customise}
+        onClose={onClose}
+        showHeader={showHeader}
+        className={className}
+      >
+        <CheckboxMenuRows items={customiseItems} onChange={onCustomiseChange} />
+      </DropdownShell>
+    )
+  }
+
   return (
     <DropdownShell
       title={resolvedTitle}
@@ -364,4 +403,4 @@ export default function Dropdown({
   )
 }
 
-export { STATUS_ITEMS, STRATEGY_ITEMS, PROFILE_ITEMS }
+export { STATUS_ITEMS, STRATEGY_ITEMS, CUSTOMISE_ITEMS, PROFILE_ITEMS }

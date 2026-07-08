@@ -1,13 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from 'storybook/preview-api'
 import TopBar, {
+  DEFAULT_CUSTOMISE_ITEMS,
   DEFAULT_STATUS_ITEMS,
   DEFAULT_STRATEGY_ITEMS,
   type TopBarPanel,
   type TopBarProps,
 } from './TopBar'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
-import type { DropdownStatusItem, DropdownStrategyItem } from '../../components/Dropdown/Dropdown'
+import type {
+  DropdownCustomiseItem,
+  DropdownStatusItem,
+  DropdownStrategyItem,
+} from '../../components/Dropdown/Dropdown'
 
 type StoryArgs = {
   variant:           'default' | 'action'
@@ -18,6 +23,7 @@ type StoryArgs = {
   launchedDate:      string | null
   launchedDateEnd:   string | null
   statusItems:       DropdownStatusItem[]
+  customiseItems:    DropdownCustomiseItem[]
 }
 
 function parseStoryDate(value: string | null | undefined): Date | null {
@@ -48,8 +54,9 @@ const meta: Meta<StoryArgs & TopBarProps> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[1116px] rounded-xl bg-white p-10">
+      <div className="relative w-full rounded-xl bg-white py-10 pl-10">
         <Story />
+        <div className="mt-6 h-40 rounded-lg bg-surface-primary" aria-hidden />
       </div>
     ),
   ],
@@ -62,6 +69,7 @@ const meta: Meta<StoryArgs & TopBarProps> = {
     launchedDate:    null,
     launchedDateEnd: null,
     statusItems:     DEFAULT_STATUS_ITEMS,
+    customiseItems:  DEFAULT_CUSTOMISE_ITEMS,
   },
   argTypes: {
     variant: {
@@ -80,11 +88,13 @@ const meta: Meta<StoryArgs & TopBarProps> = {
     launchedDate:             { table: { disable: true } },
     launchedDateEnd:          { table: { disable: true } },
     statusItems:              { table: { disable: true } },
+    customiseItems:           { table: { disable: true } },
     onPanelChange:            { table: { disable: true } },
     onStrategyItemsChange:    { table: { disable: true } },
     onDateRangeChange:        { table: { disable: true } },
     onLaunchedDateRangeChange: { table: { disable: true } },
     onStatusItemsChange:      { table: { disable: true } },
+    onCustomiseItemsChange:   { table: { disable: true } },
     className:                { table: { disable: true } },
   },
   render: function Render(args) {
@@ -102,6 +112,7 @@ const meta: Meta<StoryArgs & TopBarProps> = {
         launchedDate={parseStoryDate(args.launchedDate)}
         launchedDateEnd={parseStoryDate(args.launchedDateEnd)}
         statusItems={args.statusItems}
+        customiseItems={args.customiseItems}
         onPanelChange={setPanel}
         onStrategyItemsChange={(strategyItems) => updateArgs({ strategyItems })}
         onDateRangeChange={(start, end) =>
@@ -117,6 +128,7 @@ const meta: Meta<StoryArgs & TopBarProps> = {
           })
         }
         onStatusItemsChange={(statusItems) => updateArgs({ statusItems })}
+        onCustomiseItemsChange={(customiseItems) => updateArgs({ customiseItems })}
       />
     )
   },

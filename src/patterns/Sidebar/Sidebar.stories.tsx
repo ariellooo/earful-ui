@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import Sidebar from './Sidebar'
 
@@ -9,7 +10,7 @@ const meta: Meta<typeof Sidebar> = {
     docs: {
       description: {
         component:
-          'Primary app navigation rail with logo and section links. Supports expanded (212px with labels) and collapsed (48px icon-only) layouts for shell layouts.',
+          'Primary app navigation rail with logo and section links. Supports expanded (212px with labels) and collapsed (48px icon-only) layouts. Pass `onToggle` to show the chevron toggle at the bottom (Figma 5445:3335).',
       },
     },
   },
@@ -24,6 +25,7 @@ const meta: Meta<typeof Sidebar> = {
         defaultValue: { summary: 'expanded' },
       },
     },
+    onToggle: { table: { disable: true } },
   },
   decorators: [
     (Story) => (
@@ -39,3 +41,15 @@ type Story = StoryObj<typeof meta>
 
 export const Expanded:  Story = { args: { state: 'expanded' } }
 export const Collapsed: Story = { args: { state: 'collapsed' } }
+
+export const Interactive: Story = {
+  render: () => {
+    const [state, setState] = useState<'expanded' | 'collapsed'>('expanded')
+    return (
+      <Sidebar
+        state={state}
+        onToggle={() => setState(s => s === 'expanded' ? 'collapsed' : 'expanded')}
+      />
+    )
+  },
+}

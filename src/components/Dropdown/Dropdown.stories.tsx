@@ -1,6 +1,12 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import Dropdown, { STRATEGY_ITEMS, type DropdownStatusItem, type DropdownStrategyItem } from './Dropdown'
+import Dropdown, {
+  CUSTOMISE_ITEMS,
+  STRATEGY_ITEMS,
+  type DropdownCustomiseItem,
+  type DropdownStatusItem,
+  type DropdownStrategyItem,
+} from './Dropdown'
 
 const STATUS_ITEMS: DropdownStatusItem[] = [
   { label: 'Draft',     checked: false },
@@ -14,9 +20,15 @@ const DEFAULT_STRATEGY_ITEMS: DropdownStrategyItem[] = STRATEGY_ITEMS.map(item =
   checked: false,
 }))
 
+const DEFAULT_CUSTOMISE_ITEMS: DropdownCustomiseItem[] = CUSTOMISE_ITEMS.map(item => ({
+  ...item,
+  checked: false,
+}))
+
 const layoutControlHidden = {
-  statusLayout:   { control: false, table: { disable: true } },
-  strategyLayout: { control: false, table: { disable: true } },
+  statusLayout:    { control: false, table: { disable: true } },
+  strategyLayout:  { control: false, table: { disable: true } },
+  customiseLayout: { control: false, table: { disable: true } },
 } as const
 
 const meta: Meta<typeof Dropdown> = {
@@ -26,7 +38,7 @@ const meta: Meta<typeof Dropdown> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Contextual menu panel with variants for profile actions, notifications, item editing, status filtering, and strategy selection.',
+        component: 'Contextual menu panel with variants for profile actions, notifications, item editing, status filtering, strategy selection, and dashboard chart customisation.',
       },
     },
   },
@@ -48,13 +60,15 @@ const meta: Meta<typeof Dropdown> = {
       table: { type: { summary: 'string' } },
     },
     items:           { table: { disable: true } },
-    statusItems:     { table: { disable: true } },
-    strategyItems:   { table: { disable: true } },
-    notifications:   { table: { disable: true } },
-    onClose:         { table: { disable: true } },
-    onSelect:        { table: { disable: true } },
-    onStatusChange:  { table: { disable: true } },
+    statusItems:      { table: { disable: true } },
+    strategyItems:    { table: { disable: true } },
+    customiseItems:   { table: { disable: true } },
+    notifications:    { table: { disable: true } },
+    onClose:          { table: { disable: true } },
+    onSelect:         { table: { disable: true } },
+    onStatusChange:   { table: { disable: true } },
     onStrategyChange: { table: { disable: true } },
+    onCustomiseChange: { table: { disable: true } },
     onNotification:  { table: { disable: true } },
     className:       { table: { disable: true } },
   },
@@ -164,6 +178,42 @@ export const Strategy: Story = {
         strategyLayout={args.strategyLayout ?? 'default'}
         strategyItems={items}
         onStrategyChange={(item, checked) => {
+          setItems((prev) =>
+            prev.map((row) =>
+              row.label === item.label ? { ...row, checked } : row,
+            ),
+          )
+        }}
+      />
+    )
+  },
+}
+
+// ── Customise — Figma 5456:7449 ─────────────────────────────────────────────
+export const Customise: Story = {
+  name: 'Customise',
+  args: {
+    customiseLayout: 'default',
+  },
+  parameters: {
+    controls: { include: ['customiseLayout'] },
+  },
+  argTypes: {
+    customiseLayout: {
+      control: 'radio',
+      options: ['default', 'compact'],
+    },
+  },
+  render: function Render(args) {
+    const [items, setItems] = useState(DEFAULT_CUSTOMISE_ITEMS)
+
+    return (
+      <Dropdown
+        variant="customise"
+        title="Customise"
+        customiseLayout={args.customiseLayout ?? 'default'}
+        customiseItems={items}
+        onCustomiseChange={(item, checked) => {
           setItems((prev) =>
             prev.map((row) =>
               row.label === item.label ? { ...row, checked } : row,

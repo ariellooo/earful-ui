@@ -3,12 +3,19 @@
  *
  * variant="default" — Filter · Date · Search | Customise · Download
  * variant="action"  — Strategy · Status · Launched Date · Search | New Task
+ *
+ * Trailing actions are right-aligned with pr-6 (24 px) from the bar edge.
+ *
+ * Open panels render in an absolute layer (top-full · z-20) so dropdowns overlay
+ * chart content. Header panels use z-30 and sit above TopBar in dashboard shells.
  */
 
 import Button from '../../components/Button/Button/Button'
 import ButtonSquare from '../../components/Button/ButtonSquare/ButtonSquare'
 import Dropdown, {
+  CUSTOMISE_ITEMS,
   STRATEGY_ITEMS,
+  type DropdownCustomiseItem,
   type DropdownStatusItem,
   type DropdownStrategyItem,
 } from '../../components/Dropdown/Dropdown'
@@ -25,6 +32,7 @@ export type TopBarPanel =
   | 'status'
   | 'launchedDate'
   | 'search'
+  | 'customise'
   | null
 
 const DEFAULT_STRATEGY_ITEMS: DropdownStrategyItem[] = STRATEGY_ITEMS.map(item => ({
@@ -38,6 +46,11 @@ const DEFAULT_STATUS_ITEMS: DropdownStatusItem[] = [
   { label: 'Launched',  checked: false },
   { label: 'Completed', checked: false },
 ]
+
+const DEFAULT_CUSTOMISE_ITEMS: DropdownCustomiseItem[] = CUSTOMISE_ITEMS.map(item => ({
+  ...item,
+  checked: true,
+}))
 
 function formatStrategyLabel(items: DropdownStrategyItem[]): string {
   const checked = items.filter(item => item.checked)
@@ -83,11 +96,13 @@ export type TopBarProps = {
   launchedDate?:         Date | null
   launchedDateEnd?:      Date | null
   statusItems?:          DropdownStatusItem[]
+  customiseItems?:       DropdownCustomiseItem[]
   onPanelChange?:            (panel: TopBarPanel) => void
   onStrategyItemsChange?:    (items: DropdownStrategyItem[]) => void
   onDateRangeChange?:        (start: Date | null, end: Date | null) => void
   onLaunchedDateRangeChange?: (start: Date | null, end: Date | null) => void
-  onStatusItemsChange?: (items: DropdownStatusItem[]) => void
+  onStatusItemsChange?:      (items: DropdownStatusItem[]) => void
+  onCustomiseItemsChange?:   (items: DropdownCustomiseItem[]) => void
   className?:         string
 }
 
@@ -100,11 +115,13 @@ export default function TopBar({
   launchedDate       = null,
   launchedDateEnd    = null,
   statusItems        = DEFAULT_STATUS_ITEMS,
+  customiseItems     = DEFAULT_CUSTOMISE_ITEMS,
   onPanelChange,
   onStrategyItemsChange,
   onDateRangeChange,
   onLaunchedDateRangeChange,
   onStatusItemsChange,
+  onCustomiseItemsChange,
   className          = '',
 }: TopBarProps) {
   const togglePanel = (panel: NonNullable<TopBarPanel>) => {
@@ -119,7 +136,7 @@ export default function TopBar({
   const launchedLabel = formatDateRangeLabel(launchedDate, launchedDateEnd, 'Launched Date')
 
   return (
-    <div className={['flex w-full max-w-[1116px] flex-col gap-2', className].join(' ')}>
+    <div className={['relative w-full', className].join(' ')}>
       <div className="flex items-center justify-between">
         {/* Left */}
         <div className="flex items-center gap-2">
@@ -182,8 +199,8 @@ export default function TopBar({
           )}
         </div>
 
-        {/* Right */}
-        <div className="flex items-center gap-2">
+        {/* Right — Customise · Download (default) or New Task (action) */}
+        <div className="flex shrink-0 items-center gap-2 pr-6">
           {variant === 'default' ? (
             <>
               <Button
@@ -191,6 +208,7 @@ export default function TopBar({
                 level="secondary"
                 size="l"
                 iconLeft="wand-sparkles"
+                onClick={() => togglePanel('customise')}
               />
               <Button
                 label="Download"
@@ -211,15 +229,15 @@ export default function TopBar({
         </div>
       </div>
 
-      {/* Open panels — 8 px gap from bar via flex-col gap-2 */}
+      {/* Open panels — absolute overlay, 8 px below bar (Figma gap-2) */}
       {openPanel === 'search' && (
-        <div className="self-start">
+        <div className="absolute top-full left-0 z-20 mt-2">
           <SearchBar />
         </div>
       )}
 
       {openPanel === 'filter' && (
-        <div className="self-start">
+        <div className="absolute top-full left-0 z-20 mt-2">
           <Dropdown
             variant="status"
             title="Filter"
@@ -237,7 +255,7 @@ export default function TopBar({
       )}
 
       {openPanel === 'date' && (
-        <div className="self-start">
+        <div className="absolute top-full left-0 z-20 mt-2">
           <RangeDayPicker
             state="open"
             onApply={({ start, end }) => {
@@ -250,7 +268,7 @@ export default function TopBar({
       )}
 
       {openPanel === 'strategy' && (
-        <div className="self-start">
+        <div className="absolute top-full left-0 z-20 mt-2">
           <Dropdown
             variant="strategy"
             strategyLayout="compact"
@@ -267,7 +285,7 @@ export default function TopBar({
       )}
 
       {openPanel === 'status' && (
-        <div className="self-start">
+        <div className="absolute top-full left-0 z-20 mt-2">
           <Dropdown
             variant="status"
             title="Status"
@@ -285,7 +303,7 @@ export default function TopBar({
       )}
 
       {openPanel === 'launchedDate' && (
-        <div className="self-start">
+        <div className="absolute top-full left-0 z-20 mt-2">
           <RangeDayPicker
             state="open"
             onApply={({ start, end }) => {
@@ -296,8 +314,26 @@ export default function TopBar({
           />
         </div>
       )}
+
+      {openPanel === 'customise' && (
+        <div className="absolute top-full right-6 z-20 mt-2">
+          <Dropdown
+            variant="customise"
+            title="Customise"
+            customiseItems={customiseItems}
+            onClose={closePanel}
+            onCustomiseChange={(item, checked) => {
+              onCustomiseItemsChange?.(
+                customiseItems.map(row =>
+                  row.label === item.label ? { ...row, checked } : row,
+                ),
+              )
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }
 
-export { DEFAULT_STATUS_ITEMS, DEFAULT_STRATEGY_ITEMS }
+export { DEFAULT_STATUS_ITEMS, DEFAULT_STRATEGY_ITEMS, DEFAULT_CUSTOMISE_ITEMS }

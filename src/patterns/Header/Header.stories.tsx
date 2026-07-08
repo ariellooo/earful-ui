@@ -44,7 +44,7 @@ const meta: Meta<StoryArgs & HeaderProps> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[1116px] rounded-xl bg-white p-10">
+      <div className="w-full rounded-xl bg-white py-10 pl-10">
         <Story />
       </div>
     ),
