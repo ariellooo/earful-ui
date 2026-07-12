@@ -6,16 +6,7 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/react'
-import { useArgs } from 'storybook/preview-api'
-import ContentSeedingOverview, {
-  type ContentSeedingOverviewProps,
-} from './ContentSeedingOverview'
-
-type StoryArgs = {
-  credit:          boolean
-  launchedDate:    boolean
-  starFilterActive: boolean
-}
+import ContentSeedingOverview from './ContentSeedingOverview'
 
 const meta: Meta<typeof ContentSeedingOverview> = {
   title: 'Templates/Content Seeding',
@@ -55,7 +46,6 @@ const meta: Meta<typeof ContentSeedingOverview> = {
     },
   },
   render: function Render(args) {
-    const [, updateArgs] = useArgs<StoryArgs>()
     return (
       <ContentSeedingOverview
         showCredit={args.showCredit}
