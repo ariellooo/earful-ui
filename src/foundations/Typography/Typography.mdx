@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import Typography from './Typography.tsx'
+import {
+  HEADING_STYLES,
+  BODY_1_STYLES,
+  BODY_2_STYLES,
+  BODY_3_STYLES,
+} from './typography'
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Earful UI type scale for display (TT Norms Pro) and body (Inter) styles. Use these tokens for headings, subtitles, and body copy across product screens.
+
+<div className="flex flex-col gap-10">
+  <div>
+    <h2 className="font-body font-bold text-2xl leading-[1.25] tracking-[0.2px] text-brand-indigo">
+      Headings & Subtitles
+    </h2>
+    {HEADING_STYLES.map((style) => (
+      <Typography key={style.name} {...style} />
+    ))}
+  </div>
+  <div>
+    <h2 className="font-body font-bold text-2xl leading-[1.25] tracking-[0.2px] text-brand-indigo">
+      Body 1
+    </h2>
+    {BODY_1_STYLES.map((style) => (
+      <Typography key={style.name} {...style} />
+    ))}
+  </div>
+  <div>
+    <h2 className="font-body font-bold text-2xl leading-[1.25] tracking-[0.2px] text-brand-indigo">
+      Body 2
+    </h2>
+    {BODY_2_STYLES.map((style) => (
+      <Typography key={style.name} {...style} />
+    ))}
+  </div>
+  <div>
+    <h2 className="font-body font-bold text-2xl leading-[1.25] tracking-[0.2px] text-brand-indigo">
+      Body 3
+    </h2>
+    {BODY_3_STYLES.map((style) => (
+      <Typography key={style.name} {...style} />
+    ))}
+  </div>
+</div>

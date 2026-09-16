@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { ColorGroup } from './ColorSwatch'
+import {
+  BRAND_COLORS,
+  PRIMARY_COLORS,
+  SECONDARY_COLORS,
+  SEMANTIC_COLORS,
+  GREYSCALE_COLORS,
+} from './colors'
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+Earful UI colour tokens covering brand, primary, secondary, semantic, and greyscale roles. Use these values when binding colour tokens in components and layouts.
+
+<div className="flex flex-col gap-10">
+  <ColorGroup title="Brand Color" colors={BRAND_COLORS} />
+  <ColorGroup title="Primary Color" colors={PRIMARY_COLORS} />
+  <ColorGroup title="Secondary Color" colors={SECONDARY_COLORS} />
+  <ColorGroup title="Semantic Color" colors={SEMANTIC_COLORS} />
+  <ColorGroup title="Greyscale" colors={GREYSCALE_COLORS} />
+</div>

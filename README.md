@@ -1,7 +1,7 @@
 # Earful UI
 
-Design system and component library for [EARFUL](https://github.com/ariellooo/earful-ui) — a global AI-powered PR tech platform focused on PR crisis management, deep market intelligence, social listening, automated solutions, and analysis support.
+Earful UI is the component library for EARFUL, a global AI-powered PR technology platform focused on crisis management, market intelligence, social listening, automation, and analytical support.
 
-Earful UI is built with React, TypeScript, Tailwind CSS, and Storybook. It gives designers and engineers a shared source of truth for components, tokens, and patterns — so communication between design and development is easier than before.
+It includes Foundations, Components, Patterns, and React Templates in Storybook. Each story demonstrates interaction states and provides code for faster implementation, making collaboration between design and development easier.
 
-**Live Storybook:** Coming soon
+**Live Storybook:** https://earful-ui.netlify.app

@@ -10,6 +10,9 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-vitest'
   ],
+  staticDirs: [
+    { from: '../src/assets/logos', to: '/logos' },
+  ],
   framework: '@storybook/react-vite',
 }
 
