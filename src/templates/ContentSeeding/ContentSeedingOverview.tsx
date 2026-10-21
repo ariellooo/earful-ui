@@ -23,22 +23,12 @@ import TableContentSeeding, {
 } from '../../components/Table/TableContentSeeding'
 import Pagination from '../../components/Pagination/Pagination'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
+import {
+  CONTENT_SEEDING_PAGE_SIZE,
+  CONTENT_SEEDING_ROWS,
+} from './crowsCampaigns'
 
-// ─── Default dataset — 36 total entries, 10 visible (page 1) ─────────────────
-// Approximated from Figma node 632:16760
-
-export const DEFAULT_CONTENT_SEEDING_ROWS: ContentSeedingRow[] = [
-  { id: '1',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Dilution',          credit: 0,   status: 'Completed', launchedDate: null,         starred: true  },
-  { id: '2',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Distraction',        credit: -4,  status: 'Launched',  launchedDate: '2025-03-18', starred: false },
-  { id: '3',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Market Intelligence', credit: 0,   status: 'Draft',     launchedDate: null,         starred: false },
-  { id: '4',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Neutralization',      credit: 0,   status: 'Completed', launchedDate: null,         starred: false },
-  { id: '5',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Neutralization',      credit: -8,  status: 'Launched',  launchedDate: '2025-02-16', starred: false },
-  { id: '6',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Exposure',            credit: 0,   status: 'Completed', launchedDate: null,         starred: false },
-  { id: '7',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Distraction',         credit: 0,   status: 'Inactive',  launchedDate: '2024-08-10', starred: false },
-  { id: '8',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Dilution',            credit: -14, status: 'Launched',  launchedDate: '2024-07-15', starred: true  },
-  { id: '9',  campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Distraction',         credit: -6,  status: 'Launched',  launchedDate: '2024-07-10', starred: true  },
-  { id: '10', campaignId: 100, campaignName: 'Lorem ipsum dolor sit amet', client: 'Lorem ipsum dolor sit amet', strategy: 'Market Intelligence', credit: -10, status: 'Launched',  launchedDate: '2024-05-01', starred: false },
-]
+export const DEFAULT_CONTENT_SEEDING_ROWS: ContentSeedingRow[] = CONTENT_SEEDING_ROWS
 
 // ─── Filter helpers ───────────────────────────────────────────────────────────
 
@@ -95,12 +85,19 @@ export default function ContentSeedingOverview({
   const [launchedDateEnd, setLaunchedDateEnd] = useState<Date | null>(null)
   const [starFilter,      setStarFilter]      = useState(initialStarFilter)
   const [rows,            setRows]            = useState(DEFAULT_CONTENT_SEEDING_ROWS)
+  const [page,            setPage]            = useState(1)
 
   const visibleRows = filterVisibleRows(rows, {
     starFilter,
     strategyItems,
     statusItems,
   })
+  const pageCount = Math.max(1, Math.ceil(visibleRows.length / CONTENT_SEEDING_PAGE_SIZE))
+  const safePage = Math.min(page, pageCount)
+  const pageRows = visibleRows.slice(
+    (safePage - 1) * CONTENT_SEEDING_PAGE_SIZE,
+    safePage * CONTENT_SEEDING_PAGE_SIZE,
+  )
 
   function handleStar(id: string) {
     setRows(prev => prev.map(r => r.id === id ? { ...r, starred: !r.starred } : r))
@@ -142,13 +139,13 @@ export default function ContentSeedingOverview({
             showStarFilter
             starFilterActive={starFilter}
             onPanelChange={setTopBarPanel}
-            onStrategyItemsChange={setStrategyItems}
-            onStatusItemsChange={setStatusItems}
+            onStrategyItemsChange={(items) => { setStrategyItems(items); setPage(1) }}
+            onStatusItemsChange={(items) => { setStatusItems(items); setPage(1) }}
             onLaunchedDateRangeChange={(s, e) => {
               setLaunchedDate(s ? normalizeDate(s) : null)
               setLaunchedDateEnd(e ? normalizeDate(e) : null)
             }}
-            onStarFilterChange={setStarFilter}
+            onStarFilterChange={(active) => { setStarFilter(active); setPage(1) }}
           />
         </div>
 
@@ -156,7 +153,7 @@ export default function ContentSeedingOverview({
         <div className="relative z-0 flex flex-1 flex-col min-h-0 min-w-0 overflow-hidden px-6 pt-4">
           <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
             <TableContentSeeding
-              rows={visibleRows}
+              rows={pageRows}
               showCredit={showCredit}
               showLaunchedDate={showLaunchedDate}
               onStar={handleStar}
@@ -169,7 +166,9 @@ export default function ContentSeedingOverview({
             <Pagination
               version="default"
               totalItems={visibleRows.length}
-              defaultItemsPerPage={10}
+              defaultItemsPerPage={CONTENT_SEEDING_PAGE_SIZE}
+              page={safePage}
+              onPageChange={setPage}
             />
           </div>
         </div>

@@ -10,6 +10,7 @@ import BadgesStatus, { type BadgesStatusValue } from '../Badge/BadgeStatus/Badge
 import BadgesStrategy, { type BadgesStrategyValue } from '../Badge/BadgeStrategy/BadgeStrategy'
 import ButtonStar from '../Button/ButtonStar/ButtonStar'
 import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
+import { CONTENT_SEEDING_ROWS } from '../../templates/ContentSeeding/crowsCampaigns'
 
 export type ContentSeedingRow = {
   id:             string
@@ -156,41 +157,7 @@ function SeedingRow({
 
 // ─── Default data ─────────────────────────────────────────────────────────────
 
-export const DEFAULT_SEEDING_ROWS: ContentSeedingRow[] = [
-  {
-    id:           '1',
-    campaignId:   100,
-    campaignName: 'Lorem ipsum dolor sit amet',
-    client:       'Lorem ipsum dolor sit amet',
-    strategy:     'Dilution',
-    credit:       0,
-    status:       'Completed',
-    launchedDate: null,
-    starred:      true,
-  },
-  {
-    id:           '2',
-    campaignId:   100,
-    campaignName: 'Lorem ipsum dolor sit amet',
-    client:       'Lorem ipsum dolor sit amet',
-    strategy:     'Distraction',
-    credit:       -4,
-    status:       'Launched',
-    launchedDate: '2025-03-18',
-    starred:      false,
-  },
-  {
-    id:           '3',
-    campaignId:   100,
-    campaignName: 'Lorem ipsum dolor sit amet',
-    client:       'Lorem ipsum dolor sit amet',
-    strategy:     'Market Intelligence',
-    credit:       0,
-    status:       'Draft',
-    launchedDate: null,
-    starred:      false,
-  },
-]
+export const DEFAULT_SEEDING_ROWS: ContentSeedingRow[] = CONTENT_SEEDING_ROWS.slice(0, 3)
 
 // ─── Component ────────────────────────────────────────────────────────────────
 

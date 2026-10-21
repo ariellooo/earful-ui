@@ -18,6 +18,9 @@ export type PaginationProps = {
   version?:             PaginationVersion
   totalItems?:          number
   defaultItemsPerPage?: number
+  /** Controlled page (1-based). Omit to keep page state inside the component. */
+  page?:                number
+  onPageChange?:        (page: number) => void
 }
 
 // ─── Page window builder ──────────────────────────────────────────────────────
@@ -96,22 +99,27 @@ export default function Pagination({
   version             = 'default',
   totalItems          = 36,
   defaultItemsPerPage = 10,
+  page,
+  onPageChange,
 }: PaginationProps) {
   const [currentPage,  setCurrentPage]  = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(defaultItemsPerPage)
 
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage))
 
-  // clamp current page when itemsPerPage changes
-  const safeCurrent = Math.min(currentPage, totalPages)
+  // clamp current page when itemsPerPage or the controlled page changes
+  const activePage = page ?? currentPage
+  const safeCurrent = Math.min(Math.max(activePage, 1), totalPages)
 
-  const from = (safeCurrent - 1) * itemsPerPage + 1
+  const from = totalItems === 0 ? 0 : (safeCurrent - 1) * itemsPerPage + 1
   const to   = Math.min(safeCurrent * itemsPerPage, totalItems)
 
   const pages = buildPages(safeCurrent, totalPages)
 
-  function go(page: number) {
-    setCurrentPage(Math.max(1, Math.min(page, totalPages)))
+  function go(next: number) {
+    const clamped = Math.max(1, Math.min(next, totalPages))
+    if (page === undefined) setCurrentPage(clamped)
+    onPageChange?.(clamped)
   }
 
   return (
@@ -131,7 +139,11 @@ export default function Pagination({
             <div className="relative">
               <select
                 value={itemsPerPage}
-                onChange={e => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1) }}
+                onChange={e => {
+                  setItemsPerPage(Number(e.target.value))
+                  if (page === undefined) setCurrentPage(1)
+                  onPageChange?.(1)
+                }}
                 className={[
                   'h-9 pl-4 pr-8 appearance-none cursor-pointer',
                   'bg-surface-white border border-greyscale-300 rounded-lg shadow-100',
