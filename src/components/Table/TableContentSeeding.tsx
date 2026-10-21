@@ -139,7 +139,7 @@ function SeedingRow({
       </div>
       {showLaunchedDate && (
         <div className={`${CELL_BASE} w-[140px]`} role="cell">
-          <span className={BODY_TEXT}>{row.launchedDate ?? '--'}</span>
+          <span className={BODY_TEXT}>{row.status === 'Draft' ? 'n/a' : (row.launchedDate ?? '--')}</span>
         </div>
       )}
       <div className="flex h-12 w-12 shrink-0 items-center justify-center p-2" role="cell">
