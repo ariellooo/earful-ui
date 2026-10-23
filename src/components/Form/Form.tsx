@@ -1,5 +1,5 @@
 /**
- * Form — Figma nodes 423:2369 · 980:4645 (Earful 2026).
+ * Form — Figma node 630:8258 (Earful 2026).
  *
  * Social tabs · language header · repeating topic+comment blocks.
  * "+ New Topic" appends a new block; "+ New Comment" appends within a block.
@@ -8,7 +8,16 @@
 import { useState } from 'react'
 import Button from '../Button/Button/Button'
 import ButtonSquare from '../Button/ButtonSquare/ButtonSquare'
+import Tabs from '../Tabs/Tabs'
 import UploadImage from '../UploadImage/UploadImage'
+import topicImage1 from './assets/topic-1.jpg'
+import topicImage2 from './assets/topic-2.jpg'
+import topicImage3 from './assets/topic-3.jpg'
+import {
+  CAMPAIGN_421_CONTENT,
+  CAMPAIGN_421_NEW_TOPIC,
+  type CampaignFormContent,
+} from './campaign421Content'
 
 // ─── Public types ──────────────────────────────────────────────────────────────
 
@@ -34,43 +43,58 @@ type FormComment = {
 }
 
 type FormBlock = {
-  id:          string
-  topicText:   string
-  uploadSlots: number
-  comments:    FormComment[]
+  id:              string
+  topicText:       string
+  uploadSlots:     number
+  /** Thumbnail srcs for the first upload slots. Extra slots stay empty. */
+  images:          string[]
+  comments:        FormComment[]
+  queuedComments:  FormComment[]
 }
 
 // ─── Defaults ──────────────────────────────────────────────────────────────────
 
 const DEFAULT_TABS: FormTab[] = [
   { id: 'facebook', label: 'Facebook' },
-  { id: 'youtube',  label: 'YouTube' },
+  { id: 'threads',  label: 'Threads' },
 ]
 
-const LOREM =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'
+const DEFAULT_TOPIC_IMAGES = [topicImage1, topicImage2, topicImage3]
 
 let _uid = 0
 function uid() { return String(++_uid) }
 
-function makeBlock(): FormBlock {
+const DEFAULT_VISIBLE_COMMENTS = 2
+
+function blockFromContent(
+  content: CampaignFormContent,
+  id = uid(),
+  images: string[] = [],
+): FormBlock {
+  const comments = content.comments.map((comment) => ({
+    id:   `${id}-c${comment.id}`,
+    text: comment.content,
+  }))
+
   return {
-    id:          uid(),
-    topicText:   LOREM,
-    uploadSlots: 3,
-    comments:    [{ id: uid(), text: LOREM }],
+    id,
+    topicText:      content.topic.content,
+    uploadSlots:    Math.max(3, images.length),
+    images,
+    comments:       comments.slice(0, DEFAULT_VISIBLE_COMMENTS),
+    queuedComments: comments.slice(DEFAULT_VISIBLE_COMMENTS),
   }
 }
 
-const INITIAL_BLOCK: FormBlock = {
-  id:          '0',
-  topicText:   LOREM,
-  uploadSlots: 3,
-  comments:    [
-    { id: 'c1', text: LOREM },
-    { id: 'c2', text: LOREM },
-  ],
+function makeBlock(): FormBlock {
+  return blockFromContent(CAMPAIGN_421_NEW_TOPIC)
 }
+
+const INITIAL_BLOCK: FormBlock = blockFromContent(
+  CAMPAIGN_421_CONTENT,
+  '0',
+  DEFAULT_TOPIC_IMAGES,
+)
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
@@ -91,41 +115,6 @@ function LabelColumn({ label }: { label?: string }) {
     <div className="flex h-10 w-[120px] shrink-0 items-center px-4">
       {label ? <FieldLabel>{label}</FieldLabel> : null}
     </div>
-  )
-}
-
-function FormTabButton({
-  label,
-  active,
-  onClick,
-}: {
-  label:   string
-  active:  boolean
-  onClick: () => void
-}) {
-  return (
-    <button
-      type="button"
-      role="tab"
-      aria-selected={active}
-      onClick={onClick}
-      className="relative flex h-12 w-[120px] shrink-0 flex-col items-center justify-center"
-    >
-      <span
-        className={[
-          'font-body font-bold text-[18px] leading-8 tracking-[0.1px] whitespace-nowrap',
-          active ? 'text-primary' : 'text-text-default',
-        ].join(' ')}
-      >
-        {label}
-      </span>
-      {active ? (
-        <span
-          className="absolute bottom-0 left-1/2 h-1 w-[100px] -translate-x-1/2 bg-primary"
-          aria-hidden
-        />
-      ) : null}
-    </button>
   )
 }
 
@@ -180,7 +169,13 @@ function FormBlockSection({
           <TextEntry text={block.topicText} actionLabel="topic" />
           <div className="flex w-full items-center gap-2 px-2">
             {Array.from({ length: block.uploadSlots }, (_, i) => (
-              <UploadImage key={i} layout="vertical" helperText="" />
+              <UploadImage
+                key={i}
+                layout="vertical"
+                helperText=""
+                previewSrc={block.images[i]}
+                previewAlt={block.images[i] ? `Topic image ${i + 1}` : ''}
+              />
             ))}
             <ButtonSquare
               type="icon"
@@ -256,11 +251,11 @@ export default function Form({
 
   const handleAddComment = (blockId: string) => {
     setBlocks((prev) =>
-      prev.map((b) =>
-        b.id === blockId
-          ? { ...b, comments: [...b.comments, { id: uid(), text: LOREM }] }
-          : b,
-      ),
+      prev.map((b) => {
+        if (b.id !== blockId || b.queuedComments.length === 0) return b
+        const [next, ...queuedComments] = b.queuedComments
+        return { ...b, comments: [...b.comments, next], queuedComments }
+      }),
     )
   }
 
@@ -275,15 +270,19 @@ export default function Form({
   return (
     <div className={['flex w-full flex-col', className].join(' ')}>
       {/* Tabs */}
-      <div className="flex" role="tablist" aria-label="Social media">
-        {tabs.map((tab) => (
-          <FormTabButton
-            key={tab.id}
-            label={tab.label}
-            active={tab.id === activeTabId}
-            onClick={() => handleTabChange(tab.id)}
-          />
-        ))}
+      <div className="flex items-center" role="tablist" aria-label="Social media">
+        {tabs.map((tab) => {
+          const selected = tab.id === activeTabId
+          return (
+            <Tabs
+              key={tab.id}
+              label={tab.label}
+              variant={selected ? 'default' : 'disable'}
+              selected={selected}
+              onClick={() => handleTabChange(tab.id)}
+            />
+          )
+        })}
       </div>
 
       {/* Header */}

@@ -17,6 +17,9 @@ export type UploadImageProps = {
   layout?:     UploadImageLayout
   label?:      string
   helperText?: string
+  /** Filled thumbnail. When set, the vertical box shows this image instead of the upload prompt. */
+  previewSrc?: string
+  previewAlt?: string
   accept?:     string
   disabled?:   boolean
   onChange?:   (file: File | null) => void
@@ -67,6 +70,8 @@ export default function UploadImage({
   layout     = 'vertical',
   label,
   helperText = DEFAULT_HELPER_TEXT,
+  previewSrc,
+  previewAlt = '',
   accept     = 'image/jpeg,image/jpg,image/png,.jpg,.jpeg,.png',
   disabled   = false,
   onChange,
@@ -116,6 +121,23 @@ export default function UploadImage({
             </span>
           </span>
         </UploadTrigger>
+      ) : previewSrc ? (
+        <button
+          type="button"
+          disabled={disabled}
+          aria-label={previewAlt || 'Topic image'}
+          onClick={openPicker}
+          className={[
+            'relative size-20 shrink-0 overflow-hidden rounded-lg border border-line-invert bg-surface-white shadow-100',
+            disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+          ].join(' ')}
+        >
+          <img
+            src={previewSrc}
+            alt={previewAlt}
+            className="absolute inset-0 size-full object-cover"
+          />
+        </button>
       ) : (
         <UploadTrigger
           disabled={disabled}

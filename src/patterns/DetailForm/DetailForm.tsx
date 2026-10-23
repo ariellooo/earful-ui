@@ -1,12 +1,13 @@
 /**
  * DetailForm — Figma node 1034:4693 (Earful 2026).
  *
- * Include Context panel · board · language · launch date · topics · comments
+ * Include Context panel · language · launch date range · topics · comments
+ * Component frame 550 × 280 · px 64 · default (1034:4614) and filled (5576:5792)
  */
 
 import Button from '../../components/Button/Button/Button'
 import ButtonSquare from '../../components/Button/ButtonSquare/ButtonSquare'
-import SingleDayPicker from '../../components/DayPicker/SingleDayPicker'
+import RangeDayPicker from '../../components/DayPicker/RangeDayPicker'
 import { normalizeDate } from '../../components/DayPicker/calendarHelpers'
 import NumberPicker from '../../components/NumberPicker/NumberPicker'
 import {
@@ -17,17 +18,15 @@ import {
 export type DetailFormPanel = 'language' | 'launchDate' | null
 
 export type DetailFormProps = {
-  boardName?:           string
   language?:            LanguageOption | null
-  launchDateLabel?:     string
-  launchDate?:          Date | null
+  launchStart?:         Date | null
+  launchEnd?:           Date | null
   topicsCount?:         number | null
   commentsCount?:       number | null
   openPanel?:           DetailFormPanel
   onPanelChange?:       (panel: DetailFormPanel) => void
-  onBoardNameChange?:   (value: string) => void
   onLanguageChange?:    (language: LanguageOption) => void
-  onLaunchDateChange?:  (date: Date | null) => void
+  onLaunchDateChange?:  (start: Date | null, end: Date | null) => void
   onTopicsChange?:      (value: number | null) => void
   onCommentsChange?:    (value: number | null) => void
   onNewContext?:        () => void
@@ -35,13 +34,29 @@ export type DetailFormProps = {
   className?:           string
 }
 
-const INPUT_FIELD =
-  'w-full bg-surface-white border border-greyscale-300 rounded-lg px-4 py-2 shadow-100 ' +
-  'font-body font-medium text-[15px] leading-6 tracking-[0.2px] text-text-default ' +
-  'focus:outline-none focus:border-greyscale-500 transition-colors h-12'
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+function formatDayMonth(date: Date): string {
+  return `${date.getDate()} ${SHORT_MONTHS[date.getMonth()]}`
+}
+
+/** Filled launch date reads "1 May - 6 May, 25". */
+function formatLaunchRange(start: Date | null, end: Date | null): string {
+  if (!start) return 'Launch Date'
+  const endDate = end ?? start
+  const year = String(endDate.getFullYear()).slice(-2)
+  if (start.toDateString() === endDate.toDateString()) {
+    return `${formatDayMonth(start)}, ${year}`
+  }
+  return `${formatDayMonth(start)} - ${formatDayMonth(endDate)}, ${year}`
+}
 
 function Divider() {
-  return <div className="h-px w-full bg-line-default" aria-hidden />
+  return (
+    <div className="relative h-0 w-full" aria-hidden>
+      <div className="absolute inset-x-0 top-0 h-px bg-line-default" />
+    </div>
+  )
 }
 
 function FieldLabel({ children }: { children: string }) {
@@ -92,15 +107,13 @@ function LanguageMenu({
 }
 
 export default function DetailForm({
-  boardName          = '',
   language           = null,
-  launchDateLabel,
-  launchDate         = null,
+  launchStart        = null,
+  launchEnd          = null,
   topicsCount        = null,
   commentsCount      = null,
   openPanel          = null,
   onPanelChange,
-  onBoardNameChange,
   onLanguageChange,
   onLaunchDateChange,
   onTopicsChange,
@@ -115,15 +128,13 @@ export default function DetailForm({
 
   const closePanel = () => onPanelChange?.(null)
 
-  const languageLabel = language ?? 'Language'
-  const dateLabel = launchDateLabel ?? (launchDate
-    ? launchDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-    : 'Launch Date')
+  const languageSelected = language != null
+  const dateSelected = launchStart != null
 
   return (
     <div
       className={[
-        'flex w-full max-w-[494px] flex-col gap-1 rounded-lg bg-surface-white pb-2 pt-2',
+        'flex w-[550px] flex-col gap-1 rounded-lg bg-surface-white px-16 pb-2 pt-2',
         className,
       ].join(' ')}
     >
@@ -135,55 +146,41 @@ export default function DetailForm({
           </h2>
         </div>
         <div className="flex size-16 shrink-0 items-center justify-center p-2">
-          <ButtonSquare type="icon" icon="delete" size="m" onClick={onClose} />
+          <ButtonSquare type="icon" icon="delete" size="m" onClick={onClose} aria-label="Close" />
         </div>
       </div>
 
       <Divider />
 
-      {/* Add Board — Figma 1033:6389 */}
-      <div className="flex h-20 w-full items-center px-4">
-        <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <FieldLabel>Add Board</FieldLabel>
-          <input
-            type="text"
-            value={boardName}
-            onChange={(event) => onBoardNameChange?.(event.target.value)}
-            className={INPUT_FIELD}
-            aria-label="Add Board"
-          />
-        </div>
-      </div>
-
       {/* Language + Launch Date — Figma 1033:6404 */}
-      <div className="flex h-20 w-full items-center gap-4 px-4">
+      <div className="flex h-20 w-full items-center px-4">
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <FieldLabel>Select Language</FieldLabel>
           <Button
-            label={languageLabel}
+            label={language ?? 'Language'}
             level="secondary"
-            size="m"
+            size="l"
             iconLeft="languages"
-            iconRight={language ? undefined : 'chevron-down'}
+            iconRight={languageSelected ? undefined : 'chevron-down'}
             onClick={() => togglePanel('language')}
-            className={language ? 'w-fit' : 'w-[191px]'}
+            className="w-[191px] !gap-4"
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <FieldLabel>Select Launch Date</FieldLabel>
           <Button
-            label={dateLabel}
+            label={formatLaunchRange(launchStart, launchEnd)}
             level="secondary"
-            size="m"
+            size="l"
             iconLeft="calendar"
-            iconRight={launchDate || launchDateLabel ? undefined : 'chevron-down'}
+            iconRight={dateSelected ? undefined : 'chevron-down'}
             onClick={() => togglePanel('launchDate')}
-            className={launchDate || launchDateLabel ? 'w-fit' : 'w-[191px]'}
+            className={dateSelected ? 'w-full' : 'w-[191px]'}
           />
         </div>
       </div>
 
-      {/* Topics + Comments — Figma 1033:6397 */}
+      {/* Topics + comments per topic — Figma 1033:6397 */}
       <div className="flex h-20 w-full items-center gap-4 px-4">
         <NumberPicker
           variant="topics"
@@ -224,11 +221,13 @@ export default function DetailForm({
 
       {openPanel === 'launchDate' && (
         <div className="px-4">
-          <SingleDayPicker
-            selectedDate={launchDate}
-            onSelectDate={(date) => onLaunchDateChange?.(normalizeDate(date))}
-            onClear={() => onLaunchDateChange?.(null)}
-            onApply={closePanel}
+          <RangeDayPicker
+            state="open"
+            onApply={({ start, end }) => {
+              onLaunchDateChange?.(normalizeDate(start), normalizeDate(end))
+              closePanel()
+            }}
+            onClear={() => onLaunchDateChange?.(null, null)}
           />
         </div>
       )}

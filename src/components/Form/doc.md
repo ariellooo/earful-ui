@@ -5,21 +5,22 @@ Composite form for managing social content by platform and language. Each **comb
 ## Layout
 
 ```
-Tabs (Facebook | YouTube)
+Tabs (Facebook | Threads)
 ─────────────────────────────────────────────
 English                          [+ New Topic]
 ─────────────────────────────────────────────
-Topic    │ lorem ipsum text …          [✎][A][⋮]
+Topic    │ campaign topic copy …       [✎][A][⋮]
          │ [Upload] [Upload] [Upload] [+]
 ─────────────────────────────────────────────
-Comment  │ lorem ipsum text …          [✎][A][⋮]
-         │ lorem ipsum text …          [✎][A][⋮]
+Comment  │ campaign comment …          [✎][A][⋮]
+         │ campaign comment …          [✎][A][⋮]
          │ [+ New Comment]
 ─────────────────────────────────────────────
          │ (repeat block on + New Topic)
 ```
 
-- **Tabs** — 120 px wide each; active tab uses `text-primary` with a 100 px cyan underline.
+- **Tabs** — uses the Tabs component. Each cell is 120 px wide. The active tab is the default variant (orange label, 4 px orange underline). Inactive tabs use the disable variant.
+- **Topic images** — the opening topic shows three 80 px photos in the upload row, then the add control. Added slots stay empty.
 - **Header** — language title (`text-brand-indigo`, 24 px bold) and **New Topic** button aligned right.
 - **Label column** — fixed 120 px width for `Topic` / `Comment` labels.
 - **Content column** — flexible; holds text entries, upload slots, and actions.
@@ -29,10 +30,10 @@ Comment  │ lorem ipsum text …          [✎][A][⋮]
 
 | Action | Behavior |
 |--------|----------|
-| **+ New Topic** | Appends a new combine block below the existing one, separated by a divider. New block starts with one comment and three upload slots. |
-| **+ New Comment** | Appends a comment entry within the same block. |
+| **+ New Topic** | Appends the follow-up topic for campaign 421, with its first two comments and three upload slots. |
+| **+ New Comment** | Reveals the next remaining comment in that block, in file order. |
 | **+ (upload)** | Adds one upload slot to that block's topic row. |
-| **Tab click** | Switches the active social tab (Facebook / YouTube). |
+| **Tab click** | Switches the active social tab (Facebook / Threads). |
 
 State for blocks, comments, and upload slots is managed internally. Optional callbacks (`onNewTopic`, `onTabChange`) fire after the UI updates.
 
